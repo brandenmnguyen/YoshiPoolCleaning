@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoolSplash</title>
+    <link rel="stylesheet" href="{% static 'https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css' %}">
+    <link href="{% static '/dist/output.css' %}" rel="stylesheet">
+    <!--
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+-->
+
+    <link href="{% static 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' %}" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{%static 'homepageStyle.css' %}">
+
+
+
+</head>
+
+
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">LOGO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#services">About</a>
+                    </li>
+
+                    <a href="LoginPage.html" class="rightButton">Signup/Login</a>
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="upperContainer">
+
+
+        <div class="upperContainerInfoWithLink">
+
+            <p class="upperContainerInfo">Pool services, keep track of changes, and make payments!</p>
+
+            <a id="getStarted" href="LoginPage.html" class="navigationButton">Get Started</a>
+        </div>
+
+        <div class="forImage">
+
+            <img src="{% static '/Users/shahed/Downloads/pooolCorrected1.jpg' %}" class="img-fluid" alt="">
+
+        </div>
+
+
+    </div>
+
+
+
+    <p id="services">Explore services provided</p>
+
+    <div class="info">
+
+        <div class="insideInfo">
+            <h2>Client</h2>
+            <p id="firstInformation">Become a client where you can lookup different cleaning companies, a time stamped
+                location of the worker
+                being on property, a log of work done and updates needed to be done, and a message service within the
+                app!
+
+            </p>
+        </div>
+
+
+        <div class="insideInfo">
+            <h2>Provider</h2>
+            <p>Let your clients know what you have done, check off tasks you have done, get your payment through here!
+            </p>
+        </div>
+
+    </div>
+
+
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+            <div class="footerInfo">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Terms of Use</a>
+            </div>
+
+            <div class="footerInfo">
+                <a href="#">Email Signup</a>
+                <a href="#">Socials</a>
+                <a href="#">Instagram</a>
+            </div>
+
+
+            </p>
+        </div>
+    </footer>
+
+
+
+    <script src= "{% static 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'%}"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
