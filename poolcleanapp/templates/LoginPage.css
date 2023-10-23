@@ -1,0 +1,131 @@
+* {
+    padding: 0%;
+}
+
+.container {
+    display: flex;
+    margin: auto;
+    height: 850px;
+}
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    margin-top: 150px;
+}
+
+
+
+.form h2 {
+    font-family: 'Inter Tight', sans-serif;
+    color: rgba(96, 160, 239, 1);
+    margin-top: 80px;
+    font-size: 40px;
+    margin-bottom: 60px;
+}
+
+.inputingText {
+    display: flex;
+    height: 30PX;
+    margin: 20px;
+    width: 350px;
+    padding: 5px;
+    border-radius: 20px;
+    border: 2px solid rgba(96, 160, 239, 1);
+    text-align: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+
+#lowerInput {
+    margin-bottom: 40px;
+}
+
+.buttons {
+    background-color: rgba(96, 160, 239, 1);
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    border: none;
+    height: 40px;
+    width: 180px;
+    margin: 7px;
+    font-size: 16px;
+    transition: 0.5s;
+}
+
+.buttons:hover {
+    background-color: rgb(39, 112, 201);
+    color: rgb(255, 255, 255);
+    border-radius: 25px;
+    transform: translateY(-5px);
+    cursor: pointer;
+
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+
+}
+
+.side img {
+
+    width: 870px;
+    height: 870px;
+
+}
+
+.side h2 {
+    position: absolute;
+    font-family: 'Inter Tight', sans-serif;
+    text-align: center;
+    color: white;
+    line-height: 60px;
+    /* Position the text absolutely within the container */
+    font-size: 40px;
+    top: 50%;
+    /* Adjust the top position to vertically center the text */
+
+    left: 75%;
+    /* Adjust the left position to horizontally center the text */
+
+    transform: translate(-50%, -50%);
+    /* Center the text both vertically and horizontally */
+
+
+}
+
+.side a {
+
+    position: absolute;
+    top: 70%;
+    background-color: rgb(39, 112, 201);
+    color: white;
+    border-radius: 20px;
+    width: 190px;
+    height: 30px;
+    text-align: center;
+    padding-top: 10px;
+    text-decoration: none;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    transition: 0.6s;
+}
+
+.side a:hover {
+    background-color: rgb(18, 73, 139);
+    color: rgb(255, 255, 255);
+    border-radius: 25px;
+    transform: translateY(-5px);
+    cursor: pointer;
+}
