@@ -1,0 +1,50 @@
+body {
+    background-color: #CEE2FF;
+}
+
+.payment-option {
+    background-color: white;
+    border-radius: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.order-summary {
+    background-color: white;
+    border-radius: 25px;
+}
+
+img {
+    padding-left: 15px;
+    height: 38px;
+}
+
+#payment-info {
+    background-color: red;
+}
+
+.btn {
+    background-color: rgba(96, 160, 239, 1);
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    border: none;
+    height: 50px;
+    font-size: 16px;
+}
+
+.list-group {
+    border-radius: 25px;
+}
+
+.list-group-item {
+    background-color: #F2F2F2;
+    border: none;
+}
+
+.order-title {
+    color: #50ABFF;
+}
