@@ -1,0 +1,70 @@
+.fullScreen {
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+    height: 650px;
+}
+
+.formHalf {
+    width: 50%;
+}
+
+.imagePool {
+    width: 50%;
+}
+
+h1 {
+    color: rgba(96, 160, 239, 1);
+
+}
+
+label {
+    margin-top: 60px;
+    color: rgba(96, 160, 239, 1);
+    font-size: 23px;
+}
+
+input {
+    cursor: pointer;
+    margin-top: 60px;
+    border-radius: 20px;
+}
+
+.imagePoolSize {
+    width: 820px;
+}
+
+.body {
+    padding-bottom: 4000px;
+}
+
+.signUpButton {
+    text-decoration: none;
+    margin-left: 210px;
+    background-color: rgba(96, 160, 239, 1);
+    border-radius: 20px;
+    color: white;
+    transition: 0.5s;
+    width: 200px;
+}
+
+.signUpButton:hover {
+
+    background-color: rgb(47, 123, 217);
+    color: white;
+    transform: translateY(-5px);
+}
+
+#provider {
+    display: block;
+    margin-left: 190px;
+    text-decoration: none;
+    margin-top: 5px;
+    color: rgba(96, 160, 239, 1);
+    font-weight: bold;
+}
+
+#provider:hover {
+    text-decoration: underline;
+}
