@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background-color: #a3c9f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.navbar-links {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.navbar a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #c2d1e0;
+}
+
+.account-name {
+  background-color: #60a0ef;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.footer {
+  background-color: #a3c9f7;
+  color: white;
+  padding: 15px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* Additional styling here */
+}
+
+.task-complete {
+  background-color: #a3c9f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.task-title {
+  font-size: 1em;
+}
+
+.task-time {
+  font-size: 0.8em;
+  color: #333;
+  /* This is aligned to the top right by the flex properties on the parent */
+}
+
+.task-status {
+  font-size: 0.8em;
+  color: #4caf50;
+  font-weight: bold;
+  /* This will be pushed to the bottom of the container by the mt-auto class */
+}
+
+.task-in-progress {
+  background-color: #a3c9f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.task-status-in-progress {
+  font-size: 0.8em;
+  color: #030303;
+}
+
+.technician-greeting {
+  background-color: #f8f9fa; /* Background color */
+  padding: 20px; /* Padding inside the box */
+  border-radius: 5px; /* Rounded corners */
+  text-align: center; /* Center the text horizontally */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  border: 1px solid #333; /* Border around the box */
+  box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
+}
+
+.greeting-text {
+  /* Add styles for greeting text */
+}
+
+.name-text {
+  /* Add styles for name text */
+}
+
+.status-text {
+  /* Add styles for status text */
+}
+
+.status-arrived {
+  color: green;
+}
