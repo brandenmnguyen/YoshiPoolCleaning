@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+    <title>Dynamic Bootstrap Calendar</title>
+</head>
+<body>
+    <div class="container calendar">
+        <div id="calendar"></div>
+    </div>
+    <style>
+        /* Set the dimensions of the calendar container */
+        .calendar {
+            width: 80%;
+            height: 50%;
+            margin: 0 auto; /* Center the calendar horizontally */
+        }
+
+        .fc-header-toolbar {
+            
+            color: #91cbda;
+        }
+
+        .fc-event {
+            border-color: #d7e9ff;
+            background-color: #d7e9ff;
+        }
+
+        .fc-event-title {
+            color: #000000;
+        }
+        
+        .fc-col-header-cell.fc-day.fc-day {
+            border: 1px solid #000000;
+            background-color: #91cbda;
+        }
+        
+        .fc-daygrid-day-top {
+            background-color: #e5f3f6;
+        }
+
+        .fc-daygrid-day.fc-day {
+            border: 1px solid #000000;
+        }
+
+        .fc-view-harness.fc-view-harness-active {
+            border: 1px solid #000000;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Display a month view by default
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                {
+                        title: 'Event 1',
+                        start: '2023-11-06'
+                    },
+                    {
+                        title: 'Event 2',
+                        start: '2023-11-10'
+                    },
+                    {
+                        title: 'Event 3',
+                        start: '2023-11-15',
+                        description: 'More details about Event 3.'
+                    },
+                    {
+                        title: 'Event 4',
+                        start: '2023-12-06'
+                    }
+                    // Add more events here
+                ]
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+</html>

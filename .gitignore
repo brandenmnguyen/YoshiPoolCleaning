@@ -1,0 +1,5 @@
+# Python Specific gitignore
+venv/
+
+# Mac Specific gitignore
+.DS_Store
