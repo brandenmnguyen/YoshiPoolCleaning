@@ -8,12 +8,13 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 from poolcleanapp.models import Client
-from poolcleanapp.models import Service
-from poolcleanapp.models import Invoice
-from .serializers import ClientSerializer
-from .serializers import ServiceSerializer
-from .serializers import InvoiceSerializer
+from poolcleanapp.models import Company
+#from poolcleanapp.models import Invoice
+#from .serializers import ClientSerializer
+from .serializers import CompanySerializer
+#from .serializers import InvoiceSerializer
 
 
 
@@ -41,11 +42,16 @@ def getService(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def addService(request):
-    serializer = ServiceSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
+def addCompany(request):
+    try:
+        serializer = CompanySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def getInvoice(request):

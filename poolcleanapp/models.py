@@ -6,151 +6,86 @@ from uuid import uuid4
 #from django.contrib.auth.models import User
 
 # Create your models here.
+
+class Appointments(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
+    emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True)
+    appdate = models.DateField(blank=True, null=True)
+    apptime = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'APPOINTMENTS'
+
+
 class Client(models.Model):
+    client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
+    fname = models.CharField(max_length=100, blank=True, null=True)
+    lname = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(unique=True, max_length=100, blank=True, null=True)
+    cl_password = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
 
-    clientName = models.CharField(null=True, max_length=200)
-    addressLine = models.CharField(null=True, blank=True, max_length=200)
-    postalCode = models.CharField(null=True, blank=True, max_length=10)
-    phoneNumber = models.CharField(null=True, blank=True, max_length=100)
-    emailAddress = models.CharField(null=True, blank=True, max_length=100)
-
-    #utility fields
-    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
-    uniqueId = models.CharField(null=True, blank=True, max_length=100)
-    date_created = models.DateTimeField(blank=True, null=True)
-    last_updated = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return '{} {} {}'.format(self.clientName, self.province, self.uniqueId)
-    
-    def get_absolute_url(self):
-        return reverse('client-detail', kwargs={'slug': self.slug})
-    
-    def save(self, *args, **kwargs):
-        if self.date_created is None:
-            self.date_created = timezone.localtime(timezone.now())
-        if self.uniqueId is None:
-            self.uniqueId = str(uuid4()).split('-')[4]
-            self.slug = slugify('{} {} {}'.format(self.clientName, self.province, self.uniqueId))
-
-        self.slug = slugify('{} {} {}'.format(self.clientName, self.province, self.uniqueId))
-        self.last_updated = timezone.localtime(timezone.now())
-
-        super(Client, self).save(*args, **kwargs)
-
-class Service(models.Model):
-
-    title = models.CharField(null=True, blank=True, max_length=100) 
-    description = models.TextField(null=True, blank=True)  
-    price = models.FloatField(null=True, blank=True)
-
-    #Utility fields
-    uniqueId = models.CharField(null=True, blank=True, max_length=100)
-    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
-    date_created = models.DateTimeField(blank=True, null=True)
-    last_updated = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return '{} {}'.format(self.title, self.uniqueId)
+    class Meta:
+        managed = False
+        db_table = 'CLIENT'
 
 
-    def get_absolute_url(self):
-        return reverse('product-detail', kwargs={'slug': self.slug})
+class Company(models.Model):
+    c_id = models.AutoField(db_column='C_id', primary_key=True)  # Field name made lowercase.
+    company_name = models.CharField(db_column='Company_Name', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    company_phone = models.CharField(db_column='Company_Phone', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_pw = models.CharField(db_column='Company_PW', max_length=20, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'COMPANY'
 
 
-    def save(self, *args, **kwargs):
-        if self.date_created is None:
-            self.date_created = timezone.localtime(timezone.now())
-        if self.uniqueId is None:
-            self.uniqueId = str(uuid4()).split('-')[4]
-            self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
+class Employee(models.Model):
+    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
+    fname = models.CharField(max_length=50, blank=True, null=True)
+    lname = models.CharField(max_length=50, blank=True, null=True)
+    c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
+    emp_password = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
 
-        self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
-        self.last_updated = timezone.localtime(timezone.now())
-
-        super(Service, self).save(*args, **kwargs)  
-
-
-class Invoice(models.Model):
-    TERMS = [
-    ('14 days', '14 days'),
-    ('30 days', '30 days'),
-    ('60 days', '60 days'),
-    ]
-
-    STATUS = [
-    ('CURRENT', 'CURRENT'),
-    ('OVERDUE', 'OVERDUE'),
-    ('PAID', 'PAID'),
-    ]
-
-    title = models.CharField(null=True, blank=True, max_length=100)
-    number = models.CharField(null=True, blank=True, max_length=100)
-    dueDate = models.DateField(null=True, blank=True)
-    paymentTerms = models.CharField(choices=TERMS, default='14 days', max_length=100)
-    status = models.CharField(choices=STATUS, default='CURRENT', max_length=100)
-    notes = models.TextField(null=True, blank=True)
-
-    #RELATED fields
-    client = models.ForeignKey(Client, blank=True, null=True, on_delete=models.SET_NULL)
-    product = models.ForeignKey(Service, blank=True, null=True, on_delete=models.SET_NULL)
-
-    #Utility fields
-    uniqueId = models.CharField(null=True, blank=True, max_length=100)
-    slug = models.SlugField(max_length=500, unique=True, blank=True, null=True)
-    date_created = models.DateTimeField(blank=True, null=True)
-    last_updated = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'EMPLOYEE'
 
 
-    def __str__(self):
-        return '{} {}'.format(self.title, self.uniqueId)
+class Payment(models.Model):
+    payment_id = models.AutoField(primary_key=True)
+    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
+    payment_date = models.DateField(blank=True, null=True)
+    received_date = models.DateField(blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    payment_method = models.CharField(max_length=50, blank=True, null=True)
+    card_name = models.CharField(max_length=100, blank=True, null=True)
+    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)  # Field name made lowercase.
+    email = models.CharField(max_length=100, blank=True, null=True)
+    reference_number = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'PAYMENT'
 
 
-    def get_absolute_url(self):
-        return reverse('invoice-detail', kwargs={'slug': self.slug})
-    
-    def save(self, *args, **kwargs):
-        if self.date_created is None:
-            self.date_created = timezone.localtime(timezone.now())
-        if self.uniqueId is None:
-            self.uniqueId = str(uuid4()).split('-')[4]
-            self.slug = slugify()
+class Taskping(models.Model):
+    task_id = models.AutoField(primary_key=True)
+    status = models.CharField(max_length=1, blank=True, null=True)
+    taskname = models.CharField(db_column='taskName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    description = models.TextField(blank=True, null=True)
+    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
 
-        self.slug = slugify('{} {}'.format(self.title, self.uniqueId))
-        self.last_updated = timezone.localtime(timezone.now())
-
-        super(Invoice, self).save(*args, **kwargs)
-
-class Settings(models.Model):
-
-    #Basic Fields
-    clientName = models.CharField(null=True, blank=True, max_length=200)
-    addressLine = models.CharField(null=True, blank=True, max_length=200)
-    postalCode = models.CharField(null=True, blank=True, max_length=10)
-    phoneNumber = models.CharField(null=True, blank=True, max_length=100)
-    emailAddress = models.CharField(null=True, blank=True, max_length=100)
-
-    #Utility fields
-    uniqueId = models.CharField(null=True, blank=True, max_length=100)   
-
-    def __str__(self):
-        return '{} {} {}'.format(self.clientName, self.province, self.uniqueId)
-
-
-    def get_absolute_url(self):
-        return reverse('settings-detail', kwargs={'slug': self.slug})
-
-
-    def save(self, *args, **kwargs):
-        if self.date_created is None:
-            self.date_created = timezone.localtime(timezone.now())
-        if self.uniqueId is None:
-            self.uniqueId = str(uuid4()).split('-')[4]
-            self.slug = slugify('{} {} {}'.format(self.clientName, self.province, self.uniqueId))
-
-        self.slug = slugify('{} {} {}'.format(self.clientName, self.province, self.uniqueId))
-        self.last_updated = timezone.localtime(timezone.now())
-
-        super(Settings, self).save(*args, **kwargs)    
-        
-         
+    class Meta:
+        managed = False
+        db_table = 'TASKPING'
