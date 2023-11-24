@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,18 +11,18 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="ProviderTracking.css" />
+    <link rel="stylesheet" href="{% static "ProviderTracking.css" %}" />
     <!-- Link to the external CSS file -->
   </head>
   <!-- Navigation bar section -->
   <div class="navbar">
     <div class="navbar-links">
-      <a href="#home">Logo</a>
-      <a href="#about">About</a>
-      <a href="#providers">Providers</a>
-      <a href="#payment">Payment</a>
-      <a href="#map">Map</a>
-      <a href="#schedule">Schedule</a>
+      <a href="{% url 'homepage' %}">Logo</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'providersearch' %}">Providers</a>
+      <a href="{% url 'paymenthistory' %}">Payment</a>
+      <a href="{% url 'providertracking' %}">Map</a>      <!-- self reference?-->
+      <a href="{% url 'dailycalendar' %}">Schedule</a>
       <a href="#account" class="account-name">Account Name</a>
     </div>
   </div>
@@ -129,7 +130,7 @@
       <div class="col-md-6 offset-md-6" style="margin-top: -415px">
         <div class="technician-greeting d-none d-md-flex align-items-center">
           <div class="col-2 p-0">
-            <img src="profile.jpg" alt="Technician" class="img-fluid" />
+            <img src="{% static "Profile.jpg" %}" alt="Technician" class="img-fluid" />
           </div>
           <div class="col-10">
             <p class="name-text">Robert</p>
@@ -160,5 +161,5 @@
     </div>
   </div>
 
-  <script src="ProviderTracking.js"></script>
+  <script src="{% static "ProviderTRacking.js" %}"></script>
 </html>

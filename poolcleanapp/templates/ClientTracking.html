@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,18 +11,18 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="ClientTracking.css" />
+    <link rel="stylesheet" href="{% static "ClientTracking.css" %}" />
     <!-- Link to the external CSS file -->
   </head>
   <!-- Navigation bar section -->
   <div class="navbar">
     <div class="navbar-links">
-      <a href="#home">Logo</a>
-      <a href="#about">About</a>
-      <a href="#providers">Providers</a>
-      <a href="#payment">Payment</a>
-      <a href="#map">Map</a>
-      <a href="#schedule">Schedule</a>
+      <a href="{% url 'homepage' %}">Logo</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'providersearch' %}">Providers</a>
+      <a href="{% url 'paymenthistory' %}">Payment</a>
+      <a href="{% url 'clienttracking' %}">Map</a>   <!-- self reference?-->
+      <a href="{% url 'dailycalendar' %}">Schedule</a>
       <a href="#account" class="account-name">Account Name</a>
     </div>
   </div>
@@ -159,5 +160,5 @@
     </div>
   </div>
 
-  <script src="ClientTracking.js"></script>
+  <script src="{% static "ClientTracking.js" %}"></script>
 </html>
