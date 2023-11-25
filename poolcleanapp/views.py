@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 #from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -79,9 +80,21 @@ def anonymous_required(function=None, redirect_url=None):
 def homepage(request):
     return render(request, "Homepage.html")
 
-@anonymous_required
-def login(request):
-    return render(request, "LoginPage.html")
+def login_user(request):
+    if request.user.is_authenticated:
+        return redirect('clienttracking')
+    if request.method == "POST":
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('clienttracking')
+        else:
+            msg = 'Error logging in'
+            return render(request, "LoginPage.html", {'msg': msg})
+    else:
+        return render(request, "LoginPage.html")
 
 @anonymous_required
 def clientSignUp(request):
