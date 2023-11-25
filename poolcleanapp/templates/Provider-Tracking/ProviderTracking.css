@@ -39,11 +39,8 @@ body {
 .footer {
   background-color: #a3c9f7;
   color: white;
-  padding: 15px 0;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   text-align: center;
+  padding: 15px 0;
 }
 
 .footer a {
@@ -96,7 +93,7 @@ body {
 
 .task-status-in-progress {
   font-size: 0.8em;
-  color: #030303;
+  color: #d51717;
 }
 
 .technician-greeting {
@@ -107,6 +104,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect */
   border: 1px solid #333; /* Border around the box */
   box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
+  margin-top: 35px;
 }
 
 .greeting-text {
@@ -123,4 +121,25 @@ body {
 
 .status-arrived {
   color: green;
+}
+
+.left-side-scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+html,
+body {
+  height: 100%; /* Make sure the html and body elements take up the full height */
+  margin: 0; /* Reset default margin */
+}
+
+body {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack children elements vertically */
+  min-height: 100vh; /* Minimum height of 100% of the viewport */
+}
+
+.main-container {
+  flex: 1; /* Flex grow to absorb extra space */
 }

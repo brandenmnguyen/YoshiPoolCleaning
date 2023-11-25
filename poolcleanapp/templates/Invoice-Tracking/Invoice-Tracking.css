@@ -53,81 +53,6 @@ body {
   text-decoration: underline;
 }
 
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  /* Additional styling here */
-}
-
-.task-complete {
-  background-color: #a3c9f7;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
-.task-title {
-  font-size: 1em;
-}
-
-.task-time {
-  font-size: 0.8em;
-  color: #333;
-  /* This is aligned to the top right by the flex properties on the parent */
-}
-
-.task-status {
-  font-size: 0.8em;
-  color: #4caf50;
-  font-weight: bold;
-  /* This will be pushed to the bottom of the container by the mt-auto class */
-}
-
-.task-in-progress {
-  background-color: #a3c9f7;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
-.task-status-in-progress {
-  font-size: 0.8em;
-  color: #d51717;
-}
-
-.technician-greeting {
-  background-color: #f8f9fa; /* Background color */
-  padding: 20px; /* Padding inside the box */
-  border-radius: 5px; /* Rounded corners */
-  text-align: center; /* Center the text horizontally */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  border: 1px solid #333; /* Border around the box */
-  box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
-  margin-top: 35px;
-}
-
-.greeting-text {
-  /* Add styles for greeting text */
-}
-
-.name-text {
-  /* Add styles for name text */
-}
-
-.status-text {
-  /* Add styles for status text */
-}
-
-.status-arrived {
-  color: green;
-}
-
-.left-side-scroll {
-  max-height: 100vh;
-  overflow-y: auto;
-}
-
 html,
 body {
   height: 100%; /* Make sure the html and body elements take up the full height */
@@ -142,4 +67,79 @@ body {
 
 .main-container {
   flex: 1; /* Flex grow to absorb extra space */
+}
+
+.task-money {
+  font-size: 0.8em;
+  color: #333;
+  margin-left: 108px;
+  margin-bottom: 10px;
+  width: 100px;
+  text-align: right; /* Align text to the right */
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  /* Optional: Set a min-width if you want a minimum size */
+  min-width: 100px; /* Adjust as necessary */
+
+  /* This is aligned to the top right by the flex properties on the parent */
+}
+.task-title {
+  font-size: small;
+}
+
+.payment-background {
+  background-color: #a3c9f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  position: relative;
+}
+
+.transaction-complete {
+  font-size: 0.8em;
+  color: #4caf50;
+  margin-top: 10px;
+}
+
+.transaction-in-progress {
+  font-size: 0.8em;
+  color: #0e0e0e;
+  margin-top: 10px;
+}
+
+.technician-greeting {
+  background-color: #f8f9fa; /* Background color */
+  padding: 20px; /* Padding inside the box */
+  border-radius: 5px; /* Rounded corners */
+  text-align: center; /* Center the text horizontally */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  border: 1px solid #333; /* Border around the box */
+  box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
+  margin-top: 35px;
+}
+
+.left-side-scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.date-time-position {
+  font-size: small;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-left: 15px;
+  margin-bottom: 14px;
+  /* Add padding, margins, etc., as needed */
+}
+
+.order-number {
+  text-align: right; /* Align text to the right */
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  /* Optional: Set a min-width if you want a minimum size */
+  min-width: 100px; /* Adjust as necessary */
+  font-size: small;
 }
