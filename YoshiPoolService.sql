@@ -6,7 +6,8 @@ CREATE TABLE COMPANY (
     Company_Name VARCHAR(100),
     Company_Address VARCHAR(255),
     Company_Phone VARCHAR(20),
-    Company_Email VARCHAR(100)
+    Company_Email VARCHAR(100),
+    Company_PW VARCHAR(20)
 );
 
 CREATE TABLE EMPLOYEE (
@@ -14,7 +15,6 @@ CREATE TABLE EMPLOYEE (
     fname VARCHAR(50),
     lname VARCHAR(50),
     c_id INT,
-    userName VARCHAR(50) UNIQUE,
     emp_password VARCHAR(50),
     phone_number VARCHAR(20),
     FOREIGN KEY (c_id) REFERENCES COMPANY (C_id)
@@ -24,13 +24,10 @@ CREATE TABLE CLIENT (
     Client_id INT AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(100),
     lname VARCHAR(100),
-    email VARCHAR(100),
-    userName VARCHAR(50) UNIQUE,
+    email VARCHAR(100) UNIQUE,
     cl_password VARCHAR(50),
     phone_number VARCHAR(20),
-    address VARCHAR(255),
-    emp_id INT,
-    FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
+    address VARCHAR(255)
 );
 
 CREATE TABLE PAYMENT (
@@ -54,7 +51,6 @@ CREATE TABLE TASKPING (
     task_id INT AUTO_INCREMENT PRIMARY KEY,
     status CHAR(1),
     taskName VARCHAR(100),
-    extra_maintenancePrice DECIMAL(10, 2),
     description TEXT,
     emp_id INT,
     client_id INT,
