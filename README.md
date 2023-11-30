@@ -43,6 +43,10 @@ The pool cleaning industry is one that is quite overlooked, but important for th
 
 ## Prototype Images
 
+- **Entity Relationship Diagram**
+
+![er](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/6c0763fe-c86a-4b54-8c34-201818fbf42a)
+
 - **Payment Page**
 
 ![sampleimage1](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/465ba3cf-0c48-4923-b36b-1bd161883f72)
@@ -54,6 +58,18 @@ The pool cleaning industry is one that is quite overlooked, but important for th
 - **Login Page**
 
 ![sampleimage3](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/b28d9c69-1666-4acb-956e-ebcde57ca105)
+
+## Testing
+
+To be added in CSC191
+
+## Deployment
+
+To be added in CSC191
+
+## Developer Instructions
+
+To be added in CSC191
 
 ## Tech Stack
 
@@ -162,7 +178,7 @@ This project is built using the following technologies and tools:
 - Implement password changing options for both the client and the provider
 - Add password length and format requirements for security reasons
 - Implement recurring payments for the clients
-- Allow providers to remove clients  
+- Allow providers to remove clients
 
 ## Contact
 
