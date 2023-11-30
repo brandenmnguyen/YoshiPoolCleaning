@@ -1,5 +1,5 @@
-# YoshiPoolCleaning
-Team Yoshi Senior Project
+## Yoshi Pool Cleaning
+
 
 ## Introduction
 
