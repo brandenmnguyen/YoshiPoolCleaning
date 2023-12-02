@@ -14,8 +14,7 @@ from poolcleanapp.models import Invoice
 from .serializers import ClientSerializer
 from .serializers import ServiceSerializer
 from .serializers import InvoiceSerializer
-
-
+from .forms import ClientForm
 
 
 # Create your views here.
@@ -88,6 +87,11 @@ def clientSignUp(request):
     return render(request, "ClientSignUp.html")
 
 @anonymous_required
+def add_client(request):
+    form = ClientForm()
+    return render(request, "add_client.html", {'form': form})
+
+@anonymous_required
 def providerSignUp(request):
     return render(request, "ProviderSignUp.html")
 
@@ -122,9 +126,6 @@ def providertracking(request):
 
 def clienttracking(request):
     return render(request, "ClientTracking.html")
-
-
-
 
 #def index(request):
     #context = {}
