@@ -1,5 +1,6 @@
-## Yoshi Pool Cleaning
+# Yoshi Pool Cleaning
 
+![templogo](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd)
 
 ## Introduction
 
@@ -46,6 +47,10 @@ The pool cleaning industry is one that is quite overlooked, but important for th
 - **Entity Relationship Diagram**
 
 ![er](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/6c0763fe-c86a-4b54-8c34-201818fbf42a)
+
+- **Project Mockup in Figma**
+
+![mockup](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/ee468009-5fb9-4ab4-bc4f-77d974fdaf6f)
 
 - **Payment Page**
 
