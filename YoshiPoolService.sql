@@ -1,6 +1,7 @@
 use POOL;
 
 
+
 CREATE TABLE COMPANY (
     C_id INT AUTO_INCREMENT PRIMARY KEY,
     Company_Name VARCHAR(100),
@@ -67,7 +68,3 @@ CREATE TABLE APPOINTMENTS (
     FOREIGN KEY (cl_id) REFERENCES CLIENT (Client_id),
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
 );
-
-
-
-

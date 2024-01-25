@@ -13,7 +13,7 @@ from rest_framework import status
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 #from poolcleanapp.models import Invoice
-from .serializers import ClientSerializer
+#from .serializers import ClientSerializer
 from .serializers import CompanySerializer
 #from .serializers import InvoiceSerializer
 
