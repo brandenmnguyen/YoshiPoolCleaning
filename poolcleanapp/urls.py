@@ -9,6 +9,7 @@ urlpatterns = [
     path('addService/', views.addService),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
+    path('add_client/', views.add_client),
 
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage),
