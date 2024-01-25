@@ -98,7 +98,7 @@ def anonymous_required(function=None, redirect_url=None):
    return actual_decorator
 
 def homepage(request):
-    return render(request, "Homepage.html")
+    return render(request, "Homepage-1.html")
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -118,7 +118,7 @@ def login_user(request):
 
 @anonymous_required
 def clientSignUp(request):
-    return render(request, "ClientSignUp.html")
+    return render(request, "SignUpClient.html")
 
 @anonymous_required
 def add_client(request):
@@ -127,10 +127,10 @@ def add_client(request):
 
 @anonymous_required
 def providerSignUp(request):
-    return render(request, "ProviderSignUp.html")
+    return render(request, "SignUpProvider.html")
 
 def providerSearch(request):
-    return render(request, "ResultsPage.html")
+    return render(request, "ResultsPage-1.html")
 
 def payment(request):
     return render(request, "payment_page.html")
@@ -142,9 +142,13 @@ def paymentSuccess(request):
 def calendar(request):
     return render(request, "calendar.html")
 
-@login_required
+#@login_required
+def dailycalendar(request):
+    return render(request, "DailyCalendar.html")
+
+#@login_required
 def paymentHistory(request):
-    return render(request, "PaymentHistory.html")
+    return render(request, "invoice.html")
 
 def about(request):
     return render(request, "about.html")
@@ -152,12 +156,11 @@ def about(request):
 def contact(request):
     return render(request, "contact.html")
 
-def index(request):
-    return render(request, "index.html")
-
+#@login_required
 def providertracking(request):
     return render(request, "ProviderTracking.html")
 
+#@login_required
 def clienttracking(request):
     return render(request, "ClientTracking.html")
 

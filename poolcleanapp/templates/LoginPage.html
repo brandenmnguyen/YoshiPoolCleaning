@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
+<link rel="stylesheet" href="{% static "LoginPage.css" %}">
 
 <head>
     <!-- Required meta tags -->
@@ -43,8 +45,8 @@
 
             <h2>Welcome <br> Don't have an account already?</h2>
 
-            <img src="/Users/shahed/Desktop/Screenshot 2023-10-18 at 10.05.51 PM.png" alt="">
-            <a href="#">Sign Up</a>
+            <img src="{% static "LoginImage.png" %}" alt="">
+            <a href="{% url 'clientsignup' %}" id="provider">Sign Up</a>
 
         </div>
 

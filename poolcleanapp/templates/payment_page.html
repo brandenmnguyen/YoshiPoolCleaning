@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -9,7 +10,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <link href="./payment_page.css" rel="stylesheet">
+    <link href="{% static "payment_page.css" %}" rel="stylesheet">
     <title>Payment</title>
   </head>
 
@@ -21,28 +22,28 @@
                     <div class="shadow form-check payment-option mt-5 mx-4">
                         <input type="radio" class="form-check-input" name="q" id="option1">
                         <label class="form-check-label" for="option1">
-                        <img src="PayPal.svg.png" alt="PayPal">
+                        <img src="{% static "PayPal.svg.png" %}" alt="PayPal">
                         </label>
                     </div>
                     <div class="shadow form-check payment-option mt-5 mx-4">
                         <input type="radio" class="form-check-input" name="q" id="option2">
                         <label class="form-check-label" for="option2">
-                        <img src="Google_Pay_Logo.svg.png" alt="Google Pay">
+                        <img src="{% static "Google_Pay_Logo.svg.png" %}" alt="Google Pay">
                         </label>
                     </div>
                     <div class="shadow form-check payment-option mt-5 mx-4">
                         <input type="radio" name="q" id="option3" class="form-check-input">
                         <label class="form-check-label" for="option3">
-                        <img src="2560px-Apple_Pay_logo.svg.png" alt="Apple Pay">
+                        <img src="{% static "2560px-Apple_Pay_logo.svg.png" %}" alt="Apple Pay">
                         </label>
                     </div>
                     <div class="shadow form-check payment-option my-5 mx-4">
                         <input type="radio" name="q" id="option4" class="form-check-input">
                         <label class="form-check-label" for="option4">
-                        <img src="Visa_Inc._logo.svg.png" alt="Visa" style="height: 30px;">
-                        <img src="Mastercard-logo.svg.png" alt="MasterCard">
-                        <img src="2560px-Discover_Card_logo.svg.png" alt="Discover" style="height: 17px;">
-                        <img src="American_Express_logo_(2018).svg" alt="American Express">
+                        <img src="{% static "Visa_Inc._logo.svg.png" %}" alt="Visa" style="height: 30px;">
+                        <img src="{% static "Mastercard-logo.svg.png" %}" alt="MasterCard">
+                        <img src="{% static "2560px-Discover_Card_logo.svg.png" %}" alt="Discover" style="height: 17px;">
+                        <img src="{% static "American_Express_logo_(2018).svg" %}" alt="American Express">
                         </label>
 
                         <form>
