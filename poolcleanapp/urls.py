@@ -6,7 +6,7 @@ urlpatterns = [
     path('viewClient/', views.getClient),
     path('addClient/', views.addClient),
     path('viewService/', views.getService),
-    path('addService/', views.addService),
+    path('addCompany/', views.addCompany),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
     path('add_client/', views.add_client),
