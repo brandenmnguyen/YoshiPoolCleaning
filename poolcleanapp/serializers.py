@@ -10,10 +10,10 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Company   
-        fields = '__all__'    
+        model = Company
+        fields = '__all__'
 
 class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = "" 
-        fields = '__all__'   
+        model = ""
+        fields = '__all__'
