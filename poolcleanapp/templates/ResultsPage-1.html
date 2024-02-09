@@ -78,6 +78,7 @@
 
         .nameOfCompany {
             padding-top: 25px;
+            margin-bottom: 25px;
         }
 
         .nameOfStreet {
@@ -126,6 +127,11 @@
         .infoOfCompany {
             width: 50%;
             line-height: 1px;
+        }
+
+        .email {
+            font-size: 12px;
+            color: rgba(105, 105, 105, 1);
         }
     </style>
 
@@ -179,7 +185,7 @@
         // Iterate based on matched info from the database
         const companies = [
             {% for company in info %}
-        { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_pw }}" }
+        { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_phone }}", "email": "{{ company.company_email }}" }
         {% if not forloop.last %}, {% endif %}
         {% endfor %}
         ];
@@ -193,6 +199,7 @@
                         <p class="nameOfCompany">${company.name}</p>
                         <p class="nameOfStreet">${company.location}</p>
                         <p class="Phonenumber">${company.phoneNumber}</p>
+                        <p class="email">${company.email}</p>
                     </div>
                     <div class="plusSign">
                         <a class="plusItself">+</a>
