@@ -119,8 +119,60 @@
                 <label class="form-check-label" for="flexCheckDefault">I understand and agree to the terms and conditions</label>
             </div>
 
-            <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" value="PROCEED TO CHECKOUT">
+            <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" value="PROCEED TO CHECKOUT" onclick="openpopup()">
+            
         </div>
     </div>
+    <div class = "popup" id="popup">  
+        <h2>Order Review</h2>
+        <p>Paying with: Visa</p>
+        <p>Card Number: **** **** **** 1234</p>
+        <p>Order Total: $355.30</p>
+        <input id="orderButton" class="btn btn-lg col-8 offset-2 mb-4" type="button" value="Place your order!" onclick="processPayment()">
+    </div>
+    <!-- Popup for Payment Success -->
+    <div class="popup" id="successPopup">
+    <h2 style="color: green;">Payment Successful</h2>
+    <p>Your payment has been processed successfully.</p>
+    <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" value="Go back to Account" onclick="showPopup('success')">
+    </div>
+
+    <!-- Popup for Payment Failure -->
+    <div class="popup" id="failurePopup">
+    <h2 style="color: red;">Payment Failed</h2>
+    <p>Sorry, your payment could not be processed.</p>
+    <input id="orderButton" class="btn btn-lg col-8 offset-2 mb-4" type="button" value="Try Again!" onclick="processPayment()">
+    </div>
+    <script>
+        let popup = document.getElementById("popup");
+
+        function openpopup(){
+             popup.classList.add("openpopup");
+        }
+
+        function closepopup(){
+             popup.classList.remove("openpopup");
+        }
+
+        function processPayment() {
+            let paymentSuccessful = Math.random() < 0.5; 
+            if (paymentSuccessful) {
+                closepopup();
+                showSuccessPopup();
+            } else {
+                 closepopup();
+                 showFailurePopup();
+            }
+        }
+
+        function showSuccessPopup() {
+             document.getElementById("successPopup").classList.add("openpopup");
+        }
+
+        function showFailurePopup() {
+            document.getElementById("failurePopup").classList.add("openpopup");
+        }
+    </script> 
   </body>
 </html>
+
