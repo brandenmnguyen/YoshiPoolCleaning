@@ -1,0 +1,46 @@
+<!-- Assuming your form variable is named 'form' in the view context -->
+
+<form method="post" action="">
+    {% csrf_token %}
+    
+    <!-- Display any form errors here -->
+    {% if form.errors %}
+        <p style="color: red;">{{ form.errors }}</p>
+    {% endif %}
+
+    {{ form.as_p }}
+
+    <!-- Company Name field -->
+    <label for="{{ form.company_name.id_for_label }}">Company Name:</label>
+    <input id="{{ form.company_name.id_for_label }}" type="text" name="{{ form.company_name.name }}" value="{{ form.company_name.value }}">
+    {{ form.company_name }}
+    <br>
+
+    <!-- Company Address field -->
+    <label for="{{ form.company_address.id_for_label }}">Company Address:</label>
+    <input type="text" id="{{ form.company_address.id_for_label }}" name="{{ form.company_address.name }}" value="{{ form.company_address.value }}">
+    {{ form.company_address }}
+    <br>
+
+    <!-- Company Phone field -->
+    <label for="{{ form.company_phone.id_for_label }}">Company Phone:</label>
+    <input type="text" id="{{ form.company_phone.id_for_label }}" name="{{ form.company_phone.name }}" value="{{ form.company_phone.value }}">
+    {{ form.company_phone }}
+    <br>
+
+    <!-- Company Email field -->
+    <label for="{{ form.company_email.id_for_label }}">Company Email:</label>
+    <input type="text" id="{{ form.company_email.id_for_label }}" name="{{ form.company_email.name }}" value="{{ form.company_email.value }}">
+    {{ form.company_email }}
+    <br>
+
+    <!-- Company Password field -->
+    <label for="{{ form.company_pw.id_for_label }}">Company Password:</label>
+    <input type="password" id="{{ form.company_pw.id_for_label }}" name="{{ form.company_pw.name }}" value="{{ form.company_pw.value }}">
+    {{ form.company_pw }}
+    <br>
+
+    <!-- Add more fields as needed -->
+
+    <input type="submit" value="Register">
+</form>

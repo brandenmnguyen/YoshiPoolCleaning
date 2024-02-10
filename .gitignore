@@ -1,5 +1,13 @@
 # Python Specific gitignore
 venv/
+PVE/
 
 # Mac Specific gitignore
 .DS_Store
+
+# Compiled Python files
+__pycache__/
+__pycache__
+*.pyc
+*.pyo
+*.pyd

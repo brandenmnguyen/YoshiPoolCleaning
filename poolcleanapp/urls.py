@@ -5,7 +5,8 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('viewClient/', views.getClient),
     path('addClient/', views.addClient),
-    path('viewService/', views.getService),
+    path('viewCompany/', views.getCompany),
+    path('viewOneCompany/', views.getOneCompany),
     path('addCompany/', views.addCompany),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
@@ -13,7 +14,8 @@ urlpatterns = [
 
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name = 'homepage'),
-    path('login/', views.login, name = 'login'),
+    path('login/', views.login_user, name = 'login'),
+    path('providerlogin/', views.login_company, name = 'providerlogin'),
     path('clientsignup/', views.clientSignUp, name = 'clientsignup'),
     path('providersignup/', views.providerSignUp, name = 'providersignup'),
     path('providersearch/', views.providerSearch, name = 'providersearch'),
