@@ -15,7 +15,9 @@ from poolcleanapp.models import Company
 #from poolcleanapp.models import Invoice
 #from .serializers import ClientSerializer
 from .serializers import CompanySerializer
+from .serializers import EmployeeSerializer
 #from .serializers import InvoiceSerializer
+from django.shortcuts import get_object_or_404 ##importing this for getting ID
 
 
 
@@ -23,6 +25,8 @@ from .serializers import CompanySerializer
 # Create your views here.
 
 #Rest API
+
+## --------------- Get Client ----------------
 @api_view(['GET'])
 def getClient(request):
     try:
@@ -33,6 +37,7 @@ def getClient(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+## --------------- Create Cilent ----------------
 @api_view(['POST'])
 def addClient(request):
     try:
@@ -45,6 +50,7 @@ def addClient(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+## --------------- Get Service ----------------
 
 @api_view(['GET'])
 def getService(request):
@@ -56,6 +62,7 @@ def getService(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+## --------------- Create Company ----------------
 @api_view(['POST'])
 def addCompany(request):
     try:
@@ -68,12 +75,14 @@ def addCompany(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+## --------------- Get Invoice ----------------
 @api_view(['GET'])
 def getInvoice(request):
     invoices = Invoice.objects.all()
     serializer = InvoiceSerializer(invoices, many=True)
     return Response(serializer.data)
 
+## --------------- Create Invoice ----------------
 @api_view(['POST'])
 def addInvoice(request):
     serializer = InvoiceSerializer(data=request.data)
@@ -81,7 +90,48 @@ def addInvoice(request):
         serializer.save()
     return Response(serializer.data)
 
+## --------------- Create Employee ----------------
+@api_view(['POST'])
+def addEmployee(request):
+    try:
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+## --------------- get Employee ----------------
+def getEmployeeId(employee_id): ##getter for employee ID
+    return get_object_or_404(Employee, employee_id=employee_id) 
 
+@api_view(['GET'])
+def getEmployee(request):
+    try:
+        employees = Employee.objects.all()  
+        serializer = EmployeeSerializer(employees, many=True)  # Serialize the data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+## --------------- delete Employee ----------------
+    
+
+@api_view(['DELETE','GET'])
+def deleteEmployee(request, employee_id):
+    try:
+        employee = getEmployeeId(employee_id=employee_id)
+        employee.delete()
+        return Response({"message": "Employee deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    except Employee.DoesNotExist:
+        return Response({"error": "Employee not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 #Anonymous required
 def anonymous_required(function=None, redirect_url=None):
 

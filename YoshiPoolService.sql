@@ -1,14 +1,23 @@
 use POOL;
 
 
+CREATE TABLE ADMIN (
+    admin_id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_username VARCHAR(50) UNIQUE,
+    admin_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
+    admin_email VARCHAR(100),
+    admin_phone VARCHAR(15)
+);
 
 CREATE TABLE COMPANY (
     C_id INT AUTO_INCREMENT PRIMARY KEY,
     Company_Name VARCHAR(100),
     Company_Address VARCHAR(255),
-    Company_Phone VARCHAR(20),
+    Company_Phone VARCHAR(15),
     Company_Email VARCHAR(100),
-    Company_PW VARCHAR(20)
+    Company_PW VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
+    admin_id INT,
+    FOREIGN KEY (admin_id) REFERENCES ADMIN (admin_id)
 );
 
 CREATE TABLE EMPLOYEE (
@@ -16,9 +25,12 @@ CREATE TABLE EMPLOYEE (
     fname VARCHAR(50),
     lname VARCHAR(50),
     c_id INT,
-    emp_password VARCHAR(50),
-    phone_number VARCHAR(20),
-    FOREIGN KEY (c_id) REFERENCES COMPANY (C_id)
+    emp_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
+    phone_number VARCHAR(15),
+    is_admin BOOLEAN DEFAULT FALSE,  -- New column to indicate whether the employee is an admin
+    admin_id INT,  -- Link to ADMIN table
+    FOREIGN KEY (c_id) REFERENCES COMPANY (C_id),
+    FOREIGN KEY (admin_id) REFERENCES ADMIN (admin_id)
 );
 
 CREATE TABLE CLIENT (
@@ -26,8 +38,8 @@ CREATE TABLE CLIENT (
     fname VARCHAR(100),
     lname VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    cl_password VARCHAR(50),
-    phone_number VARCHAR(20),
+    cl_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
+    phone_number VARCHAR(15),
     address VARCHAR(255)
 );
 
@@ -44,6 +56,7 @@ CREATE TABLE PAYMENT (
     email VARCHAR(100),
     reference_number VARCHAR(50),
     status VARCHAR(20),
+    admin_id INT,
     FOREIGN KEY (client_id) REFERENCES CLIENT (Client_id),
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
 );
@@ -55,6 +68,7 @@ CREATE TABLE TASKPING (
     description TEXT,
     emp_id INT,
     client_id INT,
+    admin_id INT,
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id),
     FOREIGN KEY (client_id) REFERENCES CLIENT (Client_id)
 );
@@ -65,6 +79,7 @@ CREATE TABLE APPOINTMENTS (
     emp_id INT,
     appdate DATE,
     apptime TIME,
+    admin_id INT,
     FOREIGN KEY (cl_id) REFERENCES CLIENT (Client_id),
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
 );
