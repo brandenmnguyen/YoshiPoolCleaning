@@ -133,7 +133,28 @@ def providerSearch(request):
     return render(request, "ResultsPage-1.html")
 
 def payment(request):
-    return render(request, "payment_page.html")
+    if request.method == "POST":
+        if not 'option' in request.POST:
+            msg = "Please provide payment option"
+            return render(request, "payment_page.html", {'msg': msg})
+        option = request.POST['option']
+        print(option)
+        # temporarily show user input
+        if option == "manualCard":
+            cardNumber = request.POST['card_number']
+            cardName = request.POST['card_name']
+            cardExp = request.POST['exp_date']
+            cardCCV = request.POST['ccv']
+            cardEmail = request.POST['card_email']
+            print(cardNumber)
+            print(cardName)
+            print(cardExp)
+            print(cardCCV)
+            print(cardEmail)
+        # TODO: redirect to payment confirmation
+        return render(request, "payment_page.html")
+    else:
+        return render(request, "payment_page.html")
 
 def paymentSuccess(request):
     return render(request, "PaymentSuccess.html")
