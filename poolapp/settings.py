@@ -82,7 +82,7 @@ DATABASES = {
         "USER": "root",
         "HOST": "localhost",
         "PORT": "3306",
-        "PASSWORD": "",
+        "PASSWORD": "1234",
     }
 }
 
@@ -122,6 +122,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# Media files (User-uploaded content)
+# Define the base URL and file system path for user-uploaded files
+
+MEDIA_URL = '/media/'  # Base public URL of media files
+MEDIA_ROOT = BASE_DIR / 'media'  # Directory where user-uploaded files will be stored
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
