@@ -78,7 +78,7 @@ def addClient(request):
 ## --------------- Get Service ----------------
 
 @api_view(['GET'])
-def getService(request):
+def getCompany(request):
     try:
         services = Company.objects.all()  
         serializer = CompanySerializer(services, many=True)  # Serialize the data using the appropriate serializer
@@ -86,6 +86,29 @@ def getService(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def getOneCompany(request):
+    # Get parameters from the request
+    company_email = request.GET.get('company_email')
+    company_pw = request.GET.get('company_pw')
+
+    # Perform the query to get the company
+    try:
+        company = Company.objects.get(company_email=company_email, company_pw=company_pw)
+    except Company.DoesNotExist:
+        return Response({'error': 'Company not found'}, status=404)
+    
+    # Serialize the company data if needed
+    company_data = {
+        'company_name': company.company_name,
+        'company_address': company.company_address,
+        'company_phone': company.company_phone,
+        'company_email': company.company_email,
+        'company_pw': company.company_pw,
+    }
+
+    return Response(company_data, status=status.HTTP_200_OK)
 
 ## --------------- Create Company ----------------
 @api_view(['POST'])
@@ -180,7 +203,7 @@ def login_user(request):
         return redirect('clienttracking')
     if request.method == "POST":
         email = request.POST['email']
-        password = request.POST['password']
+        password = request.POST['password'] 
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
@@ -193,6 +216,9 @@ def login_user(request):
     
 def login_client(request):
     return render(request, "LoginClientTemp.html")
+
+def login_company(request):
+    return render(request, "LoginProvider2.html")
 
 @anonymous_required
 def clientSignUp(request, *args, **kwargs):
@@ -208,8 +234,19 @@ def clientSignUp(request, *args, **kwargs):
     return render(request, "SignUpClientTemp.html")
 
 @anonymous_required
-def providerSignUp(request):
-    return render(request, "SignUpProvider.html")
+def providerSignUp(request, *args, **kwargs):
+    
+    if request.POST:
+        form = ProviderForm(request.POST)
+        print("Submitted data:", request.POST)
+        if form.is_valid():
+            print("Submitted form data:", form.cleaned_data)
+            provider = form.save()
+        #print(form)
+    else:
+        form = ProviderForm()
+
+    return render(request, "SignUpProviderTemp2.html")
 
 def providerSearch(request):
     search_term = request.GET.get('search', '')
@@ -256,7 +293,7 @@ def dailycalendar(request):
 
 #@login_required
 def paymentHistory(request):
-    return render(request, "invoice.html")
+    return render(request, "Invoice-Tracking/Invoice-Tracking.html")
 
 def about(request):
     return render(request, "about.html")

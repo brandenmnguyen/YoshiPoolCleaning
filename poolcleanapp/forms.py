@@ -6,38 +6,36 @@ from .models import *
 
 # Create a client form
 #class ClientForm(ModelForm):
-#    class Meta:
-#        model = Client
-#        fields = ('clientName', 'addressLine', 'postalCode', 'phoneNumber', 'emailAddress')
+    #class Meta:
+        #model = Client
+        #fields = ('clientName', 'addressLine', 'postalCode', 'phoneNumber', 'emailAddress')
 
-class ClientForm(ModelForm):
+class ProviderForm(ModelForm):
 
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = Client
-        fields = ('fname', 'lname', 'email', 'cl_password', 'phone_number','address')
+        model = Company
+        fields = ('company_name', 'company_address', 'company_phone', 'company_email', 'company_pw')
 
     def clean_password(self):
         return self.cleaned_data['password']
-        
-class ClientUserForm(UserCreationForm):
-    fname = forms.CharField(max_length=100, required=False)
-    lname = forms.CharField(max_length=255, required=False)
-    email = forms.EmailField(max_length=100, required=False, help_text='Enter a valid email address.')
-    phone_number = forms.CharField(max_length=20, required=False)
-    address = forms.CharField(max_length=255, required = False)
+
+class ProviderUserForm(UserCreationForm):
+    company_name = forms.CharField(max_length=100, required=False)
+    company_address = forms.CharField(max_length=255, required=False)
+    company_phone = forms.CharField(max_length=20, required=False)
+    company_email = forms.EmailField(max_length=100, required=False, help_text='Enter a valid email address.')
 
     class Meta(UserCreationForm.Meta):
-        model = Client
-        fields = ['fname', 'lname', 'email', 'phone_number', 'address', 'password1', 'password2']
+        model = Company
+        fields = ['company_name', 'company_address', 'company_phone', 'company_email', 'password1', 'password2']
 
     def save(self, commit=True):
-        client = super().save(commit=False)
-        client.fname = self.cleaned_data['fname']
-        client.lname = self.cleaned_data['lname']
-        client.phone_number = self.cleaned_data['phone_number']
-        client.address = self.cleaned_data['address']
+        company = super().save(commit=False)
+        company.company_name = self.cleaned_data['company_name']
+        company.company_address = self.cleaned_data['company_address']
+        company.company_phone = self.cleaned_data['company_phone']
         if commit:
-            client.save()
-            return client
+            company.save()
+        return company
