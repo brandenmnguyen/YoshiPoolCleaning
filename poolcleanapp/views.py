@@ -12,6 +12,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
+from .models import Company
 #from poolcleanapp.models import Invoice
 #from .serializers import ClientSerializer
 from .serializers import CompanySerializer
@@ -130,7 +131,12 @@ def providerSignUp(request):
     return render(request, "SignUpProvider.html")
 
 def providerSearch(request):
-    return render(request, "ResultsPage-1.html")
+    search_term = request.GET.get('search', '')
+    info = Company.objects.filter(company_address__icontains=search_term)
+    count_results = info.count()
+    return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term})
+   
+   # return render(request, "ResultsPage-1.html")
 
 def payment(request):
     if request.method == "POST":

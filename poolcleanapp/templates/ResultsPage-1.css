@@ -1,0 +1,114 @@
+#Search {
+    background-color: rgba(96, 160, 239, 1);
+    color: white;
+    border-color: rgba(96, 160, 239, 1);
+    margin-right: 20px;
+}
+
+.navbar {
+    background-color: rgba(215, 233, 255, 1);
+    color: white;
+    font-size: 20px;
+    transition: 0.6s;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-around;
+}
+
+.form-control {
+    border-radius: 20px;
+    border-color: rgba(215, 233, 255, 1);
+    margin-left: 20px;
+}
+
+.nav-item:hover {
+    background-color: rgba(96, 160, 239, 1);
+    border-radius: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-left: 35px;
+    font-size: 23px;
+}
+
+.nav-item a {
+    font-family: 'Inter', sans-serif;
+    color: white;
+    font-weight: bold;
+    margin-left: 60px;
+    margin-right: 60px;
+    display: flex;
+    cursor: pointer;
+}
+
+.nav-item a:hover {
+    color: white;
+}
+
+#Search:hover {
+    background-color: rgb(57, 139, 239);
+    border-color: rgba(96, 160, 239, 1);
+}
+
+.resultsOfSearch {
+    width: 100%;
+    padding: 0px;
+    margin-left: 35px;
+    display: flex;
+    flex-direction: row;
+}
+
+.nameOfCompany {
+    padding-top: 25px;
+}
+
+.nameOfStreet {
+    font-size: 12px;
+    color: rgba(105, 105, 105, 1);
+}
+
+.Phonenumber {
+    font-size: 12px;
+    color: rgba(105, 105, 105, 1);
+}
+
+.plusItself {
+    border-radius: 50%;
+    background-color: rgba(215, 233, 255, 1);
+    color: black;
+    height: 45px;
+    width: 50px;
+    padding: 10px;
+    text-align: center;
+    margin-left: 450px;
+    size: 35px;
+    text-decoration: none;
+}
+
+
+#nameOfUser {
+    background-color: rgba(96, 160, 239, 1);
+    border-radius: 20px;
+    margin-left: 20px;
+}
+
+.plusItself:hover {
+    background-color: rgb(110, 172, 247);
+    color: black;
+}
+
+
+.plusSign {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.infoOfCompany {
+    width: 50%;
+    line-height: 1px;
+}
