@@ -122,6 +122,10 @@ def clientSignUp(request):
     return render(request, "SignUpClient.html")
 
 @anonymous_required
+def invoiceSearch(request):
+    return render(request, "InvoiceTracking.html")
+
+@anonymous_required
 def add_client(request):
     form = ClientForm()
     return render(request, "add_client.html", {'form': form})

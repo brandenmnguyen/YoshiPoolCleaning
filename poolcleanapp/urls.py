@@ -22,9 +22,10 @@ urlpatterns = [
     path('clienttracking/', views.clienttracking, name = 'clienttracking'),
     path('providertracking/', views.providertracking, name = 'providertracking'),
     path('paymenthistory/', views.paymentHistory, name = 'paymenthistory'),
+    path('invoicetracking/', views.invoiceSearch, name = 'invoicetracking'),
     path('payment/', views.payment, name = 'payment'),
     path('about/', views.about, name = 'about'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name = 'dailycalendar'),
 
-]
+] 

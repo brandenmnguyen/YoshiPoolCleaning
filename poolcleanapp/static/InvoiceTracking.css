@@ -85,7 +85,9 @@ body {
   /* This is aligned to the top right by the flex properties on the parent */
 }
 .task-title {
-  font-size: small;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .payment-background {
@@ -143,3 +145,15 @@ body {
   min-width: 100px; /* Adjust as necessary */
   font-size: small;
 }
+
+.client-name {
+  width: 100%;
+  /* Adjust the space between client name and payment method */
+}
+
+.payment-method {
+  margin-top: -25px;
+  width: 100%; /* Make the width the same for both */
+}
+
+/* Ensure that the background and positioning styles are not duplicated here, but kept where they originally were */
