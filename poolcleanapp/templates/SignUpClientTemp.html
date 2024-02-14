@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Registration</title>
+</head>
+<body>
+
+    <h1>Client Registration</h1>
+
+    <form id="clientRegistrationForm">
+        <label for="clientfname">First Name:</label>
+        <input type="text" id="clientfname" name="fname" required>
+
+        <br>
+
+        <label for="clientlname">Last Name:</label>
+        <input type="text" id="clientlname" name="lname" required>
+
+        <br>
+
+        <label for="clientphonenumber">Phone Number:</label>
+        <input type="tel" id="clientphonenumber" name="phone_number" required>
+
+        <br>
+
+        <label for="clientemail">Email:</label>
+        <input type="email" id="clientemail" name="email" required>
+
+        <br>
+
+        <label for="clientaddress">Address:</label>
+        <input type="text" id="clientaddress" name="address" required>
+        
+        <br>
+
+        <label for="client_password">Password:</label>
+        <input type="password" id="client_password" name="cl_password" required>
+
+        <br>
+
+        <button type="button" onclick="registerClient()">Register</button>
+    </form>
+
+    <script>
+        function registerClient() {
+            // Get input values
+            var client_fname = document.getElementById("clientfname").value;
+            var client_lname = document.getElementById("clientlname").value;
+            var client_phonenumber = document.getElementById("clientphonenumber").value;
+            var client_email = document.getElementById("clientemail").value;
+            var client_password = document.getElementById("client_password").value;
+            var client_address = document.getElementById("clientaddress").value;
+
+            // Display input values in the console=
+            console.log("First Name: " + client_fname);
+            console.log("Last Name: " + client_lname);
+            console.log("Phone Number: " + client_phonenumber);
+            console.log("Email: " + client_email);
+            console.log("Password: " + client_password);
+            console.log("Address: " + client_address);
+
+            // Prepare data to be sent in the POST request
+            var data = {
+                fname: client_fname,
+                lname: client_lname,
+                phone_number: client_phonenumber,
+                email: client_email,
+                cl_password: client_password,
+                address: client_address
+            };
+
+             // Perform a POST request using the Fetch API
+             fetch('http://127.0.0.1:8000/poolcleanapp/addClient/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any additional headers if needed
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server if needed
+                console.log('Success:', data);
+                window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clienttracking/';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+        function sendInfo(){
+            
+        }
+    </script>
+
+</body>
+</html>

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -14,9 +15,10 @@ from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from .models import Company
 #from poolcleanapp.models import Invoice
-#from .serializers import ClientSerializer
+from .serializers import ClientSerializer
 from .serializers import CompanySerializer
-#from .serializers import InvoiceSerializer
+from .serializers import InvoiceSerializer
+from .forms import *
 
 
 
@@ -33,6 +35,27 @@ def getClient(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def getOneClient(request):
+    email = request.GET.get('email')
+    cl_password = request.GET.get('cl_password')
+
+    try:
+        client = Client.objects.get(email=email, cl_password = cl_password)
+    except Client.DoesNotExist:
+        return Response({'error': 'Client not found'}, status=404)
+    
+    client_data = {
+        'fname': client.fname,
+        'lname': client.lname,
+        'phone_number': client.phone_number,
+        'email': client.email,
+        'cl_password': client.cl_password,
+        'address': client.address,
+    }
+
+    return Response(client_data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def addClient(request):
@@ -116,19 +139,22 @@ def login_user(request):
             return render(request, "LoginPage.html", {'msg': msg})
     else:
         return render(request, "LoginPage.html")
+    
+def login_client(request):
+    return render(request, "LoginClientTemp.html")
 
 @anonymous_required
-def clientSignUp(request):
-    return render(request, "SignUpClient.html")
+def clientSignUp(request, *args, **kwargs):
+    if request.POST:
+        form = ClientForm(request.POST)
+        print("Submitted data:", request.POST)
+        if form.is_valid():
+            print("Submitted form data:", form.cleaned_data)
+            client = form.save()
+        else:
+            form = ClientForm()
 
-@anonymous_required
-def invoiceSearch(request):
-    return render(request, "InvoiceTracking.html")
-
-@anonymous_required
-def add_client(request):
-    form = ClientForm()
-    return render(request, "add_client.html", {'form': form})
+    return render(request, "SignUpClientTemp.html")
 
 @anonymous_required
 def providerSignUp(request):

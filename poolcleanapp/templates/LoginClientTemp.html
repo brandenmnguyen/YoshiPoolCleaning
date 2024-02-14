@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+</head>
+<body>
+
+    <h1>User Login</h1>
+
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <br>
+
+        <button type="button" onclick="loginUser()">Login</button>
+    </form>
+
+    <script>
+        function loginUser() {
+            // Get input values
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Display input values in the console
+            console.log("Email: " + email);
+            console.log("Password: " + password);
+
+            // Perform a GET request using the Fetch API
+            const baseUrl = 'http://127.0.0.1:8000/poolcleanapp/viewOneClient/';
+            const clientEmail = encodeURIComponent(email);
+            const clientPassword = encodeURIComponent(password);
+
+            const url = `${baseUrl}?client_email=${clientEmail}&client_pw=${clientPassword}`;
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                // You may need to include additional headers based on your API requirements
+                },
+        })
+        .then(response => {
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clienttracking/';
+  })
+  .catch(error => {
+    // Handle errors here
+    console.error('Error:', error);
+  });
+        }
+    </script>
+
+</body>
+</html>
