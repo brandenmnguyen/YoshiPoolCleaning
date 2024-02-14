@@ -1,0 +1,68 @@
+h1 {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: rgba(96, 160, 239, 1);
+  margin-top: 80px;
+  font-size: 30px; 
+  margin-left: 250px;
+}
+
+h2 {
+  font-family: Arial, sans-serif; 
+  text-align: center;
+  font-size: 20px;
+  color: black;
+  margin-top: 90px;
+}
+
+body{
+  color: white;
+}
+
+.navbar {
+  background-color: #a3c9f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.navbar-links {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.navbar a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #c2d1e0;
+}
+
+.account-name {
+  background-color: #60a0ef;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.footer {
+    background-color: rgba(215, 233, 255, 1);
+
+}
+
+.footerInfo {
+
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+
+}
+
+

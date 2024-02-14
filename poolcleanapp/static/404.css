@@ -1,0 +1,50 @@
+h1 {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: rgba(96, 160, 239, 1);
+  margin-top: 180px;
+  font-size: 100px; 
+  text-align: center;
+}
+
+h2 {
+  font-family: Arial, sans-serif; 
+  text-align: center;
+  font-size: 20px;
+  color: black;
+}
+
+button {
+    border-radius: 20px;
+    background-color: rgba(96, 160, 239, 1);
+    border-color: rgba(96, 160, 239, 1);
+    color: white;
+    width: 180px;
+    border: 0px;
+    font-size: large;
+    font-family: 'Lato', sans-serif;
+    transition: 0.6s;
+    margin-top: 80px;
+}
+
+button:hover {
+    background-color: rgba(215, 233, 255, 1);
+    color: rgba(96, 160, 239, 1);
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+body{
+  text-align:center;
+  color: white;
+}
+
+h3 {
+  color: white;
+  font-family: Arial, sans-serif; 
+  font-size: 25px; 
+  text-decoration: none; 
+}
+
+a:link { text-decoration: none;}
+
