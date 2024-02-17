@@ -12,7 +12,7 @@ urlpatterns = [
     path('addCompany/', views.addCompany),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
-    #path('add_client/', views.add_client),
+    path('add_client/', views.addClient),
     path('viewEmployee/', views.getEmployee),
     path('addEmployee/', views.addEmployee),
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),

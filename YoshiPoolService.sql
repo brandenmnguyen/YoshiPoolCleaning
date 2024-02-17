@@ -1,49 +1,39 @@
-use POOL;
+USE POOL;
 
-CREATE TABLE ADMIN (
-    admin_id INT AUTO_INCREMENT PRIMARY KEY,
-    admin_username VARCHAR(50) UNIQUE,
-    admin_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
-    admin_email VARCHAR(100),
-    admin_phone VARCHAR(15)
+CREATE TABLE EMPLOYEE (
+    Employee_id INT PRIMARY KEY,
+    fname VARCHAR(50),
+    lname VARCHAR(50),
+    c_id INT,
+    emp_password VARCHAR(255), 
+    phone_number VARCHAR(15),
+    is_owner ENUM('Y', 'N') DEFAULT 'N',  -- New column to indicate whether the employee is an owner, default is 'N'
+    FOREIGN KEY (c_id) REFERENCES COMPANY (C_id)
 );
 
 CREATE TABLE COMPANY (
-    C_id INT AUTO_INCREMENT PRIMARY KEY,
+    C_id INT PRIMARY KEY,
     Company_Name VARCHAR(100),
     Company_Address VARCHAR(255),
     Company_Phone VARCHAR(15),
     Company_Email VARCHAR(100),
-    Company_PW VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
-    admin_id INT,
-    FOREIGN KEY (admin_id) REFERENCES ADMIN (admin_id)
-);
-
-CREATE TABLE EMPLOYEE (
-    Employee_id INT AUTO_INCREMENT PRIMARY KEY,
-    fname VARCHAR(50),
-    lname VARCHAR(50),
-    c_id INT,
-    emp_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
-    phone_number VARCHAR(15),
-    is_admin BOOLEAN DEFAULT FALSE,  -- New column to indicate whether the employee is an admin
-    admin_id INT,  -- Link to ADMIN table
-    FOREIGN KEY (c_id) REFERENCES COMPANY (C_id),
-    FOREIGN KEY (admin_id) REFERENCES ADMIN (admin_id)
+    Company_PW VARCHAR(255),
+    owner_id INT,
+    FOREIGN KEY (owner_id) REFERENCES EMPLOYEE (Employee_id)
 );
 
 CREATE TABLE CLIENT (
-    Client_id INT AUTO_INCREMENT PRIMARY KEY,
+    Client_id INT PRIMARY KEY,
     fname VARCHAR(100),
     lname VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    cl_password VARCHAR(255), -- Use a secure hashing algorithm like bcrypt
+    cl_password VARCHAR(255),
     phone_number VARCHAR(15),
     address VARCHAR(255)
 );
 
-CREATE TABLE PAYMENT (
-    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE INVOICE (
+    invoice_id INT PRIMARY KEY,
     client_id INT,
     emp_id INT,
     payment_date DATE,
@@ -55,31 +45,27 @@ CREATE TABLE PAYMENT (
     email VARCHAR(100),
     reference_number VARCHAR(50),
     status VARCHAR(20),
-    admin_id INT,
     FOREIGN KEY (client_id) REFERENCES CLIENT (Client_id),
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
 );
 
 CREATE TABLE TASKPING (
-    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    task_id INT PRIMARY KEY,
     status CHAR(1),
     taskName VARCHAR(100),
     description TEXT,
     emp_id INT,
     client_id INT,
-    admin_id INT,
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id),
     FOREIGN KEY (client_id) REFERENCES CLIENT (Client_id)
 );
 
 CREATE TABLE APPOINTMENTS (
-    appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+    appointment_id INT PRIMARY KEY,
     cl_id INT,
     emp_id INT,
     appdate DATE,
     apptime TIME,
-    admin_id INT,
     FOREIGN KEY (cl_id) REFERENCES CLIENT (Client_id),
     FOREIGN KEY (emp_id) REFERENCES EMPLOYEE (Employee_id)
 );
-

@@ -20,7 +20,6 @@ from .serializers import CompanySerializer
 from .serializers import InvoiceSerializer
 from .forms import *
 from .serializers import EmployeeSerializer
-#from .serializers import InvoiceSerializer
 from django.shortcuts import get_object_or_404 ##importing this for getting ID
 
 
