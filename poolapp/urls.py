@@ -16,13 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+from django.contrib.auth.models import User
+
+from django_otp.admin import OTPAdminSite
+from django_otp.plugins.otp_totp.models import TOTPDevice
+from django_otp.plugins.otp_totp.admin import TOTPDeviceAdmin
+
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from two_factor.urls import urlpatterns as tf_urls
+
+class OTPAdmin(OTPAdminSite):
+   pass
+
+admin_site = OTPAdmin(name='OTPAdmin')
+admin_site.register(User)
+admin_site.register(TOTPDevice, TOTPDeviceAdmin)
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+   path('', include(tf_urls)),
+    path("admin/", admin_site.urls),
     path('poolcleanapp/', include('poolcleanapp.urls')),
     path('', RedirectView.as_view(url='poolcleanapp/homepage/')),   
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
