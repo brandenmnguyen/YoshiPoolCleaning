@@ -20,6 +20,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name = 'homepage'),
     path('login/', views.login_user, name = 'login'),
+    path('clientlogin/', views.login_client, name = 'clientlogin'),
     path('providerlogin/', views.login_company, name = 'providerlogin'),
     path('clientsignup/', views.clientSignUp, name = 'clientsignup'),
     path('providersignup/', views.providerSignUp, name = 'providersignup'),
@@ -33,5 +34,7 @@ urlpatterns = [
     path('about/', views.about, name = 'about'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name = 'dailycalendar'),
+    path('stripeTest/', views.stripeTest, name = 'stripeTest'),
+    path('checkout/', views.checkout, name = 'checkout'),
 
 ] 

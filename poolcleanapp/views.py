@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
-#from django.conf import settings
+from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
 from .models import *
@@ -22,7 +22,7 @@ from .forms import *
 from .serializers import EmployeeSerializer
 #from .serializers import InvoiceSerializer
 from django.shortcuts import get_object_or_404 ##importing this for getting ID
-
+import stripe
 
 
 
@@ -308,6 +308,29 @@ def providertracking(request):
 #@login_required
 def clienttracking(request):
     return render(request, "ClientTracking.html")
+
+# Stripe
+
+def stripeTest(request):
+    return render(request, "stripeTest.html")
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def checkout(request):
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                'price': 'price_1On6V4FamngtG7BE9RUVZhNs',
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+    )
+
+    return redirect(checkout_session.url, code=303)
 
 #def index(request):
     #context = {}

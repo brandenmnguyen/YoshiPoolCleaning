@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Buy cool new product</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <section>
+      <div class="product">
+        <img src="https://private-user-images.githubusercontent.com/114447703/287418065-db209675-7c78-479c-a352-f8425947c8cd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDg3MzEyMDgsIm5iZiI6MTcwODczMDkwOCwicGF0aCI6Ii8xMTQ0NDc3MDMvMjg3NDE4MDY1LWRiMjA5Njc1LTdjNzgtNDc5Yy1hMzUyLWY4NDI1OTQ3YzhjZC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMjIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDIyM1QyMzI4MjhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZmYxYjE2MWEzNTQxY2YxMmNjNzY0NjhkYTM3ODU4MGVjOGM1NTkxNjJkYTk1NTdmMDM3YmI0MTAxYjk1NzAzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.0ypJtNIYYwLTYtWkqHF6vdqoBcwwGtu_F6kVBSxN8Sc" alt="Pool Example" />
+        <div class="description">
+          <h3>Pool Cleaning Service - Basic</h3>
+          <h5>$100.00</h5>
+        </div>
+      </div>
+      <form action="{% url 'checkout' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" id="checkout-button">Checkout</button>
+      </form>
+    </section>
+  </body>
+</html>
