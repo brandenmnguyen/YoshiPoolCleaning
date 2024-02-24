@@ -6,13 +6,15 @@ body {
 .payment-option {
     background-color: white;
     border-radius: 25px;
-    padding: 25px 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .order-summary {
     background-color: white;
     border-radius: 25px;
-    padding: 25px;
 }
 
 img {
@@ -46,52 +48,4 @@ img {
 
 .order-title {
     color: #50ABFF;
-}
-
-.popup {
-    width: calc(100vw - 1in);
-    max-width: 800px;
-    background: #fff;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
-    text-align: center;
-    padding: 30px;
-    color: #333;
-    visibility: hidden;
-    transition: transform 0.4s, top 0.4s;
-    border: 10px solid #CEE2FF;
-}
-
-.openpopup {
-    visibility: visible;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-#successPopup,
-#failurePopup {
-    width: 400px;
-    background: #fff;
-    border-radius: 6px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.1);
-    text-align: center;
-    padding: 30px;
-    color: #333;
-    visibility: hidden;
-    transition: transform 0.4s, top 0.4s;
-    border: 10px solid #CEE2FF;
-}
-
-#successPopup.openpopup,
-#failurePopup.openpopup {
-    visibility: visible;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1);
 }

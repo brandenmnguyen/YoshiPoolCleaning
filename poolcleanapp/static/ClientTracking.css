@@ -84,6 +84,13 @@ body {
   /* This will be pushed to the bottom of the container by the mt-auto class */
 }
 
+.task-status-2 {
+  font-size: 0.8em;
+  color: #de2626;
+  font-weight: bold;
+  /* This will be pushed to the bottom of the container by the mt-auto class */
+}
+
 .task-in-progress {
   background-color: #a3c9f7;
   border-radius: 10px;

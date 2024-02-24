@@ -114,60 +114,47 @@
             </div>
             {% endif %}
 
-            <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" value="PROCEED TO CHECKOUT" onclick="openpopup()">
-            
+            <div class="shadow order-summary row my-5 mx-4">
+                <h4 class="text-center mb-3 mt-3">
+                    <span class="order-title fs-1">Order<br>Summary</span>
+                </h4>
+
+                <div class="order-info">
+                    <ul class="list-group mb-3 px-2">
+                        <li class="list-group-item d-flex justify-content-between lh-sm pt-3">
+                            <span>Pool Supplies ($349.99)</span>
+                            <span>x1</span>
+                        </li>
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <span>Subtotal:</span>
+                            <span>$349.99</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <span>Shipping:</span>
+                            <span>$4.55</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <span>Additional Tax:</span>
+                            <span>$0.75</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm pb-3">
+                            <h3 style="font-weight: bold;">Total:</h3>
+                            <h3 style="font-weight: bold;">$355.30</h3>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="form-check mb-4" style="display: flex; justify-content: center;">
+                    <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">I understand and agree to the terms and conditions</label>
+                </div>
+
+                <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" id="submitButton" value="PROCEED TO CHECKOUT">
+            </div>
         </div>
     </div>
-    <div class = "popup" id="popup">  
-        <h2>Order Review</h2>
-        <p>Paying with: Visa</p>
-        <p>Card Number: **** **** **** 1234</p>
-        <p>Order Total: $355.30</p>
-        <input id="orderButton" class="btn btn-lg col-8 offset-2 mb-4" type="button" value="Place your order!" onclick="processPayment()">
-    </div>
-    <!-- Popup for Payment Success -->
-    <div class="popup" id="successPopup">
-    <h2 style="color: green;">Payment Successful</h2>
-    <p>Your payment has been processed successfully.</p>
-    <input class="btn btn-lg col-8 offset-2 mb-4" type="submit" value="Go back to Account" onclick="showPopup('success')">
-    </div>
-
-    <!-- Popup for Payment Failure -->
-    <div class="popup" id="failurePopup">
-    <h2 style="color: red;">Payment Failed</h2>
-    <p>Sorry, your payment could not be processed.</p>
-    <input id="orderButton" class="btn btn-lg col-8 offset-2 mb-4" type="button" value="Try Again!" onclick="processPayment()">
-    </div>
-    <script>
-        let popup = document.getElementById("popup");
-
-        function openpopup(){
-             popup.classList.add("openpopup");
-        }
-
-        function closepopup(){
-             popup.classList.remove("openpopup");
-        }
-
-        function processPayment() {
-            let paymentSuccessful = Math.random() < 0.5; 
-            if (paymentSuccessful) {
-                closepopup();
-                showSuccessPopup();
-            } else {
-                 closepopup();
-                 showFailurePopup();
-            }
-        }
-
-        function showSuccessPopup() {
-             document.getElementById("successPopup").classList.add("openpopup");
-        }
-
-        function showFailurePopup() {
-            document.getElementById("failurePopup").classList.add("openpopup");
-        }
-    </script> 
   </body>
 </html>
-

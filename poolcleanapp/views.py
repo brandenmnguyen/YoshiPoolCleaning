@@ -234,6 +234,15 @@ def clientSignUp(request, *args, **kwargs):
     return render(request, "SignUpClientTemp.html")
 
 @anonymous_required
+def invoiceSearch(request):
+    return render(request, "InvoiceTracking.html")
+
+@anonymous_required
+def add_client(request):
+    form = ClientForm()
+    return render(request, "add_client.html", {'form': form})
+
+@anonymous_required
 def providerSignUp(request, *args, **kwargs):
     
     if request.POST:
@@ -293,7 +302,7 @@ def dailycalendar(request):
 
 #@login_required
 def paymentHistory(request):
-    return render(request, "Invoice-Tracking/Invoice-Tracking.html")
+    return render(request, "InvoiceTracking.html")
 
 def about(request):
     return render(request, "about.html")
@@ -303,11 +312,13 @@ def contact(request):
 
 #@login_required
 def providertracking(request):
-    return render(request, "ProviderTracking.html")
+    task_list = Taskping.objects.filter(emp=1)   #need to replace with logged in provider
+    return render(request, "ProviderTracking.html", {'task_list': task_list})
 
 #@login_required
 def clienttracking(request):
-    return render(request, "ClientTracking.html")
+    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
+    return render(request, "ClientTracking.html", {'task_list': task_list})
 
 #def index(request):
     #context = {}
