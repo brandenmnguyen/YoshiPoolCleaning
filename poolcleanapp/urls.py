@@ -30,6 +30,7 @@ urlpatterns = [
     path('paymenthistory/', views.paymentHistory, name = 'paymenthistory'),
     #path('invoicetracking/', views.invoiceSearch, name = 'invoicetracking'),
     path('payment/', views.payment, name = 'payment'),
+    path('resultspage/', views.resultspage, name = 'resultspage'),
     path('about/', views.about, name = 'about'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name = 'dailycalendar'),

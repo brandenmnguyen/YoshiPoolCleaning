@@ -309,6 +309,10 @@ def providertracking(request):
 def clienttracking(request):
     return render(request, "ClientTracking.html")
 
+#@login_required
+def resultspage(request):
+    return render(request, "ResultsPage-1.html")
+
 #def index(request):
     #context = {}
     #return render(request, 'invoice/index.html', context)
