@@ -1,8 +1,11 @@
+from io import BytesIO
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+import pyotp
 
 #from django.conf import settings
 #from django.contrib import messages
@@ -22,7 +25,7 @@ from .forms import *
 from .serializers import EmployeeSerializer
 #from .serializers import InvoiceSerializer
 from django.shortcuts import get_object_or_404 ##importing this for getting ID
-
+import qrcode
 
 
 
@@ -217,6 +220,7 @@ def login_user(request):
 def login_client(request):
     return render(request, "LoginClientTemp.html")
 
+
 def login_company(request):
     return render(request, "LoginProvider2.html")
 
@@ -308,6 +312,60 @@ def providertracking(request):
 #@login_required
 def clienttracking(request):
     return render(request, "ClientTracking.html")
+
+def logging(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password') 
+        if email and password:  # Check if both email and password are provided
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('clienttracking')
+            else:
+                messaging = 'Email or password is incorrect'
+        else:
+            messaging = 'Email and password are required'
+        return render(request, "LoginPage.html", {'msg': messaging})
+    else:
+        return render(request, "LoginPage.html")
+    
+
+def clientVerification(request):
+    if request.method == 'POST':
+        user_totp_code = request.POST.get('totp_code')
+
+        key = 'base32secret3232'
+
+        totp = pyotp.TOTP(key)
+        generated_totp_code = totp.now()
+
+        if user_totp_code == generated_totp_code:
+            return render(request, 'ClientTracking.html')
+        else:
+            return render(request, 'LoginPage.html')
+
+    return render(request, 'ClientVerification.html')
+
+def generate_qr_code(request):
+    if request.method == 'GET':
+        key = 'base32secret3232'
+
+        totp = pyotp.TOTP(key)
+        uri = totp.provisioning_uri(name='poolUser', issuer_name='poolUser')
+
+        qr = qrcode.make(uri)
+
+        img_buffer = BytesIO()
+        qr.save(img_buffer)
+        img_buffer.seek(0)
+
+        return HttpResponse(img_buffer.getvalue(), content_type='image/png')
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+
 
 #def index(request):
     #context = {}
