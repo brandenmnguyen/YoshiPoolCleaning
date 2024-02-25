@@ -8,7 +8,6 @@
 from django.db import models
 
 
-
 class Appointments(models.Model):
     appointment_id = models.AutoField(primary_key=True)
     cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
@@ -20,13 +19,14 @@ class Appointments(models.Model):
         managed = False
         db_table = 'APPOINTMENTS'
 
+
 class Client(models.Model):
     client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
     fname = models.CharField(max_length=100, blank=True, null=True)
     lname = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(unique=True, max_length=100, blank=True, null=True)
-    cl_password = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    cl_password = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
@@ -35,12 +35,13 @@ class Client(models.Model):
 
 
 class Company(models.Model):
-    C_id = models.AutoField(primary_key=True, db_column='C_id')
-    company_name = models.CharField(max_length=100, db_column='Company_Name', blank=True, null=True)
-    company_address = models.CharField(max_length=255, db_column='Company_Address', blank=True, null=True)
-    company_phone = models.CharField(max_length=15, db_column='Company_Phone', blank=True, null=True)
-    company_email = models.CharField(max_length=100, db_column='Company_Email', blank=True, null=True)
-    company_pw = models.CharField(max_length=255, db_column='Company_PW', blank=True, null=True)
+    c_id = models.AutoField(db_column='C_id', primary_key=True)  # Field name made lowercase.
+    company_name = models.CharField(db_column='Company_Name', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    company_phone = models.CharField(db_column='Company_Phone', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_price = models.DecimalField(db_column='Company_Price', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    company_pw = models.CharField(db_column='Company_PW', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -48,13 +49,13 @@ class Company(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.AutoField(primary_key=True, db_column='Employee_id')
+    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
     fname = models.CharField(max_length=50, blank=True, null=True)
     lname = models.CharField(max_length=50, blank=True, null=True)
     c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
-    emp_password = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
-    is_admin = models.CharField(max_length=1, choices=[('Y', 'Yes'), ('N', 'No')], default='N')
+    emp_password = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_admin = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -62,22 +63,21 @@ class Employee(models.Model):
 
 
 class Invoice(models.Model):
-    payment_id = models.AutoField(primary_key=True)
-    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
-    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
-    payment_date = models.DateField(blank=True, null=True)
-    received_date = models.DateField(blank=True, null=True)
+    invoice_id = models.AutoField(primary_key=True)
+    client = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     payment_method = models.CharField(max_length=50, blank=True, null=True)
     card_name = models.CharField(max_length=100, blank=True, null=True)
-    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)  # Field name made lowercase.
+    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
-    reference_number = models.CharField(max_length=50, blank=True, null=True)
-    status = models.CharField(max_length=20, blank=True, null=True)
+    card_number = models.CharField(max_length=16, blank=True, null=True)
+    cvv_code = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'PAYMENT'
+        db_table = 'INVOICE'
+
 
 class Taskping(models.Model):
     task_id = models.AutoField(primary_key=True)
