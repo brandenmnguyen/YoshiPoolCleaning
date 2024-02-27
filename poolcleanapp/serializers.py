@@ -3,7 +3,8 @@ from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from poolcleanapp.models import Employee
 from poolcleanapp.models import Taskping
-#from poolcleanapp.models import Invoice
+from poolcleanapp.models import Invoice
+
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,9 +17,9 @@ class CompanySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class InvoiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = "" 
-        fields = '__all__'   
+   class Meta:
+       model = Invoice
+       fields = '__all__'
 
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:

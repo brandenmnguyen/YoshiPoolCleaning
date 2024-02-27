@@ -21,9 +21,9 @@ from .serializers import InvoiceSerializer
 from .serializers import TaskpingSerializer
 from .forms import *
 from .serializers import EmployeeSerializer
-#from .serializers import InvoiceSerializer
 from django.shortcuts import get_object_or_404 ##importing this for getting ID
-
+from django.http import HttpResponse
+from .forms import InvoiceForm
 
 
 
@@ -291,32 +291,61 @@ def providerSearch(request):
    
    # return render(request, "ResultsPage-1.html")
 
-def payment(request):
-    if request.method == "POST":
-        if not 'option' in request.POST:
-            msg = "Please provide payment option"
-            return render(request, "payment_page.html", {'msg': msg})
-        option = request.POST['option']
-        print(option)
-        # temporarily show user input
-        if option == "manualCard":
-            cardNumber = request.POST['card_number']
-            cardName = request.POST['card_name']
-            cardExp = request.POST['exp_date']
-            cardCCV = request.POST['ccv']
-            cardEmail = request.POST['card_email']
-            print(cardNumber)
-            print(cardName)
-            print(cardExp)
-            print(cardCCV)
-            print(cardEmail)
-        # TODO: redirect to payment confirmation
-        return render(request, "payment_page.html")
-    else:
-        return render(request, "payment_page.html")
+
+## --------------- PAYMENT PAGE ---------------------------------------------------------------------------
+
+def getCompanyPrice(c_id): # GET COMPANY
+    company = get_object_or_404(Company, C_id=c_id)
+    return company.company_price
+
+def getClientName(client_id):
+    client = get_object_or_404(Client, id=client_id)
+    return client.fname, client.lname 
+
+def payment(request, company_id, client_id):
+    try:
+        # Retrieve the company price based on the provided company ID
+        company = Company.objects.get(c_id=company_id)
+        company_charges = company.company_price
+        company_name = company.company_name  # Get the company name
+
+        # Get client information
+        client = Client.objects.get(client_id=client_id)
+        client_fname = client.fname
+        client_lname = client.lname
+
+        if request.method == 'POST':
+            # If the request method is POST, process the form data
+            form = InvoiceForm(request.POST)
+            if form.is_valid():
+                # If form is valid, save the invoice and redirect
+                invoice = form.save()
+                return HttpResponse('Invoice created successfully!')
+        else:
+            # Create an instance of the invoice form and pre-fill it with relevant data
+            initial_data = {
+                'client': client_id,
+                'c': company_id,
+                'amount': company_charges,
+                'email': client.email  # You can pre-fill other fields as needed
+            }
+            form = InvoiceForm(initial=initial_data)
+
+        # Pass company charges, company name, client information, and the invoice form to the template
+        return render(request, "payment_page.html", {'company_charges': company_charges, 'company_name': company_name, 'client_fname': client_fname, 'client_lname': client_lname, 'form': form})
+    except Company.DoesNotExist:
+        msg = "Company not found"
+        return render(request, "payment_page.html", {'msg': msg})
+    except Client.DoesNotExist:
+        msg = "Client not found"
+        return render(request, "payment_page.html", {'msg': msg})
+
+
 
 def paymentSuccess(request):
-    return render(request, "PaymentSuccess.html")
+    return render(request, "paymentsuccessful.html")
+
+## ------------------------------------------------------------------------------------------
 
 #@login_required
 def calendar(request):
