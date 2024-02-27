@@ -1,0 +1,58 @@
+#qrcode{
+    padding: 25px;
+    margin: 20px;
+    margin-right: 250px !important;
+}
+
+.card{
+ margin-left: 36%;
+ margin-top: 80px;
+  background-color:  rgb(114, 169, 237);
+  transition: 0.7s;
+}
+
+.card:hover{
+ 
+    transform:translateY(-10px);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5),
+    -5px -5px 10px rgba(255, 255, 255, 0.5);
+   }
+
+.card-img-top{
+    padding: 20px;
+}
+
+.card-title{
+    color: white;
+    text-align: center;
+}
+
+button{
+    background-color: rgb(213, 227, 255);
+    border-color: rgb(0, 99, 221);
+    border-radius: 25px;
+    border-style: solid;
+    padding: 5px;
+    margin-left: 10px;
+    transition: 0.8s;
+    color: rgb(0, 102, 255);
+    text-align: center;
+    font-size: 20px;
+    width: 80px;
+}
+
+button:hover{
+    transform:translateY(-6px);
+    box-shadow:  0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.totpCode{
+    color: white;
+    font-size: 20px;
+}
+
+#totp_code{
+   border-radius: 18px;
+   border-style: none;
+   padding: 5px;
+}
