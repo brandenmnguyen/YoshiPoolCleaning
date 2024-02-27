@@ -1,14 +1,4 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
-# Create your models here.
-
 class Appointments(models.Model):
     appointment_id = models.AutoField(primary_key=True)
     cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
@@ -36,12 +26,12 @@ class Client(models.Model):
 
 
 class Company(models.Model):
-    c_id = models.AutoField(db_column='C_id', primary_key=True)  # Field name made lowercase.
-    company_name = models.CharField(db_column='Company_Name', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    company_phone = models.CharField(db_column='Company_Phone', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_pw = models.CharField(db_column='Company_PW', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    C_id = models.AutoField(primary_key=True, db_column='C_id')
+    company_name = models.CharField(max_length=100, db_column='Company_Name', blank=True, null=True)
+    company_address = models.CharField(max_length=255, db_column='Company_Address', blank=True, null=True)
+    company_phone = models.CharField(max_length=15, db_column='Company_Phone', blank=True, null=True)
+    company_email = models.CharField(max_length=100, db_column='Company_Email', blank=True, null=True)
+    company_pw = models.CharField(max_length=255, db_column='Company_PW', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -49,19 +39,21 @@ class Company(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
+    employee_id = models.AutoField(primary_key=True, db_column='Employee_id')
     fname = models.CharField(max_length=50, blank=True, null=True)
     lname = models.CharField(max_length=50, blank=True, null=True)
     c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
     emp_password = models.CharField(max_length=50, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
+    is_admin = models.CharField(max_length=1, choices=[('Y', 'Yes'), ('N', 'No')], default='N')
 
     class Meta:
         managed = False
         db_table = 'EMPLOYEE'
 
 
-class Payment(models.Model):
+
+class Invoice(models.Model):
     payment_id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
     emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)

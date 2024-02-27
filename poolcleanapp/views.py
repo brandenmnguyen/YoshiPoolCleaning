@@ -18,6 +18,7 @@ from .models import Company
 from .serializers import ClientSerializer
 from .serializers import CompanySerializer
 from .serializers import InvoiceSerializer
+from .serializers import TaskpingSerializer
 from .forms import *
 from .serializers import EmployeeSerializer
 #from .serializers import InvoiceSerializer
@@ -122,7 +123,28 @@ def addCompany(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+## --------------- Create Taskping ----------------
+@api_view(['POST'])
+def addTaskping(request):
+    try:
+        serializer = TaskpingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+## --------------- GET Taskping ----------------
+@api_view(['GET'])
+def getTaskping(request):
+    try:
+        Taskpings = Taskping.objects.all()  # Replace YourModel with your actual model
+        serializer = TaskpingSerializer(Taskpings, many=True)  # Serialize the data
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 ## --------------- Get Invoice ----------------
 @api_view(['GET'])
 def getInvoice(request):
@@ -256,6 +278,10 @@ def providerSignUp(request, *args, **kwargs):
         form = ProviderForm()
 
     return render(request, "SignUpProviderTemp2.html")
+
+@anonymous_required
+def invoiceSearch(request):
+    return render(request, "InvoiceTracking.html")
 
 def providerSearch(request):
     search_term = request.GET.get('search', '')

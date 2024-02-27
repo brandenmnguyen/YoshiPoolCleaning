@@ -10,6 +10,8 @@ urlpatterns = [
     path('viewCompany/', views.getCompany),
     path('viewOneCompany/', views.getOneCompany),
     path('addCompany/', views.addCompany),
+    path('addTaskping/', views.addTaskping),
+    path('getTaskping/', views.getTaskping),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
     path('add_client/', views.add_client),

@@ -60,7 +60,7 @@ body {
   /* Additional styling here */
 }
 
-.task-complete {
+.task {
   background-color: #a3c9f7;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -77,10 +77,10 @@ body {
   /* This is aligned to the top right by the flex properties on the parent */
 }
 
-.task-status {
+.status-complete {
+  font-weight: bold;
   font-size: 0.8em;
   color: #4caf50;
-  font-weight: bold;
   /* This will be pushed to the bottom of the container by the mt-auto class */
 }
 
@@ -99,6 +99,10 @@ body {
 }
 
 .task-status-in-progress {
+  font-weight: bold;
+}
+.status-in-progress {
+  font-weight: bold;
   font-size: 0.8em;
   color: #d51717;
 }
@@ -144,7 +148,7 @@ body {
 body {
   display: flex; /* Use flexbox */
   flex-direction: column; /* Stack children elements vertically */
-  min-height: 100vh; /* Minimum height of 100% of the viewport */
+  /* Minimum height of 100% of the viewport */
 }
 
 .main-container {

@@ -1,11 +1,11 @@
 const ticketsData = [
   {
-    amount: "$223.99",
-    orderNumber: "Order No.: 987654",
-    status: "Processed",
-    clientName: "Alice Johnson",
+    amount: "$44323.99",
+    orderNumber: "Order No.: 4654",
+    status: "In Progress",
+    clientName: "Jessica Wilson",
     paymentMethod: "Credit Card",
-    createdAt: new Date("2023-09-15T23:59:00"),
+    createdAt: new Date("2020-09-15T18:30:00"),
   },
   {
     amount: "$2237.00",
@@ -31,57 +31,100 @@ const ticketsData = [
     paymentMethod: "Bank Transfer",
     createdAt: new Date("2023-09-14T23:59:00"), // Add the current date and time
   },
-  {
-    amount: "$324.99",
-    orderNumber: "Order No.: 56434738",
-    status: "Processed",
-    clientName: "David Miller",
-    paymentMethod: "Check",
-    createdAt: new Date("2023-09-16T23:59:00"), // Add the current date and time
-  },
 ];
 
 function updateTickets() {
-  const ticketContainers = document.querySelectorAll(".payment-background");
+  const container = document.querySelector(".payment-history-container"); // Select the container
 
-  ticketContainers.forEach((container, index) => {
-    if (index < ticketsData.length) {
-      const clientNameElement = container.querySelector(".client-name");
-      const paymentMethodElement = container.querySelector(".payment-method");
-      const amountElement = container.querySelector(".task-money");
-      const orderNumberElement = container.querySelector(".order-number");
-      const dateTimeElement = container.querySelector(".date-time-position"); // Select the date-time element
-      const transactionStatusElement = container.querySelector(".transaction");
+  ticketsData.forEach((ticket) => {
+    // Create the outermost 'row' and 'mt-3' div
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("row", "mt-3");
 
-      // Assuming all tickets now have a 'createdAt' property
-      const ticket = ticketsData[index];
+    // Create the 'payment-background' div
+    const paymentDiv = document.createElement("div");
+    paymentDiv.classList.add(
+      "payment-background",
+      "d-flex",
+      "flex-column",
+      "justify-content-between"
+    );
 
-      if (clientNameElement) clientNameElement.textContent = ticket.clientName;
-      if (paymentMethodElement)
-        paymentMethodElement.textContent = ticket.paymentMethod;
-      if (amountElement) amountElement.textContent = ticket.amount;
-      if (orderNumberElement)
-        orderNumberElement.textContent = ticket.orderNumber;
-      if (dateTimeElement)
-        dateTimeElement.textContent = formatDate(ticket.createdAt); // Format and set the date-time
+    // Create the inner structure with 'client-name', 'payment-method', etc.
+    const contentDiv = document.createElement("div");
+    contentDiv.classList.add("d-flex", "justify-content-between");
 
-      // Update the transaction status and class based on the ticket status
-      if (transactionStatusElement) {
-        transactionStatusElement.textContent =
-          ticket.status === "Processed"
-            ? "✔ Payment Processed"
-            : "● Payment in Progress";
-        transactionStatusElement.className = `transaction ${
-          ticket.status === "Processed"
-            ? "transaction-complete"
-            : "transaction-in-progress"
-        }`;
-      }
-    } else {
-      container.style.display = "none"; // Hide containers without corresponding data
-    }
+    // Client name and payment method section
+    const taskTitleDiv = document.createElement("div");
+    taskTitleDiv.classList.add("task-title", "d-flex", "align-items-center");
+    const clientNameSpan = document.createElement("span");
+    clientNameSpan.classList.add("client-name");
+    clientNameSpan.textContent = ticket.clientName;
+    const paymentMethodSpan = document.createElement("span");
+    paymentMethodSpan.classList.add("payment-method");
+    paymentMethodSpan.textContent = ticket.paymentMethod;
+
+    taskTitleDiv.appendChild(clientNameSpan);
+    taskTitleDiv.appendChild(document.createElement("br"));
+    taskTitleDiv.appendChild(paymentMethodSpan);
+
+    // Money and order number section
+    const moneyOrderDiv = document.createElement("div");
+    const taskMoneyDiv = document.createElement("div");
+    taskMoneyDiv.classList.add("task-money");
+    taskMoneyDiv.textContent = ticket.amount;
+    const orderNumberDiv = document.createElement("div");
+    orderNumberDiv.classList.add("order-number");
+    orderNumberDiv.textContent = ticket.orderNumber;
+
+    moneyOrderDiv.appendChild(taskMoneyDiv);
+    moneyOrderDiv.appendChild(orderNumberDiv);
+
+    // Date-time position
+    const dateTimeDiv = document.createElement("div");
+    dateTimeDiv.classList.add("date-time-position");
+    dateTimeDiv.textContent = formatDate(ticket.createdAt);
+
+    // Transaction status container
+    const transactionContainerDiv = document.createElement("div");
+    transactionContainerDiv.classList.add("d-flex", "justify-content-end");
+
+    // Transaction status
+    const transactionDiv = document.createElement("div");
+    transactionDiv.classList.add(
+      "transaction",
+      ticket.status === "Processed"
+        ? "transaction-complete"
+        : "transaction-in-progress"
+    );
+    transactionDiv.textContent =
+      ticket.status === "Processed"
+        ? "✔ Payment Processed"
+        : "● Payment in Progress";
+
+    // Append the transaction status to its container
+    transactionContainerDiv.appendChild(transactionDiv);
+
+    // Assembling the structure
+    contentDiv.appendChild(taskTitleDiv);
+    contentDiv.appendChild(moneyOrderDiv);
+
+    paymentDiv.appendChild(contentDiv);
+    paymentDiv.appendChild(dateTimeDiv);
+    paymentDiv.appendChild(transactionContainerDiv); // Append the transaction status container at the bottom
+
+    rowDiv.appendChild(paymentDiv);
+
+    // Append the assembled row to the container
+    container.appendChild(rowDiv);
   });
 }
+
+// Keep the formatDate function as is
+
+// Assuming formatDate function is defined elsewhere as provided previously
+
+document.addEventListener("DOMContentLoaded", updateTickets);
 
 // Helper function to format the date
 function formatDate(date) {
