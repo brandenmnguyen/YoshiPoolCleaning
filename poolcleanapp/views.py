@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
@@ -24,6 +25,8 @@ from .serializers import EmployeeSerializer
 from django.shortcuts import get_object_or_404 ##importing this for getting ID
 from django.http import HttpResponse
 from .forms import InvoiceForm
+from math import sin, cos, sqrt, atan2, radians
+
 
 
 
@@ -60,6 +63,9 @@ def getOneClient(request):
         'cl_password': client.cl_password,
         'address': client.address,
     }
+    request.session['username'] = client.email
+    request.session['password'] = client.cl_password
+    request.session['type'] = "client"
 
     return Response(client_data, status=status.HTTP_200_OK)
 
@@ -108,8 +114,29 @@ def getOneCompany(request):
         'company_email': company.company_email,
         'company_pw': company.company_pw,
     }
+    
+    request.session['username'] = company.company_email
+    request.session['password'] = company.company_pw
+    request.session['type'] = "provider"
 
     return Response(company_data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getSession(request):
+
+    if not 'username' in request.session and not 'password' in request.session:
+        return Response("user not logged in", status=status.HTTP_404_NOT_FOUND)
+    
+    username = request.session['username']
+    password =  request.session['password']
+    type = request.session['type']
+
+    user_data = {
+        'username': username,
+        'password': password,
+        'type': type,
+    }
+    return Response(user_data, status=status.HTTP_200_OK)
 
 ## --------------- Create Company ----------------
 @api_view(['POST'])
@@ -242,6 +269,12 @@ def login_client(request):
 def login_company(request):
     return render(request, "LoginProvider2.html")
 
+# Logs out the user whether client or provider
+@api_view(['DELETE','GET'])
+def logout(request):
+    request.session.flush()
+    return redirect('homepage')
+
 @anonymous_required
 def clientSignUp(request, *args, **kwargs):
     if request.POST:
@@ -346,6 +379,33 @@ def paymentSuccess(request):
     return render(request, "paymentsuccessful.html")
 
 ## ------------------------------------------------------------------------------------------
+
+@api_view(['POST'])
+def calculate_distance(request):
+   
+    data = json.loads(request.body)
+    print(data)
+    lat1 = float(data['lat1'])
+    lon1 = float(data['lon1'])
+    lat2 = float(data['lat2'])
+    lon2 = float(data['lon2'])
+    
+    distance = haversine_distance(lat1, lon1, lat2, lon2)
+
+    if distance > 0.1:
+        message = 'Provider is ' + str(round(distance, 2)) + ' miles away'
+        return Response(message,status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response("Provider has arrived!",status=status.HTTP_200_OK)
+    
+def haversine_distance(lat1, lon1, lat2, lon2):
+    R = 3959.0  # Earth's radius in miles
+    d_lat = radians(lat2 - lat1)
+    d_lon = radians(lon2 - lon1)
+    a = sin(d_lat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(d_lon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    distance = R * c
+    return distance
 
 #@login_required
 def calendar(request):

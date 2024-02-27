@@ -38,7 +38,7 @@
             const clientEmail = encodeURIComponent(email);
             const clientPassword = encodeURIComponent(password);
 
-            const url = `${baseUrl}?client_email=${clientEmail}&client_pw=${clientPassword}`;
+            const url = `${baseUrl}?email=${clientEmail}&cl_password=${clientPassword}`;
             fetch(url, {
                 method: 'GET',
                 headers: {
