@@ -22,7 +22,6 @@ urlpatterns = [
     path('getSession/',views.getSession),
     
     path('ping',views.calculate_distance),
-
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name='homepage'),
     path('login/', views.login_user, name='login'),
