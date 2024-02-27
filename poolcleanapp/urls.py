@@ -18,7 +18,7 @@ urlpatterns = [
     path('viewEmployee/', views.getEmployee),
     path('addEmployee/', views.addEmployee),
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),
-    path('logout/', views.logout),
+    path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
     
     path('ping',views.calculate_distance),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
     path('about/', views.about, name='about'),
+    path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name='dailycalendar'),
 ]

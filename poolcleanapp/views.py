@@ -3,12 +3,14 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
+from django.http import HttpResponse 
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import pyotp
-
 from django.conf import settings
+from django_otp.plugins.otp_totp.models import TOTPDevice
+#from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
 from .models import *
@@ -31,6 +33,11 @@ from .forms import InvoiceForm
 from math import sin, cos, sqrt, atan2, radians
 import qrcode
 import stripe
+from django.contrib import messages
+
+import pyotp
+
+from io import BytesIO
 
 
 
@@ -251,24 +258,109 @@ def anonymous_required(function=None, redirect_url=None):
 def homepage(request):
     return render(request, "Homepage-1.html")
 
-def login_user(request):
-    if request.user.is_authenticated:
-        return redirect('clienttracking')
-    if request.method == "POST":
-        email = request.POST['email']
-        password = request.POST['password'] 
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('clienttracking')
-        else:
-            msg = 'Error logging in'
-            return render(request, "LoginPage.html", {'msg': msg})
+
+
+#for QR code generator 
+def generate_qr_code(request):
+    if request.method == 'GET':
+        # The secret key used to generate TOTP codes
+        key = 'base32secret3232'
+
+        # Generate the TOTP code using the secret key
+        totp = pyotp.TOTP(key)
+
+        # Generate the provisioning URI for the QR code
+        uri = totp.provisioning_uri(name='poolUser', issuer_name='poolUser')
+
+        # Generate the QR code image
+        qr = qrcode.make(uri)
+
+        # Create a BytesIO object to store the image data
+        img_buffer = BytesIO()
+        qr.save(img_buffer)
+        img_buffer.seek(0)
+
+        # Return the image data as an HTTP response
+        return HttpResponse(img_buffer.getvalue(), content_type='image/png')
     else:
+        # Handle other HTTP methods (e.g., POST)
+        return HttpResponse("Method not allowed", status=405)
+
+
+#For two factor authentication
+
+def verification(request):
+    if request.method == 'POST':
+        user_totp_code = request.POST.get('totp_code')  # Assuming the form field is named 'totp_code'
+
+        # The secret key used to generate TOTP codes
+        key = 'base32secret3232'
+
+        # Generate the TOTP code using the secret key
+        totp = pyotp.TOTP(key)
+        generated_totp_code = totp.now()
+
+
+
+        # Compare the user-entered TOTP code with the generated TOTP code
+        if user_totp_code == generated_totp_code:
+            # TOTP code is correct
+            return render(request, 'ProviderTracking.html')
+        else:
+            # TOTP code is incorrect
+            return render(request, 'LoginPage.html')
+
+    # Handle GET request or other cases
+    return render(request, 'verification_form.html')
+
+
+
+
+
+
+
+def login_user(request):
+ #   if request.user.is_authenticated:
+  #      return redirect('clienttracking')
+   # if request.method == "POST":
+    #    email = request.POST['email']
+     #   password = request.POST['password'] 
+      #  user = authenticate(request, username=email, password=password)
+       # if user is not None:
+        #    login(request, user)
+         #   return redirect('clienttracking')
+        #else:
+
+         #   messaging = 'Email or password is incorrect'
+          #  return render(request, "LoginPage.html", {'msg': messaging})
+    #else:
         return render(request, "LoginPage.html")
     
+
+
+
 def login_client(request):
     return render(request, "LoginClientTemp.html")
+
+
+
+def logging(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password') 
+        if email and password:  # Check if both email and password are provided
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('clienttracking')
+            else:
+                messaging = 'Email or password is incorrect'
+        else:
+            messaging = 'Email and password are required'
+        return render(request, "LoginPage.html", {'msg': messaging})
+    else:
+        return render(request, "LoginPage.html")
+
 
 
 def login_company(request):
@@ -283,7 +375,7 @@ def logout(request):
 @anonymous_required
 def clientSignUp(request, *args, **kwargs):
     if request.POST:
-        form = ClientForm(request.POST)
+        form = ClientForm(request.POST) 
         print("Submitted data:", request.POST)
         if form.is_valid():
             print("Submitted form data:", form.cleaned_data)
@@ -321,6 +413,7 @@ def providerSignUp(request, *args, **kwargs):
 def invoiceSearch(request):
     return render(request, "InvoiceTracking.html")
 
+@login_required(login_url=logging)
 def providerSearch(request):
     search_term = request.GET.get('search', '')
     info = Company.objects.filter(company_address__icontains=search_term)
@@ -413,16 +506,20 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return distance
 
 #@login_required
+@login_required(login_url=logging)
 def calendar(request):
     return render(request, "calendar.html")
 
 #@login_required
+@login_required(login_url=logging)
 def dailycalendar(request):
     return render(request, "DailyCalendar.html")
 
 #@login_required
+@login_required(login_url=logging)
 def paymentHistory(request):
     return render(request, "InvoiceTracking.html")
+
 
 def about(request):
     return render(request, "about.html")
@@ -431,11 +528,13 @@ def contact(request):
     return render(request, "contact.html")
 
 #@login_required
+#@login_required(login_url=login_user)
 def providertracking(request):
     task_list = Taskping.objects.filter(emp=1)   #need to replace with logged in provider
     return render(request, "ProviderTracking.html", {'task_list': task_list})
 
 #@login_required
+#@login_required(login_url=login_user)
 def clienttracking(request):
     task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
@@ -516,6 +615,11 @@ def checkout(request):
     )
 
     return redirect(checkout_session.url, code=303)
+
+#logout
+def logoutUser(request):
+    logout(request)
+    return redirect(logging)
 
 #def index(request):
     #context = {}

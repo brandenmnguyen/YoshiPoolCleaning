@@ -87,8 +87,9 @@
 .side h2 {
     position: absolute;
     font-family: 'Inter Tight', sans-serif;
+    
     text-align: center;
-    color: white;
+    color: rgb(255, 255, 255);
     line-height: 60px;
     /* Position the text absolutely within the container */
     font-size: 40px;

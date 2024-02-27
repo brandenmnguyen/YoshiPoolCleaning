@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Registration</title>
 </head>
+
 <body>
 
     <h1>Company Registration</h1>
@@ -63,8 +65,8 @@
                 company_pw: companyPassword
             };
 
-             // Perform a POST request using the Fetch API
-             fetch('http://127.0.0.1:8000/poolcleanapp/addCompany/', {
+            // Perform a POST request using the Fetch API
+            fetch('http://127.0.0.1:8000/poolcleanapp/addCompany/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,20 +74,21 @@
                 },
                 body: JSON.stringify(data),
             })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response from the server if needed
-                console.log('Success:', data);
-                window.location.href = 'http://127.0.0.1:8000/poolcleanapp/providerlogin/';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server if needed
+                    console.log('Success:', data);
+                    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/loggin/';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
-        function sendInfo(){
-            
+        function sendInfo() {
+
         }
     </script>
 
 </body>
+
 </html>
