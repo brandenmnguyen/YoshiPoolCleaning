@@ -621,6 +621,10 @@ def logoutUser(request):
     logout(request)
     return redirect(logging)
 
+#@login_required
+def resultspage(request):
+    return render(request, "ResultsPage-1.html")
+
 #def index(request):
     #context = {}
     #return render(request, 'invoice/index.html', context)
