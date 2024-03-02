@@ -39,15 +39,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_email',  # <- if you want email capability.
-    'two_factor',
-    'two_factor.plugins.phonenumber',  # <- if you want phone number capability.
-    'two_factor.plugins.email',  # <- if you want email capability.
-    'two_factor.plugins.yubikey',  # <- for yubikey capability.
-    'otp_yubikey',
 ]
 
 MIDDLEWARE = [
@@ -56,9 +47,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-
-    "django_otp.middleware.OTPMiddleware",
-
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -162,9 +150,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51On5WEFamngtG7BEjsSW9aMv4ttPdG5zA5hXPJwVziOGXJSTyyq9zL26gAs5dglXamEs7xIXRUIcNisAvRb7Uo8i00LQZwrUrj'
 STRIPE_SECRET_KEY = 'sk_test_51On5WEFamngtG7BEN4TJHzKhvvwA3ytpCWLaCuABKFCcLwQuwdOSTxR85Q0ztzJB7xYq0Ae8cM1Lv6GdF5V0FU2i00KhTHDX6V'
-
-
-LOGIN_URL = 'two_factor:login'
 
 
 

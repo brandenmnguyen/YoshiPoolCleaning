@@ -7,9 +7,9 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-import pyotp
+
 from django.conf import settings
-from django_otp.plugins.otp_totp.models import TOTPDevice
+
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
