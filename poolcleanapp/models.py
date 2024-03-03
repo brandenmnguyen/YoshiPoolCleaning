@@ -64,8 +64,8 @@ class Employee(models.Model):
 
 class Invoice(models.Model):
     invoice_id = models.AutoField(primary_key=True)
-    client = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
-    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey('Client', models.DO_NOTHING, db_column='client_id', blank=True, null=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, db_column='c_id', blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     payment_method = models.CharField(max_length=50, blank=True, null=True)
     card_name = models.CharField(max_length=100, blank=True, null=True)
@@ -77,7 +77,6 @@ class Invoice(models.Model):
     class Meta:
         managed = False
         db_table = 'INVOICE'
-
 
 
 class Taskping(models.Model):

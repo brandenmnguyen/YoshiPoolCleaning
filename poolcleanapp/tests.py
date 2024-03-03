@@ -1,30 +1,48 @@
-from django.test import TestCase
-from django.urls import reverse
-from poolcleanapp.views import payment  # Import the payment view function
-from poolcleanapp.models import Company, Client, Invoice
-from django.http import HttpRequest
+from django.test import SimpleTestCase, TestCase
+from django.test import Client as TestClient
+from django.urls import reverse, resolve
+from poolcleanapp.models import Client
+from poolcleanapp.views import homepage
+from poolcleanapp.views import about
+from poolcleanapp.views import providertracking
+from poolcleanapp.views import clienttracking
 
+import json
 
-class PaymentViewTest(TestCase):
-    def setUp(self):
-        # Create a sample company and client for testing
-        self.company = Company.objects.create(c_id=1, company_name="Test Company", company_price=100.00)
-        self.client = Client.objects.create(client_id=1, fname="John", lname="Doe", email="john.doe@example.com")
+# Create your tests here.from django.test import TestCase
 
-    def test_payment_view(self):
-        # Create a request object
-        request = HttpRequest()
-        request.method = 'GET'
-        
-        # Call the payment view function with the company_id and client_id
-        response = payment(request, company_id=self.company.c_id, client_id=self.client.client_id)
+class TestUrls(SimpleTestCase):
+    def test_homepage(self):
+        client = TestClient()  # Create a client object for making requests
+        url = reverse('homepage')
+        response = client.get(url)  # Perform a GET request to the URL
+        print(resolve(url))
+        self.assertTemplateUsed(response, 'Homepage-1.html')  # Check if the correct template is used
+        self.assertEqual(response.status_code, 200)  # Check if the response status code is 200
 
-        # Check if the response is successful (status code 200)
-        self.assertEqual(response.status_code, 200)
+class TestUrlsAbout(SimpleTestCase):
+    def test_homepage(self):
+        client = TestClient()  # Create a client object for making requests
+        url = reverse('about')
+        response = client.get(url)  # Perform a GET request to the URL
+        print(resolve(url))
+        self.assertTemplateUsed(response, 'about.html')  # Check if the correct template is used
+        self.assertEqual(response.status_code, 200)  # Check if the response status code is 200
 
-        # Check if the company and client information is passed to the template context
-        self.assertIn('company_charges', response.context)
-        self.assertIn('company_name', response.context)
-        self.assertIn('client_fname', response.context)
-        self.assertIn('client_lname', response.context)
-        self.assertIn('form', response.context)
+class TestUrlsTracking(SimpleTestCase):
+    def test_homepage(self):
+        client = TestClient()  # Create a client object for making requests
+        url = reverse('providertracking')
+        response = client.get(url)  # Perform a GET request to the URL
+        print(resolve(url))
+        self.assertTemplateUsed(response, 'ProviderTracking.html')  # Check if the correct template is used
+        self.assertEqual(response.status_code, 200)  # Check if the response status code is 200
+
+class TestUrlsTrackingClient(SimpleTestCase):
+    def test_homepage(self):
+        client = TestClient()  # Create a client object for making requests
+        url = reverse('clienttracking')
+        response = client.get(url)  # Perform a GET request to the URL
+        print(resolve(url))
+        self.assertTemplateUsed(response, 'ClientTracking.html')  # Check if the correct template is used
+        self.assertEqual(response.status_code, 200)  # Check if the response status code is 200
