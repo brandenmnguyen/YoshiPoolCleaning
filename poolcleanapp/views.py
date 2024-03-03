@@ -619,7 +619,7 @@ def checkout(request):
 #logout
 def logoutUser(request):
     logout(request)
-    return redirect(logging)
+    return redirect(login_user)
 
 #@login_required
 def resultspage(request):

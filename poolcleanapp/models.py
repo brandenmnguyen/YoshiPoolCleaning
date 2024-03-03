@@ -33,7 +33,6 @@ class Company(models.Model):
     company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
     company_phone = models.CharField(db_column='Company_Phone', max_length=15, blank=True, null=True)  # Field name made lowercase.
     company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_price = models.DecimalField(db_column='Company_Price', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     company_pw = models.CharField(db_column='Company_PW', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

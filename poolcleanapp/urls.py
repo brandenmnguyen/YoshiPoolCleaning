@@ -38,6 +38,7 @@ urlpatterns = [
     path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
     path('about/', views.about, name='about'),
+    path('verification/', views.verification, name = 'verification'),
     path('resultspage/', views.resultspage, name = 'resultspage'),
     path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),

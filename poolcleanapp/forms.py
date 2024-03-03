@@ -5,10 +5,10 @@ from django.contrib.auth import authenticate
 from .models import *
 
 # Create a client form
-class ClientForm(ModelForm):
-    class Meta:
-        model = Client
-        fields = ('clientName', 'addressLine', 'postalCode', 'phoneNumber', 'emailAddress')
+#class ClientForm(ModelForm):
+ #   class Meta:
+  #      model = Client
+   #     fields = ('clientName', 'addressLine', 'postalCode', 'phoneNumber', 'emailAddress')
 
 class ProviderForm(ModelForm):
 
