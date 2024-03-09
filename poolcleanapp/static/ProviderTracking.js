@@ -64,3 +64,5 @@ function getNextPrompt(currentPrompt) {
   const currentIndex = allPrompts.indexOf(currentPrompt);
   return allPrompts[currentIndex + 1]; // Returns undefined if there is no next prompt, which is fine
 }
+
+

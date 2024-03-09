@@ -56,7 +56,7 @@
               tasks.forEach(task => {
               // Create task element
               const taskElement = document.createElement('div');
-              taskElement.classList.add('mt-2', 'task-complete', 'd-flex', 'flex-column', 'justify-content-between');
+              taskElement.classList.add('mt-2', 'task', 'd-flex', 'flex-column', 'justify-content-between');
 
               // Task title
               const taskTitle = document.createElement('div');
@@ -102,7 +102,7 @@
               const taskStatus = document.createElement('div');
               taskStatus.classList.add('d-flex', 'justify-content-end');
               if (task.status === "y") {
-                taskStatus.classList.add('task-status');
+                taskStatus.classList.add('status-complete');
                 taskStatus.textContent = "✔ Completed";
               } else {
                 taskStatus.classList.add('task-status-2');

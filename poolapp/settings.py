@@ -31,14 +31,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
     "poolcleanapp.apps.PoolcleanappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "daphne",
     "django.contrib.staticfiles",
-    "rest_framework",
+    "rest_framework",    
 ]
 
 MIDDLEWARE = [
@@ -70,6 +72,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "poolapp.wsgi.application"
+ASGI_APPLICATION = "poolapp.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        #inmemorychannellayr is for testing only
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Database
@@ -150,6 +160,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51On5WEFamngtG7BEjsSW9aMv4ttPdG5zA5hXPJwVziOGXJSTyyq9zL26gAs5dglXamEs7xIXRUIcNisAvRb7Uo8i00LQZwrUrj'
 STRIPE_SECRET_KEY = 'sk_test_51On5WEFamngtG7BEN4TJHzKhvvwA3ytpCWLaCuABKFCcLwQuwdOSTxR85Q0ztzJB7xYq0Ae8cM1Lv6GdF5V0FU2i00KhTHDX6V'
-
 
 

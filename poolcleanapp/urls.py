@@ -20,7 +20,7 @@ urlpatterns = [
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),
     path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
-    
+    path('messaging/', views.messaging, name = 'messaging'),
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name='homepage'),

@@ -39,88 +39,90 @@
             </div>
           </div>
         </div>
-
-        {% if task_list%}
-        <script>
+            {% if task_list%}
+            <script>
+            
+            const dateElement = document.getElementById("liveDate");
+            const now = new Date();
+            const options = { weekday: "long", month: "long", day: "numeric" };
+            dateElement.textContent = now.toLocaleDateString("en-US", options);
+     
           
-          const tasks = [
-          {% for task in task_list %}
-          { "name": "{{ task.taskname }}", "description": "{{ task.description }}", "status": "{{ task.status }}"} //add an if to task.status
-          {% if not forloop.last %}, {% endif %}
-          {% endfor %}
-          ];
-
-          const tasksContainer = document.getElementById('tasksContainer');
-
-          tasks.forEach(task => {
-          // Create task element
-          const taskElement = document.createElement('div');
-          taskElement.classList.add('mt-2', 'task-complete', 'd-flex', 'flex-column', 'justify-content-between');
-
-          // Task title
-          const taskTitle = document.createElement('div');
-          taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
-          taskTitle.innerHTML = `<b>${task.name}`;
-          taskElement.appendChild(taskTitle);
-
-          const taskDesc = document.createElement('div');
-          taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
-          //taskDesc.innerHTML = `${task.description}`;
-          //taskElement.appendChild(taskDesc);
-           
-          // Button
-          const button = document.createElement('button');
-          button.classList.add('dropdown-toggle', 'ms-1'); // Add classes for styling
-          taskTitle.appendChild(button); // Append button to task title
-
-          button.addEventListener('click', function(event) {
-          event.stopPropagation(); // Prevents the click event from bubbling up to the document body
-          // Action to perform when the button is clicked
-          // Create a new paragraph element
-          if(taskDesc.innerHTML === '') {
-          taskDesc.innerHTML = `${task.description}`;
-          } else {
-            taskDesc.innerHTML = '';
-          }
-          // Append the paragraph to the info container
-          taskElement.appendChild(taskDesc);
-          });
-
-          //button functionality
-          document.body.addEventListener('click', function(event) {
-          // Check if the click occurred outside the info container
-          if (!taskDesc.contains(event.target)) {
-                // If so, remove the info container
-                taskDesc.innerHTML = ''; // Clear the content
-          }
-          });          
-
-          // Task status
-          const taskStatus = document.createElement('div');
-          taskStatus.classList.add('d-flex', 'justify-content-end');
-          if (task.status === "y") {
-            taskStatus.classList.add('task-status');
-            taskStatus.textContent = "✔ Completed";
-          } else {
-            taskStatus.classList.add('task-status-2');
-            taskStatus.textContent = "✖ Not Yet Complete";
-          }  
-          taskElement.appendChild(taskStatus);
-
-          //add the ability to check task as complete
-
-          // Append task element to container
-          tasksContainer.appendChild(taskElement);
-          });
+            const tasks = [
+            {% for task in task_list %}
+            { "name": "{{ task.taskname }}", "description": "{{ task.description }}", "status": "{{ task.status }}"} //add an if to task.status
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            ];
           
-          <label for "name">Name of Task</label>
-          <input type="text" class="form-control" placeholder="Name of Task"
+            const tasksContainer = document.getElementById('tasksContainer');
 
-          </script>
-          {% else %}
-          <h2>No tasks posted.</h2>
-          {% endif %}
-          
+            tasks.forEach(task => {
+              // Create task element
+              const taskElement = document.createElement('div');
+              taskElement.classList.add('mt-2', 'task', 'd-flex', 'flex-column', 'justify-content-between');
+
+              // Task title
+              const taskTitle = document.createElement('div');
+              taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
+              taskTitle.innerHTML = `<b>${task.name}`;
+              taskElement.appendChild(taskTitle);
+
+              const taskDesc = document.createElement('div');
+              taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+              //taskDesc.innerHTML = `${task.description}`;
+              //taskElement.appendChild(taskDesc);
+
+               
+              // Button
+              const button = document.createElement('button');
+              button.classList.add('dropdown-toggle', 'ms-1'); // Add classes for styling
+              taskTitle.appendChild(button); // Append button to task title
+
+              button.addEventListener('click', function(event) {
+              event.stopPropagation(); // Prevents the click event from bubbling up to the document body
+              // Action to perform when the button is clicked
+              // Create a new paragraph element
+              if(taskDesc.innerHTML === '') {
+              taskDesc.innerHTML = `${task.description}`;
+              } else {
+                taskDesc.innerHTML = '';
+              }
+              // Append the paragraph to the info container
+              taskElement.appendChild(taskDesc);
+              });
+
+              //button functionality
+              document.body.addEventListener('click', function(event) {
+              // Check if the click occurred outside the info container
+              if (!taskDesc.contains(event.target)) {
+                    // If so, remove the info container
+                    taskDesc.innerHTML = ''; // Clear the content
+              }
+              });
+              
+
+              // Task status
+              const taskStatus = document.createElement('div');
+              taskStatus.classList.add('d-flex', 'justify-content-end');
+              if (task.status === "y") {
+                taskStatus.classList.add('task-status-complete');
+                taskStatus.textContent = "✔ Completed";
+              } else {
+                taskStatus.classList.add('task-status-2');
+                taskStatus.textContent = "✖ Not Yet Complete";
+              }  
+              taskElement.appendChild(taskStatus);
+
+              // Append task element to container
+              tasksContainer.appendChild(taskElement);
+              });              
+            
+              </script>
+              {% else %}
+              <h2>No tasks posted.</h2>
+              {% endif %}
+                  
 
           <!-- add the POST function for tasks here-->
 

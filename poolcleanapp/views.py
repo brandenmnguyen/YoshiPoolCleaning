@@ -313,11 +313,11 @@ def verification(request):
     # Handle GET request or other cases
     return render(request, 'verification_form.html')
 
-
-
-
-
-
+#for messaging
+def messaging(request):
+    room = Chat.objects.filter(cl=1).first()
+    chats = []  
+    return render(request, 'messaging.html', {'room' : room, 'chats': chats})
 
 def login_user(request):
  #   if request.user.is_authenticated:
