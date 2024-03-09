@@ -43,4 +43,5 @@ urlpatterns = [
     path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name='dailycalendar'),
+    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient')
 ]
