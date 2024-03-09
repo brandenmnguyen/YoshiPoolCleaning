@@ -63,6 +63,7 @@ h2 {
 
 .nameOfCompany {
     padding-top: 25px;
+    margin-bottom: 25px;
 }
 
 .nameOfStreet {
@@ -111,4 +112,46 @@ h2 {
 .infoOfCompany {
     width: 50%;
     line-height: 1px;
+}
+
+.email {
+    font-size: 12px;
+    color: rgba(105, 105, 105, 1);
+
+.subscribed {
+    background-color: darkblue;
+    color: white;
+    cursor: default;
+}
+
+.checkmark {
+    margin-left: 5px;
+}
+
+/* Your existing CSS */
+
+.subscribeButton {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.subscribeItself {
+    border-radius: 50%;
+    background-color: rgba(215, 233, 255, 1); /* Dark blue color */
+    color: white;
+    height: 45px;
+    width: 160px;
+    padding: 10px;
+    text-align: center;
+    margin-left: 450px;
+    size: 35px;
+    text-decoration: none;
+    border-radius: 0.40rem;
+    border: none;
+}
+
+.subscribeItself.subscribed {
+    background-color: rgba(96, 160, 239, 1); /* Change to your desired color for subscribed state */
 }

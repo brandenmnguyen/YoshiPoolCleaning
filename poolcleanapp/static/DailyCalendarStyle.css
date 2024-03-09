@@ -180,6 +180,7 @@ body {
   white-space: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  font-weight: bold;
 }
 
 .calendar {
@@ -301,6 +302,10 @@ span.cal-month__next.clicked:after{
   color: #fff;
   animation: dayselected-FadeIn 0.6s;
 }/*# sourceMappingURL=style.css.map */
+
+.cal-day__day--indicator {
+  color: green;
+}
 
 @keyframes dayselected-FadeIn {
   from{background-color: #fff; color: #777;} to{background-color: #60a0ef; color: #fff;}

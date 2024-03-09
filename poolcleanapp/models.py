@@ -1,10 +1,3 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
@@ -40,7 +33,6 @@ class Company(models.Model):
     company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
     company_phone = models.CharField(db_column='Company_Phone', max_length=15, blank=True, null=True)  # Field name made lowercase.
     company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_price = models.DecimalField(db_column='Company_Price', max_digits=10, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     company_pw = models.CharField(db_column='Company_PW', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
@@ -49,7 +41,7 @@ class Company(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
+    employee_id = models.AutoField(primary_key=True, db_column='Employee_id')
     fname = models.CharField(max_length=50, blank=True, null=True)
     lname = models.CharField(max_length=50, blank=True, null=True)
     c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)

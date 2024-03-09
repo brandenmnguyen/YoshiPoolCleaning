@@ -1,12 +1,7 @@
 //create array
 
 const companyInformation = [
-    { name: "Liquad FX", location: "4712 Sacramento, CA", phoneNumber: "(925)4930-394" },
-    { name: "PoolGuysLLC", location: "8694 Rocklin, CA", phoneNumber: "(925)3895-953" },
-    { name: "Poseidon Pool Service", location: "1983, Brentwood, CA", phoneNumber: "(916)9400-824" },
-    { name: "NorCal Pools", location: "2351 Sunset bLVD, Rocklin, CA", phoneNumber: "(916)886-3828" },
-    { name: "Matthews Pool Services", location: "877, Greater Sacramento Area, CA", phoneNumber: "(916)612-8877" },
-    { name: "Above & Beyond Pool Service", location: "622 Farrington Ln, Lincolin, CA", phoneNumber: "(702)339-3878" }
+
 ];
 
 const bodyofbody = document.querySelector(".contentOfConent"); //this is for the main body
@@ -19,13 +14,13 @@ resultNumber.textContent = `Showing ${companyInformation.length} results`;
 //iterate through the whole array
 companyInformation.forEach(company => {
 
-    //creating elements 
+    // Creating elements 
     const mainContainer = document.createElement("div");
     const companyContainer = document.createElement("div");
     const secondContainer = document.createElement("div");
-    const plus = document.createElement("a");
+    const subscribeButton = document.createElement("button");
 
-    plus.textContent = "+";
+    subscribeButton.textContent = "Subscribe";
 
     const nameOfCompany = document.createElement("p");
     nameOfCompany.textContent = company.name;
@@ -46,19 +41,29 @@ companyInformation.forEach(company => {
     companyContainer.appendChild(locationOfCompany);
     companyContainer.appendChild(numberOfCompany);
 
-    //for css purposes
+    // For CSS purposes
     mainContainer.classList.add("resultsOfSearch");
     companyContainer.classList.add("infoOfCompany");
-    secondContainer.classList.add("plusSign");
-    plus.classList.add("plusItself");
+    secondContainer.classList.add("subscribeButton");
 
-    
-    secondContainer.appendChild(plus);
+    subscribeButton.classList.add("subscribeItself");
+
+    secondContainer.appendChild(subscribeButton);
 
     mainContainer.appendChild(companyContainer);
     mainContainer.appendChild(secondContainer);
-    
+
     bodyofbody.appendChild(mainContainer);
     bodyofbody.appendChild(line);
 
+});
+
+// Add event listeners for subscription
+const subscribeButtons = document.querySelectorAll(".subscribeItself");
+
+subscribeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        button.classList.toggle("subscribed");
+        button.textContent = button.classList.contains("subscribed") ? "Subscribed ✔" : "Subscribe";
+    });
 });

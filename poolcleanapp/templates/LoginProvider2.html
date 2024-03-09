@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Login</title>
 </head>
+
 <body>
 
     <h1>User Login</h1>
@@ -42,24 +44,25 @@
             fetch(url, {
                 method: 'GET',
                 headers: {
-                // You may need to include additional headers based on your API requirements
+                    // You may need to include additional headers based on your API requirements
                 },
-        })
-        .then(response => {
-        if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/providertracking/';
-  })
-  .catch(error => {
-    // Handle errors here
-    console.error('Error:', error);
-  });
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/providertracking/';
+                })
+                .catch(error => {
+                    // Handle errors here
+                    console.error('Error:', error);
+                });
         }
     </script>
 
 </body>
+
 </html>

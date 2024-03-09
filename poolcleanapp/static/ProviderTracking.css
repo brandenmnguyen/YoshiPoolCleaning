@@ -60,13 +60,6 @@ body {
   /* Additional styling here */
 }
 
-.task-complete {
-  background-color: #a3c9f7;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
 .task-title {
   font-size: 1em;
 }
@@ -77,9 +70,16 @@ body {
   /* This is aligned to the top right by the flex properties on the parent */
 }
 
-.task-status {
+.task-status-complete {
   font-size: 0.8em;
   color: #4caf50;
+  font-weight: bold;
+  /* This will be pushed to the bottom of the container by the mt-auto class */
+}
+
+.task-status-2 {
+  font-size: 0.8em;
+  color: #de2626;
   font-weight: bold;
   /* This will be pushed to the bottom of the container by the mt-auto class */
 }
@@ -88,10 +88,18 @@ body {
   background-color: #a3c9f7;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  padding: 10px;
+  font-size: medium;
+}
+.task {
+  background-color: #a3c9f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  font-size: medium;
 }
 
-.task-status-in-progress {
+.task-status-not-complete {
   font-size: 0.8em;
   color: #d51717;
 }
@@ -142,4 +150,9 @@ body {
 
 .main-container {
   flex: 1; /* Flex grow to absorb extra space */
+}
+
+/* Adjust the container's right margin to push contents to the left */
+.small.text-muted {
+  margin-right: 15px; /* Adjust this value as needed */
 }

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Registration</title>
 </head>
+
 <body>
 
     <h1>Client Registration</h1>
@@ -32,7 +34,7 @@
 
         <label for="clientaddress">Address:</label>
         <input type="text" id="clientaddress" name="address" required>
-        
+
         <br>
 
         <label for="client_password">Password:</label>
@@ -71,8 +73,8 @@
                 address: client_address
             };
 
-             // Perform a POST request using the Fetch API
-             fetch('http://127.0.0.1:8000/poolcleanapp/addClient/', {
+            // Perform a POST request using the Fetch API
+            fetch('http://127.0.0.1:8000/poolcleanapp/addClient/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,20 +82,22 @@
                 },
                 body: JSON.stringify(data),
             })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response from the server if needed
-                console.log('Success:', data);
-                window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clienttracking/';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server if needed
+                    console.log('Success:', data);
+                    //   window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clienttracking/';
+                    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/loggin/';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
-        function sendInfo(){
-            
+        function sendInfo() {
+
         }
     </script>
 
 </body>
+
 </html>

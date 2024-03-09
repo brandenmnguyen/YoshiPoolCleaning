@@ -27,3 +27,5 @@ urlpatterns = [
     path('', RedirectView.as_view(url='poolcleanapp/homepage/')),   
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+
+

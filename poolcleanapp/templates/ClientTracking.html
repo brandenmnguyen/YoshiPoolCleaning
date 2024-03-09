@@ -11,7 +11,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static "ClientTracking.css" %}">
+    <link rel="stylesheet" href="{% static 'ClientTracking.css' %}">
 
     <!-- Link to the external CSS file -->
   </head>
@@ -20,12 +20,12 @@
     <!-- Navigation bar section -->
     <div class="navbar">
       <div class="navbar-links">
-        <a href="#home">Logo</a>
-        <a href="#about">About</a>
-        <a href="#providers">Providers</a>
-        <a href="#payment">Payment</a>
-        <a href="#map">Map</a>
-        <a href="#schedule">Schedule</a>
+        <a href="{% url 'homepage' %}">Logo</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'providersearch' %}">Providers</a>
+        <a href="{% url 'paymenthistory' %}">Payment</a>
+       <!--<a href="#map">Map</a>-->
+        <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="#account" class="account-name">Account Name</a>
       </div>
     </div>
@@ -33,100 +33,102 @@
     <div class="main-container">
       <div class="row">
         <div class="col left-side-scroll">
-          <div class="container-fluid">
+          <div class="container-fluid" id="tasksContainer">
             <div class="row">
               <div class="col-md-6 mt-1">
                 <div id="liveDate" class="live-date"></div>
               </div>
             </div>
-
-            <div class="row">
-              <div class="mt-2">
-                <div
-                  class="task-complete d-flex flex-column justify-content-between"
-                >
-                  <div class="d-flex justify-content-between">
-                    <div class="task-title d-flex align-items-center">
-                      Skimming and Brushing
-                      <button class="dropdown-toggle ms-1"></button>
-                    </div>
-                    <div class="task-time">9:00 AM</div>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                    <div class="task-status">✔ Completed</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="mt-4">
-                <div
-                  class="task-complete d-flex flex-column justify-content-between"
-                >
-                  <div class="d-flex justify-content-between">
-                    <div class="task-title d-flex align-items-center">
-                      Vacuuming
-                      <button class="dropdown-toggle ms-1"></button>
-                    </div>
-                    <div class="task-time">9:00 AM</div>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                    <div class="task-status">✔ Completed</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="mt-4">
-                <div
-                  class="task-complete d-flex flex-column justify-content-between"
-                >
-                  <div class="d-flex justify-content-between">
-                    <div class="task-title d-flex align-items-center">
-                      Chemical Balancing
-                      <button class="dropdown-toggle ms-1"></button>
-                    </div>
-                    <div class="task-time">9:00 AM</div>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                    <div class="task-status">✔ Completed</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="mt-4">
-                <div
-                  class="task-in-progress d-flex flex-column justify-content-between"
-                >
-                  <div class="d-flex justify-content-between">
-                    <div class="task-title d-flex align-items-center">
-                      Checking pool equipment & repairs
-                      <button class="dropdown-toggle ms-1"></button>
-                    </div>
-                    <div class="task-time">9:00 AM</div>
-                  </div>
-                  <div class="d-flex justify-content-end">
-                    <div class="task-status-in-progress">In Progress</div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+            {% if task_list%}
+            <script>
+              
+              const tasks = [
+              {% for task in task_list %}
+              { "name": "{{ task.taskname }}", "description": "{{ task.description }}", "status": "{{ task.status }}"} //add an if to task.status
+              {% if not forloop.last %}, {% endif %}
+              {% endfor %}
+              ];
+
+              const tasksContainer = document.getElementById('tasksContainer');
+
+              tasks.forEach(task => {
+              // Create task element
+              const taskElement = document.createElement('div');
+              taskElement.classList.add('mt-2', 'task-complete', 'd-flex', 'flex-column', 'justify-content-between');
+
+              // Task title
+              const taskTitle = document.createElement('div');
+              taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
+              taskTitle.innerHTML = `<b>${task.name}`;
+              taskElement.appendChild(taskTitle);
+
+              const taskDesc = document.createElement('div');
+              taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+              //taskDesc.innerHTML = `${task.description}`;
+              //taskElement.appendChild(taskDesc);
+
+               
+              // Button
+              const button = document.createElement('button');
+              button.classList.add('dropdown-toggle', 'ms-1'); // Add classes for styling
+              taskTitle.appendChild(button); // Append button to task title
+
+              button.addEventListener('click', function(event) {
+              event.stopPropagation(); // Prevents the click event from bubbling up to the document body
+              // Action to perform when the button is clicked
+              // Create a new paragraph element
+              if(taskDesc.innerHTML === '') {
+              taskDesc.innerHTML = `${task.description}`;
+              } else {
+                taskDesc.innerHTML = '';
+              }
+              // Append the paragraph to the info container
+              taskElement.appendChild(taskDesc);
+              });
+
+              //button functionality
+              document.body.addEventListener('click', function(event) {
+              // Check if the click occurred outside the info container
+              if (!taskDesc.contains(event.target)) {
+                    // If so, remove the info container
+                    taskDesc.innerHTML = ''; // Clear the content
+              }
+              });
+              
+
+              // Task status
+              const taskStatus = document.createElement('div');
+              taskStatus.classList.add('d-flex', 'justify-content-end');
+              if (task.status === "y") {
+                taskStatus.classList.add('task-status');
+                taskStatus.textContent = "✔ Completed";
+              } else {
+                taskStatus.classList.add('task-status-2');
+                taskStatus.textContent = "✖ Not Yet Complete";
+              }  
+              taskElement.appendChild(taskStatus);
+
+              // Append task element to container
+              tasksContainer.appendChild(taskElement);
+              });
+                    
+              </script>
+              {% else %}
+              <h2>No tasks posted.</h2>
+              {% endif %}
 
         <div class="col">
           <div class="container-fluid">
             <div class="row">
+              <div class="mt-2"></div>
               <div class="col-md-12">
                 <div
                   class="technician-greeting d-none d-md-flex align-items-center"
                 >
                   <div class="col-2 p-0">
-                    <img src="profile.jpg" alt="Technician" class="img-fluid" />
+                    <img src="{% static 'profile.jpg' %}" alt="Technician" class="img-fluid" />
                   </div>
                   <div class="col-9">
                     <p class="greeting-text">
@@ -171,6 +173,6 @@
       <a href="#socials">Socials</a>
       <a href="#instagram">Instagram</a>
     </div>
-    <script src="ClientTracking.js"></script>
+    <script src="{% static "ClientTracking.js" %}" rel="stylesheet"></script>
   </body>
 </html>

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from poolcleanapp.models import Employee
+from poolcleanapp.models import Taskping
 from poolcleanapp.models import Invoice
 
 
@@ -23,5 +24,10 @@ class InvoiceSerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee  
+        fields = '__all__'
+
+class TaskpingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Taskping
         fields = '__all__'
 
