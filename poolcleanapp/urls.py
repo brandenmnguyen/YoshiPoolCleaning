@@ -20,6 +20,10 @@ urlpatterns = [
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),
     path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
+    path('viewAppointments/',views.getAppointments),
+    path('addAppointments/',views.addAppointments),
+    path('viewAvailableAppointments/',views.viewAvailableAppointments),
+    path('scheduleAppointments/',views.scheduleAppointment),
     
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),

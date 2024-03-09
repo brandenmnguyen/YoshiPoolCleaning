@@ -11,82 +11,13 @@ from django.db import models
 class Appointments(models.Model):
     appointment_id = models.AutoField(primary_key=True)
     cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
-    emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'APPOINTMENTS'
-
-class Client(models.Model):
-    client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
-    fname = models.CharField(max_length=100, blank=True, null=True)
-    lname = models.CharField(max_length=100, blank=True, null=True)
-    email = models.CharField(unique=True, max_length=100, blank=True, null=True)
-    cl_password = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'CLIENT'
-
-
-class Company(models.Model):
-    c_id = models.AutoField(db_column='C_id', primary_key=True)  # Field name made lowercase.
-    company_name = models.CharField(db_column='Company_Name', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    company_phone = models.CharField(db_column='Company_Phone', max_length=15, blank=True, null=True)  # Field name made lowercase.
-    company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    company_pw = models.CharField(db_column='Company_PW', max_length=255, blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'COMPANY'
-
-
-class Employee(models.Model):
-    employee_id = models.AutoField(primary_key=True, db_column='Employee_id')
-    fname = models.CharField(max_length=50, blank=True, null=True)
-    lname = models.CharField(max_length=50, blank=True, null=True)
-    c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
-    emp_password = models.CharField(max_length=255, blank=True, null=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_admin = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'EMPLOYEE'
-
-
-class Invoice(models.Model):
-    invoice_id = models.AutoField(primary_key=True)
-    client = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
-    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    payment_method = models.CharField(max_length=50, blank=True, null=True)
-    card_name = models.CharField(max_length=100, blank=True, null=True)
-    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    card_number = models.CharField(max_length=16, blank=True, null=True)
-    cvv_code = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'INVOICE'
-
-class Taskping(models.Model):
-    task_id = models.AutoField(primary_key=True)
-    status = models.CharField(max_length=1, blank=True, null=True)
-    taskname = models.CharField(db_column='taskName', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    description = models.TextField(blank=True, null=True)
-    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
-    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'TASKPING'
+        db_table = 'appointments'
 
 
 class AuthGroup(models.Model):
@@ -158,6 +89,33 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Client(models.Model):
+    client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
+    fname = models.CharField(max_length=100, blank=True, null=True)
+    lname = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(unique=True, max_length=100, blank=True, null=True)
+    cl_password = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'client'
+
+
+class Company(models.Model):
+    c_id = models.AutoField(db_column='C_id', primary_key=True)  # Field name made lowercase.
+    company_name = models.CharField(db_column='Company_Name', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_address = models.CharField(db_column='Company_Address', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    company_phone = models.CharField(db_column='Company_Phone', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    company_email = models.CharField(db_column='Company_Email', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    company_pw = models.CharField(db_column='Company_PW', max_length=20, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'company'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -201,3 +159,114 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+
+class Employee(models.Model):
+    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
+    fname = models.CharField(max_length=50, blank=True, null=True)
+    lname = models.CharField(max_length=50, blank=True, null=True)
+    c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
+    emp_password = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'employee'
+
+
+class Payment(models.Model):
+    payment_id = models.AutoField(primary_key=True)
+    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
+    payment_date = models.DateField(blank=True, null=True)
+    received_date = models.DateField(blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    payment_method = models.CharField(max_length=50, blank=True, null=True)
+    card_name = models.CharField(max_length=100, blank=True, null=True)
+    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)  # Field name made lowercase.
+    email = models.CharField(max_length=100, blank=True, null=True)
+    reference_number = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'payment'
+
+
+class PoolcleanappClient(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    clientname = models.CharField(db_column='clientName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    addressline = models.CharField(db_column='addressLine', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    postalcode = models.CharField(db_column='postalCode', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    phonenumber = models.CharField(db_column='phoneNumber', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    emailaddress = models.CharField(db_column='emailAddress', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    uniqueid = models.CharField(db_column='uniqueId', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    slug = models.CharField(unique=True, max_length=500, blank=True, null=True)
+    date_created = models.DateTimeField(blank=True, null=True)
+    last_updated = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poolcleanapp_client'
+
+
+class PoolcleanappInvoice(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    number = models.CharField(max_length=100, blank=True, null=True)
+    duedate = models.DateField(db_column='dueDate', blank=True, null=True)  # Field name made lowercase.
+    paymentterms = models.CharField(db_column='paymentTerms', max_length=100)  # Field name made lowercase.
+    status = models.CharField(max_length=100)
+    notes = models.TextField(blank=True, null=True)
+    uniqueid = models.CharField(db_column='uniqueId', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    slug = models.CharField(unique=True, max_length=500, blank=True, null=True)
+    date_created = models.DateTimeField(blank=True, null=True)
+    last_updated = models.DateTimeField(blank=True, null=True)
+    client = models.ForeignKey(PoolcleanappClient, models.DO_NOTHING, blank=True, null=True)
+    product = models.ForeignKey('PoolcleanappService', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poolcleanapp_invoice'
+
+
+class PoolcleanappService(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    price = models.FloatField(blank=True, null=True)
+    uniqueid = models.CharField(db_column='uniqueId', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    slug = models.CharField(unique=True, max_length=500, blank=True, null=True)
+    date_created = models.DateTimeField(blank=True, null=True)
+    last_updated = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'poolcleanapp_service'
+
+
+class PoolcleanappSettings(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    clientname = models.CharField(db_column='clientName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    addressline = models.CharField(db_column='addressLine', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    postalcode = models.CharField(db_column='postalCode', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    phonenumber = models.CharField(db_column='phoneNumber', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    emailaddress = models.CharField(db_column='emailAddress', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    uniqueid = models.CharField(db_column='uniqueId', max_length=100, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'poolcleanapp_settings'
+
+
+class Taskping(models.Model):
+    task_id = models.AutoField(primary_key=True)
+    status = models.CharField(max_length=1, blank=True, null=True)
+    taskname = models.CharField(db_column='taskName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    description = models.TextField(blank=True, null=True)
+    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'taskping'
