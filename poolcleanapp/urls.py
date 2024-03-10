@@ -12,6 +12,7 @@ urlpatterns = [
     path('addCompany/', views.addCompany),
     path('addTaskping/', views.addTaskping),
     path('getTaskping/', views.getTaskping),
+    path('putTaskping/<int:pk>/', views.putTaskping, name='update-taskping-status'),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
     path('add_client/', views.add_client),

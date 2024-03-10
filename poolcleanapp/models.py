@@ -1,3 +1,10 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
@@ -7,6 +14,7 @@ class Appointments(models.Model):
     emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
+    client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -41,7 +49,7 @@ class Company(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.AutoField(primary_key=True, db_column='Employee_id')
+    employee_id = models.AutoField(db_column='Employee_id', primary_key=True)  # Field name made lowercase.
     fname = models.CharField(max_length=50, blank=True, null=True)
     lname = models.CharField(max_length=50, blank=True, null=True)
     c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
@@ -56,12 +64,12 @@ class Employee(models.Model):
 
 class Invoice(models.Model):
     invoice_id = models.AutoField(primary_key=True)
-    client = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
-    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+    c = models.ForeignKey(Company, models.DO_NOTHING, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     payment_method = models.CharField(max_length=50, blank=True, null=True)
     card_name = models.CharField(max_length=100, blank=True, null=True)
-    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)
+    expdate = models.DateField(db_column='ExpDate', blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(max_length=100, blank=True, null=True)
     card_number = models.CharField(max_length=16, blank=True, null=True)
     cvv_code = models.IntegerField(blank=True, null=True)
@@ -71,19 +79,27 @@ class Invoice(models.Model):
         db_table = 'INVOICE'
 
 
-
 class Taskping(models.Model):
+    TASK_STATUS_CHOICES = [
+        ('n', 'In progress'),
+        ('y', 'Completed'),
+    ]
+
     task_id = models.AutoField(primary_key=True)
-    status = models.CharField(max_length=1, blank=True, null=True)
-    taskname = models.CharField(db_column='taskName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(
+        max_length=1,
+        default='N',
+        choices=TASK_STATUS_CHOICES
+    )
+    taskname = models.CharField(max_length=100, blank=True, null=True)  # Renamed from taskName to task_name
     description = models.TextField(blank=True, null=True)
-    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
-    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
+    c_id = models.ForeignKey(Company, on_delete=models.CASCADE, db_column='C_id', blank=True, null=True)  # Renamed from c to company
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        managed = False
-        db_table = 'TASKPING'
-
+        managed = True
+        db_table = 'TASKPING' 
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)

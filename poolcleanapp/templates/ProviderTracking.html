@@ -1,32 +1,36 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProviderTrackPage</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ProviderTrackPage</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'ProviderTracking.css' %}" />
+  </head>
 
-  <link rel="stylesheet" href="{% static 'ProviderTracking.css' %}">
-  <!-- Link to the external CSS file -->
-</head>
-
-<body>
-  <!-- Navigation bar section -->
-  <div class="navbar">
-    <div class="navbar-links">
-      <a href="#home">Logo</a>
-      <a href="#about">About</a>
-      <a href="#providers">Providers</a>
-      <a href="#payment">Payment</a>
-      <a href="#map">Map</a>
-      <a href="#schedule">Schedule</a>
-      <a href=" {% url 'logout' %}">Logout</a>
-      <a href="#account" class="account-name">Account Name {{request.user}} </a>
+  <body>
+    <div class="navbar">
+      <div class="navbar-links">
+        <a href="#home">Logo</a>
+        <a href="#about">About</a>
+        <a href="#providers">Providers</a>
+        <a href="#payment">Payment</a>
+        <a href="#map">Map</a>
+        <a href="#schedule">Schedule</a>
+        <a href=" {% url 'logout' %}">Logout</a>
+        <a href="#account" class="account-name"
+          >Account Name {{request.user}}
+        </a>
+      </div>
     </div>
-  </div>
 
     <div class="main-container">
       <div class="row">
@@ -40,96 +44,13 @@
           </div>
         </div>
 
-        {% if task_list%}
-        <script>
-          
-          const tasks = [
-          {% for task in task_list %}
-          { "name": "{{ task.taskname }}", "description": "{{ task.description }}", "status": "{{ task.status }}"} //add an if to task.status
-          {% if not forloop.last %}, {% endif %}
-          {% endfor %}
-          ];
-
-          const tasksContainer = document.getElementById('tasksContainer');
-
-          tasks.forEach(task => {
-          // Create task element
-          const taskElement = document.createElement('div');
-          taskElement.classList.add('mt-2', 'task-complete', 'd-flex', 'flex-column', 'justify-content-between');
-
-          // Task title
-          const taskTitle = document.createElement('div');
-          taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
-          taskTitle.innerHTML = `<b>${task.name}`;
-          taskElement.appendChild(taskTitle);
-
-          const taskDesc = document.createElement('div');
-          taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
-          //taskDesc.innerHTML = `${task.description}`;
-          //taskElement.appendChild(taskDesc);
-           
-          // Button
-          const button = document.createElement('button');
-          button.classList.add('dropdown-toggle', 'ms-1'); // Add classes for styling
-          taskTitle.appendChild(button); // Append button to task title
-
-          button.addEventListener('click', function(event) {
-          event.stopPropagation(); // Prevents the click event from bubbling up to the document body
-          // Action to perform when the button is clicked
-          // Create a new paragraph element
-          if(taskDesc.innerHTML === '') {
-          taskDesc.innerHTML = `${task.description}`;
-          } else {
-            taskDesc.innerHTML = '';
-          }
-          // Append the paragraph to the info container
-          taskElement.appendChild(taskDesc);
-          });
-
-          //button functionality
-          document.body.addEventListener('click', function(event) {
-          // Check if the click occurred outside the info container
-          if (!taskDesc.contains(event.target)) {
-                // If so, remove the info container
-                taskDesc.innerHTML = ''; // Clear the content
-          }
-          });          
-
-          // Task status
-          const taskStatus = document.createElement('div');
-          taskStatus.classList.add('d-flex', 'justify-content-end');
-          if (task.status === "y") {
-            taskStatus.classList.add('task-status');
-            taskStatus.textContent = "✔ Completed";
-          } else {
-            taskStatus.classList.add('task-status-2');
-            taskStatus.textContent = "✖ Not Yet Complete";
-          }  
-          taskElement.appendChild(taskStatus);
-
-          //add the ability to check task as complete
-
-          // Append task element to container
-          tasksContainer.appendChild(taskElement);
-          });
-          
-          <label for "name">Name of Task</label>
-          <input type="text" class="form-control" placeholder="Name of Task"
-
-          </script>
-          {% else %}
-          <h2>No tasks posted.</h2>
-          {% endif %}
-          
-
-          <!-- add the POST function for tasks here-->
-
         <div class="col">
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <div
-                  class="technician-greeting d-none d-md-flex align-items-center">
+                  class="technician-greeting d-none d-md-flex align-items-center"
+                >
                   <div class="col-2 p-0">
                     <img
                       src="{% static 'profile.jpg' %}"
@@ -150,9 +71,7 @@
           </div>
 
           <div class="container-fluid">
-            <!-- <div class="row"> -->
             <div class="col-md-12 mt-4">
-              <!-- Map Container with Bootstrap display classes for responsiveness -->
               <div class="map-container d-none d-md-block">
                 <iframe
                   src="https://www.google.com/maps?q=Sacramento,CA&output=embed"
@@ -168,7 +87,6 @@
         </div>
       </div>
     </div>
-  </div>
 
     <div class="footer">
       <a href="{% url 'about' %}">About Us</a>
@@ -178,6 +96,27 @@
       <a href="#socials">Socials</a>
       <a href="#instagram">Instagram</a>
     </div>
+    <div id="tasksContainer">
+      <!-- Task elements will be appended here by the JavaScript -->
+    </div>
+    {% if task_list %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const tasks = [
+          {% for task in task_list %}
+            {
+              "name": "{{ task.taskname|escapejs }}",
+              "description": "{{ task.description|escapejs }}",
+              "status": "{{ task.status }}"
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ];
+        initializeTasks(tasks);
+          });
+    </script>
+    {% endif %}
+    <!-- External JavaScript File -->
+    <!-- Link to the external JavaScript file -->
     <script src="{% static 'ProviderTracking.js' %}"></script>
   </body>
 </html>
