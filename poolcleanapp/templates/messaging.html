@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Pool App Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/messaging.css">
+</head>
+<body>
+
+<main>
+    <header>
+        <div class="title">
+            <img src="../static/logo.png" width="35px" alt="Pool App Logo">
+            <h1> Chat Pool </h1>
+        </div>
+        <button type="button" onclick="show_hide()">
+            <img src="../static/chat.png" width="50px" alt="Chat">
+        </button>        
+    </header>
+    <div class="container">
+        <div class="users-window">
+            <div class="users-head">
+                <h3>People</h3>
+                <h4 class="users-count">0</h4>
+            </div>
+            <div class="users-list">
+            </div>
+        </div>
+        <div class="chat-window">
+            <div class="chats">
+            </div>
+        <div class="user-input">
+            <input id="user-msg" type="text" placeholder="Type your message...">
+            <button type="button" id="user-send">
+            <img src="../static/send.png" width="30px" alt="Chat">
+            </button>
+
+        </div>
+        </div>
+    </div>
+</main>
+<script>
+    var uwindow=document.querySelector('.users-window');
+    function show_hide(){
+        if(uwindow.style.display=="block"){
+            uwindow.style.display="none";
+        }
+        else{
+            uwindow.style.display="block";
+        }
+    }
+</script>
+
+<!-- Correct these script tags -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="../static/client.js"></script>
+
+</body>
+</html>
+
+<!---->
