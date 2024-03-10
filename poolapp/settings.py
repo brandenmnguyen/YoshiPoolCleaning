@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "channels",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "poolapp.wsgi.application"
+ASGI_APPLICATION = "poolapp.asgi.application"
 
 
 # Database
@@ -152,4 +154,15 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_51On5WEFamngtG7BEjsSW9aMv4ttPdG5zA5hXPJwVziOGX
 STRIPE_SECRET_KEY = 'sk_test_51On5WEFamngtG7BEN4TJHzKhvvwA3ytpCWLaCuABKFCcLwQuwdOSTxR85Q0ztzJB7xYq0Ae8cM1Lv6GdF5V0FU2i00KhTHDX6V'
 
 
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
+# Channel layer definitions
+# Use a channel layer that uses Redis as its backing store
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # List of Redis server instances as (host, port) tuples
+        },
+    },
+}

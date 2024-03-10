@@ -1,15 +1,17 @@
 import json
 from io import BytesIO
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
 from django.http import HttpResponse 
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.core import serializers
+from channels.layers import get_channel_layer
 
 from django.conf import settings
-
+from django.core.serializers import serialize
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -174,15 +176,59 @@ def addTaskping(request):
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 ## --------------- GET Taskping ----------------
+@api_view(['POST'])
+def addTaskping(request):
+    try:
+        serializer = TaskpingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+## --------------- GET Taskping ----------------
 @api_view(['GET'])
 def getTaskping(request):
     try:
-        Taskpings = Taskping.objects.all()  # Replace YourModel with your actual model
-        serializer = TaskpingSerializer(Taskpings, many=True)  # Serialize the data
+        taskpings = Taskping.objects.all()  # Ensure Taskping is your model name
+        serializer = TaskpingSerializer(taskpings, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+## --------------- Put Taskping ----------------
+
+@api_view(['PUT', 'POST'])  # Using PUT for update operations, POST can be used for creating
+def putTaskping(request, pk):
+    try:
+        task = Taskping.objects.get(pk=pk)
+        serializer = TaskpingSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            task_instance = serializer.save()
+
+            # This is where we send the message to the group
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                'client_group',
+                {
+                    'type': 'send_task_update',
+                    'task': {
+                        'id': task_instance.pk,
+                        'status': task_instance.status,
+                        # Include any other task details you want to send to the client
+                    }
+                }
+            )
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Taskping.DoesNotExist:
+        return Response({'error': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 ## --------------- Get Invoice ----------------
 @api_view(['GET'])
 def getInvoice(request):
@@ -526,11 +572,26 @@ def about(request):
 
 def contact(request):
     return render(request, "contact.html")
-
+#-----------------------TRACKING PAGE------------------------------------
 #@login_required
 #@login_required(login_url=login_user)
+from django.shortcuts import redirect, render
+from .models import Taskping
+from django.views.decorators.http import require_http_methods
+
+@require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 def providertracking(request):
-    task_list = Taskping.objects.filter(emp=1)   #need to replace with logged in provider
+    if request.method == 'POST':
+        # Check for the special '_method' field
+        if request.POST.get('_method') == 'PUT':
+            task_id = request.POST.get('task_id')
+            if task_id:
+                task = Taskping.objects.get(pk=task_id)
+                task.status = 'y'  # Update the status to 'y'
+                task.save()
+                return JsonResponse({'success': True})  # Return a JSON response for AJAX success
+
+    task_list = Taskping.objects.filter(c_id=1)
     return render(request, "ProviderTracking.html", {'task_list': task_list})
 
 #@login_required
@@ -539,6 +600,7 @@ def clienttracking(request):
     task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
 
+#--------------------- LOGIN --------------------------------------
 def logging(request):
     if request.method == "POST":
         email = request.POST.get('email')
