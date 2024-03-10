@@ -429,7 +429,7 @@ def clientSignUp(request, *args, **kwargs):
         else:
             form = ClientForm()
 
-    return render(request, "SignUpClientTemp.html")
+    return render(request, "SignUpClient.html")
 
 @anonymous_required
 def invoiceSearch(request):
@@ -453,7 +453,7 @@ def providerSignUp(request, *args, **kwargs):
     else:
         form = ProviderForm()
 
-    return render(request, "SignUpProviderTemp2.html")
+    return render(request, "SignUpProvider.html")
 
 @anonymous_required
 def invoiceSearch(request):
@@ -659,6 +659,38 @@ def checkout(request):
             {
                 # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
                 'price': 'price_1On6V4FamngtG7BE9RUVZhNs',
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+    )
+
+    return redirect(checkout_session.url, code=303)
+
+def checkout2(request):
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                'price': 'price_1OsJnIFamngtG7BEWNIUWEqY',
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+    )
+
+    return redirect(checkout_session.url, code=303)
+
+def checkout3(request):
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                'price': 'price_1OsJo8FamngtG7BE9w7XfgRm',
                 'quantity': 1,
             },
         ],

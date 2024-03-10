@@ -44,4 +44,8 @@ urlpatterns = [
     path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name='dailycalendar'),
+    path('stripeTest/', views.stripeTest, name = 'stripeTest'),
+    path('checkout/', views.checkout, name = 'checkout'),
+    path('checkout2/', views.checkout2, name = 'checkout2'),
+    path('checkout3/', views.checkout3, name = 'checkout3'),
 ]
