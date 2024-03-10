@@ -11,7 +11,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static 'ClientTracking.css' %}">
+    <link rel="stylesheet" href="{% static 'ClientTracking.css' %}" />
 
     <!-- Link to the external CSS file -->
   </head>
@@ -24,7 +24,7 @@
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
-       <!--<a href="#map">Map</a>-->
+        <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="#account" class="account-name">Account Name</a>
       </div>
@@ -41,73 +41,74 @@
             </div>
           </div>
         </div>
-            {% if task_list%}
-            <script>
-              const tasks = [
-                {% for task in task_list %}
-                { 
-                  "name": "{{ task.taskname|escapejs }}", 
-                  "description": "{{ task.description|escapejs }}", 
-                  "status": "{{ task.status }}",
-                  "updated_at": "{{ task.updated_at }}" // Assuming you have an updated_at field in your task model
-                }
-                {% if not forloop.last %}, {% endif %}
-                {% endfor %}
-              ];
-            
-              const tasksContainer = document.getElementById('tasksContainer');
-            
-              tasks.forEach(task => {
-                // Create task element
-                const taskElement = document.createElement('div');
-                taskElement.classList.add('mt-2', 'task', 'd-flex', 'flex-column', 'justify-content-between');
-            
-                // Task title
-                const taskTitle = document.createElement('div');
-                taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
-                taskTitle.innerHTML = `<b>${task.name}</b>`;
-                taskElement.appendChild(taskTitle);
-            
-                const taskDesc = document.createElement('div');
-                taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
-                taskDesc.style.display = "none"; // Initially hide the description
-            
-                // Button to toggle description visibility
-                const detailsButton = document.createElement('button');
-                detailsButton.classList.add('btn', 'btn-info', 'dropdown-toggle', 'ms-1');
-                detailsButton.textContent = "Details";
-                taskTitle.appendChild(detailsButton);
-            
-                detailsButton.onclick = function() {
-                  taskDesc.style.display = taskDesc.style.display === "none" ? "block" : "none";
-                  taskDesc.innerHTML = taskDesc.style.display === "block" ? task.description : "";
-                };
-            
-                // Append description to task element (it will be toggled by the details button)
-                taskElement.appendChild(taskDesc);
-            
-                // Task status and timestamp
-                const taskStatus = document.createElement('div');
-                taskStatus.classList.add('d-flex', 'justify-content-end');
-            
-                if (task.status === "y") {
-                  taskStatus.classList.add('task-status');
-                  taskStatus.innerHTML = `✔ Completed <span class="timestamp">- ${task.updated_at}</span>`;
-                } else {
-                  taskStatus.classList.add('task-status-2');
-                  taskStatus.textContent = "✖ Not Yet Complete";
-                }
-            
-                taskElement.appendChild(taskStatus);
-            
-                // Append task element to container
-                tasksContainer.appendChild(taskElement);
-              });
-            </script>
-            
-              {% else %}
-              <h2>No tasks posted.</h2>
-              {% endif %}
+        {% if task_list%}
+        <script>
+          const tasks = [
+            {% for task in task_list %}
+            {
+              "name": "{{ task.taskname|escapejs }}",
+              "description": "{{ task.description|escapejs }}",
+              "status": "{{ task.status }}",
+              "updated_at": "{{ task.updated_at }}" // Assuming you have an updated_at field in your task model
+            }
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          ];
+
+
+          const tasksContainer = document.getElementById('tasksContainer');
+
+          tasks.forEach(task => {
+            // Create task element
+            const taskElement = document.createElement('div');
+            taskElement.classList.add('mt-2', 'task', 'd-flex', 'flex-column', 'justify-content-between');
+
+            // Task title
+            const taskTitle = document.createElement('div');
+            taskTitle.classList.add('d-flex', 'justify-content-between', 'task-title', 'align-items-center');
+            taskTitle.innerHTML = `<b>${task.name}</b>`;
+            taskElement.appendChild(taskTitle);
+
+            const taskDesc = document.createElement('div');
+            taskDesc.classList.add('d-flex', 'justify-content-between', 'align-items-center');
+            taskDesc.style.display = "none"; // Initially hide the description
+
+            // Button to toggle description visibility
+            const detailsButton = document.createElement('button');
+            detailsButton.classList.add('btn', 'btn-info', 'dropdown-toggle', 'ms-1');
+            detailsButton.textContent = "Details";
+            taskTitle.appendChild(detailsButton);
+
+            detailsButton.onclick = function() {
+              taskDesc.style.display = taskDesc.style.display === "none" ? "block" : "none";
+              taskDesc.innerHTML = taskDesc.style.display === "block" ? task.description : "";
+            };
+
+            // Append description to task element (it will be toggled by the details button)
+            taskElement.appendChild(taskDesc);
+
+            // Task status and timestamp
+            const taskStatus = document.createElement('div');
+            taskStatus.classList.add('d-flex', 'justify-content-end');
+
+            if (task.status === "y") {
+              taskStatus.classList.add('task-status');
+              taskStatus.innerHTML = `✔ Completed <span class="timestamp">- ${task.updated_at}</span>`;
+            } else {
+              taskStatus.classList.add('task-status-2');
+              taskStatus.textContent = "✖ Not Yet Complete";
+            }
+
+            taskElement.appendChild(taskStatus);
+
+            // Append task element to container
+            tasksContainer.appendChild(taskElement);
+          });
+        </script>
+
+        {% else %}
+        <h2>No tasks posted.</h2>
+        {% endif %}
 
         <div class="col">
           <div class="container-fluid">
@@ -118,7 +119,11 @@
                   class="technician-greeting d-none d-md-flex align-items-center"
                 >
                   <div class="col-2 p-0">
-                    <img src="{% static 'profile.jpg' %}" alt="Technician" class="img-fluid" />
+                    <img
+                      src="{% static 'profile.jpg' %}"
+                      alt="Technician"
+                      class="img-fluid"
+                    />
                   </div>
                   <div class="col-9">
                     <p class="greeting-text">
@@ -163,6 +168,6 @@
       <a href="#socials">Socials</a>
       <a href="#instagram">Instagram</a>
     </div>
-    <script src="{% static "ClientTracking.js" %}" rel="stylesheet"></script>
+    <script src="{% static 'ClientTracking.js' %}" rel="stylesheet"></script>
   </body>
 </html>

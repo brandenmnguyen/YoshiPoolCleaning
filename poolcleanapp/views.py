@@ -581,18 +581,9 @@ from django.views.decorators.http import require_http_methods
 
 @require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 def providertracking(request):
-    if request.method == 'POST':
-        # Check for the special '_method' field
-        if request.POST.get('_method') == 'PUT':
-            task_id = request.POST.get('task_id')
-            if task_id:
-                task = Taskping.objects.get(pk=task_id)
-                task.status = 'y'  # Update the status to 'y'
-                task.save()
-                return JsonResponse({'success': True})  # Return a JSON response for AJAX success
-
-    task_list = Taskping.objects.filter(c_id=1)
+    task_list = Taskping.objects.filter(c_id=1)   # as an example
     return render(request, "ProviderTracking.html", {'task_list': task_list})
+
 
 #@login_required
 #@login_required(login_url=login_user)
