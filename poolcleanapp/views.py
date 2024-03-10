@@ -530,8 +530,9 @@ def contact(request):
 #@login_required
 #@login_required(login_url=login_user)
 def providertracking(request):
-    task_list = Taskping.objects.filter(emp=1)   #need to replace with logged in provider
+    task_list = Taskping.objects.filter(c_id=1)   # as an example
     return render(request, "ProviderTracking.html", {'task_list': task_list})
+
 
 #@login_required
 #@login_required(login_url=login_user)
