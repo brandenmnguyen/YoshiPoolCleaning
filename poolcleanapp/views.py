@@ -552,14 +552,18 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return distance
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def calendar(request):
     return render(request, "calendar.html")
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def dailycalendar(request):
     return render(request, "DailyCalendar.html")
+
+
+def dailycalendarclient(request):
+    return render(request, "ClientCalendarClient.html")
 
 #@login_required
 @login_required(login_url=logging)
@@ -709,6 +713,7 @@ def logoutUser(request):
 #@login_required
 def resultspage(request):
     return render(request, "ResultsPage-1.html")
+
 
 #def index(request):
     #context = {}

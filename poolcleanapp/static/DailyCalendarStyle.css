@@ -320,4 +320,44 @@ span.cal-month__next.clicked:after{
 } 
 
 
+.timings-buttons {
+  display: block !important; /* Change to block */
+  text-align: center; /* Optionally, center-align the button */
+  font-size: 20px;
+  color: white;
+ 
+  border-radius: 30px;
+ margin-left: 40px;
+}
+
+.schedule {
+  display: block !important; /* Change to block */
+  border-radius: 30px;
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #60a0ef;
+  height: 50px;
+  width: 120px;
+  border-style: none;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.selected {
+  background-color: #1274ec; /* Change the background color to blue when selected */
+  color: white; /* Change the text color to white when selected */
+  border-color: black;
+  border-style: solid;
+}
+
+
+button.scheduled {
+  background-color: #1274ec30 !important;
+  cursor: not-allowed !important; /* Change cursor to indicate the button is not allowed to be interacted with */
+  }
+  
 

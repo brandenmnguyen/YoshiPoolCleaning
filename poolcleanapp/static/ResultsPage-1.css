@@ -1,157 +1,320 @@
-#Search {
-    background-color: rgba(96, 160, 239, 1);
-    color: white;
-    border-color: rgba(96, 160, 239, 1);
-    margin-right: 20px;
-}
-
-.navbar {
-    background-color: rgba(215, 233, 255, 1);
-    color: white;
-    font-size: 20px;
-    transition: 0.6s;
-}
-
-.navbar-nav {
+/* Import Google font - Poppins */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+  }
+  
+  body {
     display: flex;
-    justify-content: space-around;
-}
-
-.form-control {
-    border-radius: 20px;
-    border-color: rgba(215, 233, 255, 1);
-    margin-left: 20px;
-}
-
-.nav-item:hover {
-    background-color: rgba(96, 160, 239, 1);
-    border-radius: 20px;
-}
-
-h2 {
-    margin-top: 20px;
-    margin-left: 35px;
-    font-size: 23px;
-}
-
-.nav-item a {
-    font-family: 'Inter', sans-serif;
-    color: white;
-    font-weight: bold;
-    margin-left: 60px;
-    margin-right: 60px;
+    align-items: center;
+    padding: 0 20%;
+    justify-content: right;
+    min-height: 100vh;
+  }
+  
+  .dayview-container {
+    position: relative;
+    right: 20%;
     display: flex;
-    cursor: pointer;
-}
-
-.nav-item a:hover {
-    color: white;
-}
-
-#Search:hover {
-    background-color: rgb(57, 139, 239);
-    border-color: rgba(96, 160, 239, 1);
-}
-
-.resultsOfSearch {
+    overflow: hidden;
+    align-items: stretch;
+    flex: 1 1 auto;
+  }
+  
+  .dayview-timestrings-container {
+    height: auto;
+    overflow-y: hidden;
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    min-width: 40px;
+  }
+  
+  .dayview-timestring-container {
+    height: 40px;
+    position: relative;
+    padding-inline-end: 8px;
+    text-align: right;
+  }
+  
+  .dayview-timestring {
+    display: block;
+    color: #70757a;
+    font-size: 10px;
+    /*position: relative;*/
+    top: -6px;
+  }
+  
+  .dayview-timestrings {
+    position: relative;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin-left: auto;
+  }
+  
+  .dayview-grid-container {
+    overflow-x: auto;
+    overflow-y: scroll;
+    display: flex;
+    align-items: flex-start;
+    width: 1000px;
+  }
+  
+  .dayview-grid {
+    border-bottom: #dadce0 1px solid;
+    position: relative;
+    min-width: 100%;
+    flex: none;
+    display: inline-flex;
+    vertical-align: top;
+  }
+  
+  .dayview-grid-tiles {
+    z-index: 1;
+    border-top: #dadce0 1px solid;
+  }
+  
+  .dayview-grid-tile {
+    height: 40px;
+  }
+  
+  .dayview-grid-tile:after {
+    content: "";
+    border-bottom: #dadce0 1px solid;
+    position: absolute;
     width: 100%;
-    padding: 0px;
-    margin-left: 35px;
-    display: flex;
-    flex-direction: row;
-}
-
-.nameOfCompany {
-    padding-top: 25px;
-    margin-bottom: 25px;
-}
-
-.nameOfStreet {
-    font-size: 12px;
-    color: rgba(105, 105, 105, 1);
-}
-
-.Phonenumber {
-    font-size: 12px;
-    color: rgba(105, 105, 105, 1);
-}
-
-.plusItself {
+    margin-top: -1px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  .dayview-grid-marker-start,
+  .dayview-grid-marker-end {
+    width: 8px;
+    border-inline-end: #dadce0 1px solid;
+    background-color: #EEF6FF;
+  }
+  
+  .dayview-grid-marker-end {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .dayview-gridcell-container {
+    position: relative;
+    padding: 0 12px;
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    width: 129px;
+    min-width: 129px;
+    /*border-right: white 1px solid;*/
+    overflow: visible;
+    background-color: #EEF6FF;
+  }
+  
+  .dayview-gridcell {
+    grid-column-gap: 3px;
+    z-index: 2;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(96, 10px);
+    /* grid-template-columns: fit-content(100%); */
+  }
+  
+  .dayview-cell {
+    z-index: 2;
+    border-radius: 5px;
+    /* border: 1px solid darkred; */
+    background-color: #60a0ef;
+    padding: 0 3px;
+  }
+  
+  .dayview-now-marker {
+    position: absolute;
+    z-index: 504;
+    border-top: #1F76E2 solid 2px;
+    right: 0px;
+    left: 8px;
+    pointer-events: none;
+  }
+  
+  .dayview-now-marker:after {
+    background: #1F76E2;
     border-radius: 50%;
-    background-color: rgba(215, 233, 255, 1);
-    color: black;
-    height: 45px;
-    width: 50px;
-    padding: 10px;
-    text-align: center;
-    margin-left: 450px;
-    size: 35px;
-    text-decoration: none;
-}
-
-
-#nameOfUser {
-    background-color: rgba(96, 160, 239, 1);
-    border-radius: 20px;
-    margin-left: 20px;
-}
-
-.plusItself:hover {
-    background-color: rgb(110, 172, 247);
-    color: black;
-}
-
-
-.plusSign {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.infoOfCompany {
-    width: 50%;
-    line-height: 1px;
-}
-
-.email {
+    content: "";
+    position: absolute;
+    height: 12px;
+    margin-inline-start: -6px;
+    margin-top: -6.75px;
+    width: 12px;
+  }
+  
+  .dayview-cell {
+    padding: 3px;
+    color: white;
     font-size: 12px;
-    color: rgba(105, 105, 105, 1);
-
-.subscribed {
-    background-color: darkblue;
-    color: white;
-    cursor: default;
-}
-
-.checkmark {
-    margin-left: 5px;
-}
-
-/* Your existing CSS */
-
-.subscribeButton {
-    width: 50%;
     display: flex;
-    justify-content: center;
+  }
+  
+  .dayview-cell:not(.dayview-cell-extended) .dayview-cell-title:after {
+    content: ",";
+    margin-inline-end: 4px;
+  }
+  
+  .dayview-cell-extended {
+    display: block;
+  }
+  
+  .dayview-cell-desc {
+    display: none;
+  }
+  
+  .dayview-cell-title,
+  .dayview-cell-desc {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    font-weight: bold;
+  }
+  
+  .calendar {
+    width: 540px;
+    margin: 50px auto 0;
+    box-shadow: 0px 0px 5px #8b8b8b;
+    border-radius: 10px;
+  }
+  
+  .calendar__month {
+    font-size: 35px;
+    font-weight: 800;
+    padding: 10px 0;
+    width: 540px;
+    position: relative;
+    background-color:#60a0ef;
+    border-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  
+  .cal-month__previous,
+  .cal-month__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-}
-
-.subscribeItself {
-    border-radius: 50%;
-    background-color: rgba(215, 233, 255, 1); /* Dark blue color */
-    color: white;
-    height: 45px;
-    width: 160px;
-    padding: 10px;
     text-align: center;
-    margin-left: 450px;
-    size: 35px;
-    text-decoration: none;
-    border-radius: 0.40rem;
-    border: none;
-}
-
-.subscribeItself.subscribed {
-    background-color: rgba(96, 160, 239, 1); /* Change to your desired color for subscribed state */
-}
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    font-size: 25px;
+  }
+  
+  .cal-month__previous{
+    left: 18px;
+  }
+  
+  .cal-month__next{
+    left: 375px;
+  }
+  
+  .cal-month__previous:hover,
+  .cal-month__next:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.75);
+    border-radius: 50%;
+    font-weight: 800;
+    color:#60a0ef;
+    animation: monthhover-FadeIn 0.5s;
+  }
+  
+  span.cal-month__previous.clicked:after,
+  span.cal-month__next.clicked:after{
+    animation: monthhover-click 0.6s forwards;
+  }
+  
+  .cal-month__next {
+    left: 480px;
+  }
+  
+  .cal-month__current {
+    text-align: center;
+       color:#60a0ef;
+  }
+  
+  .cal-head__day,
+  .cal-body__day {
+    display: inline-block;
+    width: 68px;
+    height: 68px;
+    font-size: 22px;
+  
+  }
+  
+  .cal-body__week,
+  .calendar__head {
+    display: block;
+    height: 70px;
+    width: 540px;
+    text-align: center;
+  }
+  
+  .calendar__head {
+    line-height: 70px;
+    position: relative;
+  }
+  
+  .calendar__head:after {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #90CAF9;
+  }
+  
+  .cal-body__day {
+    color: #b9b9b9;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .cal-day__month--current {
+    color: #777;
+  }
+  
+  .cal-day__day--today {
+    font-weight: 800;
+    color: #60a0ef;
+  }
+  
+  .cal-day__day--selected {
+    background-color: #60a0ef;
+    box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.75);
+    border-radius: 50%;
+    color: #fff;
+    animation: dayselected-FadeIn 0.6s;
+  }/*# sourceMappingURL=style.css.map */
+  
+  .cal-day__day--indicator {
+    color: green;
+  }
+  
+  @keyframes dayselected-FadeIn {
+    from{background-color: #fff; color: #777;} to{background-color: #60a0ef; color: #fff;}
+  } 
+  
+  @keyframes monthhover-FadeIn {
+    from{background-color: #60a0ef; color: #fff;} to{background-color: #fff; color:#60a0ef;}
+  } 
+  
+  @keyframes monthhover-click {
+    from{font-size: 40px;} to{font-size: 24px;}
+  }

@@ -48,4 +48,5 @@ urlpatterns = [
     path('checkout/', views.checkout, name = 'checkout'),
     path('checkout2/', views.checkout2, name = 'checkout2'),
     path('checkout3/', views.checkout3, name = 'checkout3'),
+    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient')
 ]
