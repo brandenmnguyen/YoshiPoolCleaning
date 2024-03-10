@@ -22,6 +22,11 @@ urlpatterns = [
     path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
     path('messaging/', views.messaging, name = 'messaging'),
+    path('viewAppointments/',views.getAppointments),
+    path('addAppointments/',views.addAppointments),
+    path('viewAvailableAppointments/',views.viewAvailableAppointments),
+    path('scheduleAppointments/',views.scheduleAppointment),
+    
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name='homepage'),
