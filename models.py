@@ -260,13 +260,23 @@ class PoolcleanappSettings(models.Model):
 
 
 class Taskping(models.Model):
+    TASK_STATUS_CHOICES = [
+        ('n', 'In progress'),
+        ('y', 'Completed'),
+    ]
+
     task_id = models.AutoField(primary_key=True)
-    status = models.CharField(max_length=1, blank=True, null=True)
-    taskname = models.CharField(db_column='taskName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(
+        max_length=1,
+        default='N',
+        choices=TASK_STATUS_CHOICES
+    )
+    taskname = models.CharField(max_length=100, blank=True, null=True)  # Renamed from taskName to task_name
     description = models.TextField(blank=True, null=True)
-    emp = models.ForeignKey(Employee, models.DO_NOTHING, blank=True, null=True)
-    client = models.ForeignKey(Client, models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
+    c_id = models.ForeignKey(Company, on_delete=models.CASCADE, db_column='C_id', blank=True, null=True)  # Renamed from c to company
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        managed = False
-        db_table = 'taskping'
+        managed = True
+        db_table = 'TASKPING'

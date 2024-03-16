@@ -24,7 +24,7 @@ class Appointments(models.Model):
     c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
-    client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
+    #client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
 
     class Meta:
         managed = False
