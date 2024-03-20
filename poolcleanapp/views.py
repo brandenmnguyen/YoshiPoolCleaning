@@ -198,7 +198,7 @@ def getTaskping(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ## --------------- Put Taskping ----------------
-
+from asgiref.sync import async_to_sync
 @api_view(['PUT', 'POST'])  # Using PUT for update operations, POST can be used for creating
 def putTaskping(request, pk):
     try:
