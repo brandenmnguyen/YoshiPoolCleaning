@@ -31,15 +31,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "channels",
     "poolcleanapp.apps.PoolcleanappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "daphne",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "channels",
+    "rest_framework",    
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
         "USER": "root",
         "HOST": "localhost",
         "PORT": "3306",
-        "PASSWORD": "",
+        "PASSWORD": "1234",
     },
     "test": {
         "ENGINE": "django.db.backends.mysql",
@@ -92,7 +93,7 @@ DATABASES = {
         "USER": "root",
         "HOST": "localhost",
         "PORT": "3306",
-        "PASSWORD": "",
+        "PASSWORD": "1234",
     }
 }
 

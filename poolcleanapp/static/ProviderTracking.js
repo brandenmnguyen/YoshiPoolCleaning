@@ -5,23 +5,29 @@ function initializeTasks(tasks) {
     tasksContainer.appendChild(taskElement);
   });
 
-  // Create a div to wrap the button and facilitate centering
+  // Create and show the "Finish" button regardless of task completion status
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("button-container");
 
-  // Create the button
   const newButton = document.createElement("button");
   newButton.textContent = "Finish";
   newButton.classList.add("btn", "btn-primary");
 
-  // Append the button to the buttonContainer, then append the buttonContainer to the tasksContainer
   buttonContainer.appendChild(newButton);
   tasksContainer.appendChild(buttonContainer);
 
-  // Add an event listener to the newButton for click events
+  // Event listener for the "Finish" button
   newButton.addEventListener("click", function () {
-    // Call the function to show the popup
-    showPopup();
+    // Check if any tasks are not completed
+    const anyTaskIncomplete = tasks.some((task) => task.status !== "y");
+
+    if (anyTaskIncomplete) {
+      // If there are incomplete tasks, show the popup
+      showPopup();
+    } else {
+      // If all tasks are completed, you might want to show a different message or take some other action
+      console.log("All tasks are complete. No action needed.");
+    }
   });
 }
 
@@ -147,3 +153,5 @@ function showPopup() {
     overlay.remove();
   });
 }
+
+

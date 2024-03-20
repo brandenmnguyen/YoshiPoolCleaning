@@ -23,7 +23,7 @@ from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from .models import Company
 #from poolcleanapp.models import Invoice
-from .serializers import ClientSerializer
+from .serializers import AppointmentsSerializer, ClientSerializer
 from .serializers import CompanySerializer
 from .serializers import InvoiceSerializer
 from .serializers import TaskpingSerializer
@@ -301,6 +301,73 @@ def anonymous_required(function=None, redirect_url=None):
        return actual_decorator(function)
    return actual_decorator
 
+## --------------- Appointment Scheduling ----------------
+    
+@api_view(['GET'])
+def getAppointments(request):
+    try:
+        services = Appointments.objects.all()  
+        serializer = AppointmentsSerializer(services, many=True)  # Serialize the data using the appropriate serializer
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def addAppointments(request):
+    try:
+        serializer = AppointmentsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST'])
+def viewAvailableAppointments(request):
+    # Get parameters from the request
+    appdate = request.data.get('appdate')
+    c = request.data.get('c')
+
+    available_appointments = Appointments.objects.filter(c=c, appdate=appdate)
+
+    # Extract appointment times from available appointments
+    appointment_times = [appointment.apptime.strftime('%H:%M') for appointment in available_appointments]
+
+    # Sort the appointment times
+    appointment_times.sort()
+
+    # Return the list of appointment times
+    return Response(appointment_times, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def scheduleAppointment(request):
+    # Get parameters from the request
+    appdate = request.data.get('appdate')
+    apptime = request.data.get('apptime')
+    c = request.data.get('c')
+
+    # Perform the query to check if appointment exists
+    try:
+        appointment = Appointments.objects.get(appdate=appdate, apptime=apptime, c=c)
+        return Response({'error': 'Appointment already scheduled'}, status=404)
+    except Appointments.DoesNotExist:
+        # If appointment does not exist, add it
+        try:
+            serializer = AppointmentsSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else: 
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+   
+
 def homepage(request):
     return render(request, "Homepage-1.html")
 
@@ -359,11 +426,11 @@ def verification(request):
     # Handle GET request or other cases
     return render(request, 'verification_form.html')
 
-
-
-
-
-
+#for messaging
+def messaging(request):
+    room = Chat.objects.filter(cl=1).first()
+    chats = []  
+    return render(request, 'messaging.html', {'room' : room, 'chats': chats})
 
 def login_user(request):
  #   if request.user.is_authenticated:
@@ -429,7 +496,7 @@ def clientSignUp(request, *args, **kwargs):
         else:
             form = ClientForm()
 
-    return render(request, "SignUpClientTemp.html")
+    return render(request, "SignUpClient.html")
 
 @anonymous_required
 def invoiceSearch(request):
@@ -453,7 +520,7 @@ def providerSignUp(request, *args, **kwargs):
     else:
         form = ProviderForm()
 
-    return render(request, "SignUpProviderTemp2.html")
+    return render(request, "SignUpProvider.html")
 
 @anonymous_required
 def invoiceSearch(request):
@@ -552,14 +619,18 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return distance
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def calendar(request):
     return render(request, "calendar.html")
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def dailycalendar(request):
     return render(request, "DailyCalendar.html")
+
+
+def dailycalendarclient(request):
+    return render(request, "ClientCalendarClient.html")
 
 #@login_required
 @login_required(login_url=logging)
@@ -581,18 +652,9 @@ from django.views.decorators.http import require_http_methods
 
 @require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 def providertracking(request):
-    if request.method == 'POST':
-        # Check for the special '_method' field
-        if request.POST.get('_method') == 'PUT':
-            task_id = request.POST.get('task_id')
-            if task_id:
-                task = Taskping.objects.get(pk=task_id)
-                task.status = 'y'  # Update the status to 'y'
-                task.save()
-                return JsonResponse({'success': True})  # Return a JSON response for AJAX success
-
-    task_list = Taskping.objects.filter(c_id=1)
+    task_list = Taskping.objects.filter(c_id=1)   # as an example
     return render(request, "ProviderTracking.html", {'task_list': task_list})
+
 
 #@login_required
 #@login_required(login_url=login_user)
@@ -678,6 +740,38 @@ def checkout(request):
 
     return redirect(checkout_session.url, code=303)
 
+def checkout2(request):
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                'price': 'price_1OsJnIFamngtG7BEWNIUWEqY',
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+    )
+
+    return redirect(checkout_session.url, code=303)
+
+def checkout3(request):
+    checkout_session = stripe.checkout.Session.create(
+        line_items=[
+            {
+                # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                'price': 'price_1OsJo8FamngtG7BE9w7XfgRm',
+                'quantity': 1,
+            },
+        ],
+        mode='payment',
+        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+    )
+
+    return redirect(checkout_session.url, code=303)
+
 #logout
 def logoutUser(request):
     logout(request)
@@ -686,6 +780,7 @@ def logoutUser(request):
 #@login_required
 def resultspage(request):
     return render(request, "ResultsPage-1.html")
+
 
 #def index(request):
     #context = {}

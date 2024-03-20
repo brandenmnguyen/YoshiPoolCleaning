@@ -4,12 +4,18 @@
   "description": "Team Yoshi Senior Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "nodemon ./poolcleanapp/static/server.js"
+}
+,
   "keywords": [],
-  "author": "",
+  "author": "Eva",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.3.2"
+    "bootstrap": "^5.3.2",
+    "express": "^4.18.3",
+    "socket.io": "^4.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

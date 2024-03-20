@@ -8,17 +8,27 @@
 from django.db import models
 
 
+class Chat(models.Model):
+    content = models.CharField(max_length = 1000)
+    timestamp = models.DateTimeField(auto_now=True)
+    cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True) #on delete = models.CASCADE
+    emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True) #on delete = models.CASCADE
+    room = models.ForeignKey('ChatRoom', on_delete=models.CASCADE)
+
+class ChatRoom(models.Model):
+    name = models.CharField(max_length = 255)    
+
 class Appointments(models.Model):
     appointment_id = models.AutoField(primary_key=True)
     cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
-    emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
-    client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
+    #client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'APPOINTMENTS'
+        db_table = 'appointments'
 
 
 class Client(models.Model):
