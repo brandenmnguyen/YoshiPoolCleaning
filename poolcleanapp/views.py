@@ -1,5 +1,7 @@
 import json
 from io import BytesIO
+import smtplib
+import ssl
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
@@ -12,6 +14,9 @@ from channels.layers import get_channel_layer
 
 from django.conf import settings
 from django.core.serializers import serialize
+import requests
+from django.views.decorators.csrf import csrf_exempt
+
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -36,6 +41,7 @@ from math import sin, cos, sqrt, atan2, radians
 import qrcode
 import stripe
 from django.contrib import messages
+from email.message import EmailMessage
 
 import pyotp
 
@@ -366,7 +372,54 @@ def scheduleAppointment(request):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-   
+
+## --------------- Notifications ----------------  
+         
+@api_view(['POST'])
+def send_email(request):
+    data = json.loads(request.body)
+    print(data)
+
+    email_sender = "do.not.reply2.poolcleaningapp@gmail.com"
+    email_pass = "ntnqmfmbcoswvbvb"
+
+    #email_receiver = "mohammedalch1111@gmail.com"
+    email_receiver = request.data.get('email')
+
+    #email_subject = "subject2"
+    email_subject = request.data.get('subject')
+
+    body = request.data.get('body')
+
+    email_message = EmailMessage()
+    email_message['From'] = email_sender
+    email_message['To'] = email_receiver
+    email_message['Subject'] = email_subject
+    email_message.set_content(body)
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.starttls()
+        smtp.login(email_sender,email_pass)
+        smtp.sendmail(email_sender,email_receiver,email_message.as_string())
+        smtp.quit()
+        
+    return Response(request.data, status=status.HTTP_200_OK)
+
+@csrf_exempt 
+@api_view(['POST'])
+def send_simple_message(request):
+    email_receiver = request.data.get('email')
+    email_subject = request.data.get('subject')
+    body = request.data.get('body')
+
+    r = requests.post(
+		"https://api.mailgun.net/v3/sandboxceea637047d742199cae2aa88cf4a967.mailgun.org/messages",
+		auth=("api", "c77ac05298d93c5f5f06d32f4ca8f16e-f68a26c9-0a1e5bb7"),
+		data={"from": "Mailgun Sandbox <postmaster@sandboxceea637047d742199cae2aa88cf4a967.mailgun.org>",
+			"to": "Mohammed Al Chalabi <"+email_receiver+">",
+			"subject": email_subject,
+			"text":body})
+    return Response(request.data, status=r.status_code)
 
 def homepage(request):
     return render(request, "Homepage-1.html")
