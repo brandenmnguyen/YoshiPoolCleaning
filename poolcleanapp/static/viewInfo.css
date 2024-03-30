@@ -1,0 +1,27 @@
+
+h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(38, 125, 232);
+    font-weight: 450;
+    text-align: center;
+    font-size: 60px;
+    margin-top: 200px;
+}
+
+
+li{
+color: rgb(0, 0, 0);
+font-size: 20px;
+list-style-type: none;
+margin-top: 25px;
+}
+
+
+.box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+

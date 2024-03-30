@@ -21,6 +21,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
+from .models import Appointments
 from .models import Company
 #from poolcleanapp.models import Invoice
 from .serializers import AppointmentsSerializer, ClientSerializer
@@ -371,6 +372,19 @@ def scheduleAppointment(request):
 def homepage(request):
     return render(request, "Homepage-1.html")
 
+#, 'appdate': appointments.appdate, 'appetite': appointments.appetime
+
+def appointments_view(request):
+
+    appointments = Appointments.objects.all()
+    appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
+    request.session['appointments'] = appointment_data
+
+
+    return render(request, 'ClientCalendarClient.html', {'appointments': appointments})
+
+
+
 
 
 #for QR code generator 
@@ -526,7 +540,7 @@ def providerSignUp(request, *args, **kwargs):
 def invoiceSearch(request):
     return render(request, "InvoiceTracking.html")
 
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def providerSearch(request):
     search_term = request.GET.get('search', '')
     info = Company.objects.filter(company_address__icontains=search_term)
@@ -638,6 +652,9 @@ def paymentHistory(request):
     return render(request, "InvoiceTracking.html")
 
 
+
+
+
 def about(request):
     return render(request, "about.html")
 
@@ -661,6 +678,73 @@ def providertracking(request):
 def clienttracking(request):
     task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
+
+
+#DISPLAYING AVAILABLE TIME OF PROVIDER
+def clientSchedule(request):
+    schedule_list = Appointments.objects.filter(c_id=24)   
+    return render(request, "clientSchedule.html", {'schedule_list': schedule_list})
+
+
+
+#SHOW APPOINTMENT INFO FOR CLIENT 
+def info(request):
+ 
+    appointments = Appointments.objects.filter(cl_id=4)   
+    appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
+    request.session['appointments'] = appointment_data
+
+    return render(request, 'viewInfo.html', {'appointments': appointments})
+
+
+#SCHEDULING LOGIC
+def schedule_appointment(request):
+    if request.method == 'POST':
+        # Parse JSON data from request body
+        data = json.loads(request.body)
+      #  cl_id = data.get('cl_id')
+        c_id = data.get('c_id')
+        appdate = data.get('appdate')
+        apptime = data.get('apptime')
+
+        # Create a new appointment instance
+        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime)
+        
+        # Save the appointment to the database
+        appointment.save()
+
+        # Return a success response
+        return JsonResponse({'message': 'Appointment scheduled successfully.'})
+    else:
+        # Return an error response if method is not POST
+        return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
+
+
+
+
+
+
+# def clientSchedule(request):
+    # Assuming 'cl' is a key associated with the client's ID in the session
+    # client_id = request.session.get('cl')
+
+    # If client_id is None, it means the client is not logged in or the session doesn't contain their ID
+    # if client_id is None:
+        # You can handle this case as per your application's requirements
+        # return HttpResponse("You need to log in to view the schedule.")
+
+    # Assuming Appointments model has a field 'client_id' representing the client associated with the appointment
+    # schedule_list = Appointments.objects.filter(client_id=client_id)
+
+    # return render(request, "clientSchedule.html", {'schedule_list': schedule_list})
+
+
+
+
 
 #--------------------- LOGIN --------------------------------------
 def logging(request):

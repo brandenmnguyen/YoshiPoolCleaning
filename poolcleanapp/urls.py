@@ -54,5 +54,10 @@ urlpatterns = [
     path('checkout/', views.checkout, name = 'checkout'),
     path('checkout2/', views.checkout2, name = 'checkout2'),
     path('checkout3/', views.checkout3, name = 'checkout3'),
-    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient')
+    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient'),
+    path('appView/', views.appointments_view, name = 'appView'),
+    path('info/', views.info, name = 'info'),
+    path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
+    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment')
+
 ]
