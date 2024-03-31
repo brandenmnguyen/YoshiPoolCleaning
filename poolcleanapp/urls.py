@@ -37,4 +37,7 @@ urlpatterns = [
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name = 'dailycalendar'),
 
+    #------------------------------------------------------------------#
+    path('messaging/', views.messaging_view, name='messaging'),
+    #------------------------------------------------------------------#
 ] 
