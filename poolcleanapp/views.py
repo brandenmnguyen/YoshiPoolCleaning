@@ -199,28 +199,15 @@ def getTaskping(request):
 
 ## --------------- Put Taskping ----------------
 
-@api_view(['PUT', 'POST'])  # Using PUT for update operations, POST can be used for creating
+@api_view(['PUT'])  # Using PUT for update operations
 def putTaskping(request, pk):
     try:
         task = Taskping.objects.get(pk=pk)
-        serializer = TaskpingSerializer(task, data=request.data, partial=True)
+        # Restrict updates to the 'status' field only
+        serializer = TaskpingSerializer(task, data={'status': request.data.get('status')}, partial=True)
+
         if serializer.is_valid():
-            task_instance = serializer.save()
-
-            # This is where we send the message to the group
-            channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send)(
-                'client_group',
-                {
-                    'type': 'send_task_update',
-                    'task': {
-                        'id': task_instance.pk,
-                        'status': task_instance.status,
-                        # Include any other task details you want to send to the client
-                    }
-                }
-            )
-
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -656,12 +643,6 @@ def providertracking(request):
     return render(request, "ProviderTracking.html", {'task_list': task_list})
 
 
-#@login_required
-#@login_required(login_url=login_user)
-def clienttracking(request):
-    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
-    return render(request, "ClientTracking.html", {'task_list': task_list})
-
 #--------------------- LOGIN --------------------------------------
 def logging(request):
     if request.method == "POST":
@@ -825,3 +806,57 @@ def resultspage(request):
 
     #inv = Invoice.objects.get(number=number)
     #return redirect('create-build-invoice', slug=inv.slug)
+def getClientName(email, cl_password):
+    try:
+        client = Client.objects.get(email=email, cl_password=cl_password)
+        return client
+    except Client.DoesNotExist:
+        return None
+
+def getProviderIdFromClient(client_id):
+    try:
+        # Attempt to get the first Taskping instance matching the client_id
+        taskping_instance = Taskping.objects.filter(client_id=client_id).first()
+
+        # If a Taskping instance is found, return its associated company's c_id
+        if taskping_instance:
+            return taskping_instance.c_id_id  # Assuming c_id is the ForeignKey to the Company
+        else:
+            return None
+    except Taskping.DoesNotExist:
+        # This exception block may actually never be hit because .first() will return None
+        # instead of raising DoesNotExist if no objects match the filter
+        return None
+
+        #@login_required
+#@login_required(login_url=login_user)
+def clienttracking(request):
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+
+    client_id = client.client_id
+    c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID
+
+    task_list = Taskping.objects.filter(client=client)  # Filter Taskping objects by client object
+
+    company = None
+    if c_id:
+        try:
+            company = Company.objects.get(c_id=c_id)  # Attempt to get the Company object using c_id
+        except Company.DoesNotExist:
+            company = None  # Handle the case where no Company matches the c_id
+
+    context = {
+        'client': client,
+        'company': company,  # Pass the company object, which may be None
+        'task_list': task_list,  # Pass the list of tasks associated with the client
+    }
+    return render(request, "ClientTracking.html", context)
+
+
+
+
+

@@ -26,7 +26,10 @@
         <a href="{% url 'paymenthistory' %}">Payment</a>
         <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
-        <a href="#account" class="account-name">Account Name</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="#account" class="account-name">
+          {{ client.fname }} {{client.lname}}</a
+        >
       </div>
     </div>
 
@@ -129,7 +132,7 @@
                     <p class="greeting-text">
                       Hello, I am your pool service technician,
                     </p>
-                    <p class="name-text">Robert</p>
+                    <p class="name-text">{{ company.company_name }}</p>
                     <p class="status-text">
                       Status: <span class="status-arrived">Arrived</span>
                     </p>
