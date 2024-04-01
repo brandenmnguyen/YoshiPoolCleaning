@@ -46,8 +46,8 @@ class InvoiceForm(forms.ModelForm):
     card_number = forms.CharField(max_length=16, label='Card Number', required=False)
 
     class Meta:
-        model = Invoice
-        fields = ['client', 'c', 'amount', 'payment_method', 'card_name', 'expdate', 'email', 'card_number', 'cvv_code']
+        model = PoolcleanappInvoice
+        fields = ['client', 'product']
     
     # Hidden inputs that will be auto-filled
     def __init__(self, *args, **kwargs):

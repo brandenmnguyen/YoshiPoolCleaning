@@ -23,10 +23,14 @@
         <a href="{% url 'homepage' %}">Logo</a>
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
+        <a href="{% url 'messaging' %}">Messages</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
         <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
-        <a href="#account" class="account-name">Account Name</a>
+        <a href=" {% url 'logout' %}">Logout</a>
+        <a href="#account" class="account-name"
+          >Account Name {{request.user}}
+        </a>
       </div>
     </div>
 
@@ -161,7 +165,7 @@
     </div>
 
     <div class="footer">
-      <a href="#about-us">About Us</a>
+      <a href="{% url 'about' %}">About Us</a>
       <a href="#terms">Terms of Use</a>
       <a href="#contact">Contact</a>
       <a href="#email-signup">Email Signup</a>

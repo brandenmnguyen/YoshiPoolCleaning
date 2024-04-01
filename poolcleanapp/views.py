@@ -428,9 +428,9 @@ def verification(request):
 
 #for messaging
 def messaging(request):
-    room = Chat.objects.filter(cl=1).first()
-    chats = []  
-    return render(request, 'messaging.html', {'room' : room, 'chats': chats})
+    #room = Chat.objects.filter(cl=1).first()
+   # chats = []  
+    return render(request, 'messaging.html')#, {'room' : room, 'chats': chats})
 
 def login_user(request):
  #   if request.user.is_authenticated:
