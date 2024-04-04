@@ -41,7 +41,7 @@ class Client(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'CLIENT'
 
 
@@ -54,7 +54,7 @@ class Company(models.Model):
     company_pw = models.CharField(db_column='Company_PW', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'COMPANY'
 
 
@@ -68,7 +68,7 @@ class Employee(models.Model):
     is_admin = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'EMPLOYEE'
 
 
