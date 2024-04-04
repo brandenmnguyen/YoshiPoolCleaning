@@ -21,7 +21,7 @@ urlpatterns = [
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),
     path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
-    path('messaging/', views.messaging, name = 'messaging'),
+    #path('messaging/', views.messaging, name = 'messaging'),
     path('viewAppointments/',views.getAppointments),
     path('addAppointments/',views.addAppointments),
     path('viewAvailableAppointments/',views.viewAvailableAppointments),
@@ -63,5 +63,9 @@ urlpatterns = [
     path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
     path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
 
-    path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory')
-]
+    path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
+
+    #------------------------------------------------------------------#
+    path('messaging/', views.messaging_view, name='messaging'),
+    #------------------------------------------------------------------#
+] 

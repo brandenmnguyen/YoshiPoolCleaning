@@ -903,6 +903,10 @@ def generate_qr_code(request):
         return HttpResponse("Method not allowed", status=405)
 
 
+from django.shortcuts import render
+
+def messaging_view(request):
+    return render(request, 'messaging.html')
 
 
 # Stripe
