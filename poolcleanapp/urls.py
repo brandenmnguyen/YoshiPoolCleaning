@@ -26,6 +26,8 @@ urlpatterns = [
     path('addAppointments/',views.addAppointments),
     path('viewAvailableAppointments/',views.viewAvailableAppointments),
     path('scheduleAppointments/',views.scheduleAppointment),
+    path('sendEmail/',views.send_email),
+    path('sendEmailAPI/',views.send_simple_message),
     
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),
