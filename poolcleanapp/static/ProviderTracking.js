@@ -1,109 +1,54 @@
-function initializeTasks(tasks) {
-  const tasksContainer = document.getElementById("tasksContainer");
-  tasks.forEach((task) => {
-    const taskElement = createTaskElement(task);
-    tasksContainer.appendChild(taskElement);
-  });
 
-  // Create and show the "Finish" button regardless of task completion status
-  const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("button-container");
+/*document.addEventListener('DOMContentLoaded', function () {
+  // Adjust the URL as necessary
+  const wsStart = window.location.protocol === "https:" ? "wss://" : "ws://";
+  const wsPath = wsStart + window.location.host + "/ws/provider-status-update/"; // General path, adjust as necessary
+  const taskStatusSocket = new WebSocket(wsPath);
 
-  const newButton = document.createElement("button");
-  newButton.textContent = "Finish";
-  newButton.classList.add("btn", "btn-primary");
-
-  buttonContainer.appendChild(newButton);
-  tasksContainer.appendChild(buttonContainer);
-
-  // Event listener for the "Finish" button
-  newButton.addEventListener("click", function () {
-    // Check if any tasks are not completed
-    const anyTaskIncomplete = tasks.some((task) => task.status !== "y");
-
-    if (anyTaskIncomplete) {
-      // If there are incomplete tasks, show the popup
-      showPopup();
-    } else {
-      // If all tasks are completed, you might want to show a different message or take some other action
-      console.log("All tasks are complete. No action needed.");
-    }
-  });
-}
-
-function createTaskElement(task) {
-  const taskElement = document.createElement("div");
-  taskElement.classList.add(
-    "mt-2",
-    "task",
-    "d-flex",
-    "flex-column",
-    "justify-content-between"
-  );
-
-  const taskTitle = document.createElement("div");
-  taskTitle.classList.add(
-    "d-flex",
-    "justify-content-between",
-    "task-title",
-    "align-items-center"
-  );
-  taskTitle.innerHTML = `<b>${task.name}</b>`;
-  taskElement.appendChild(taskTitle);
-
-  const taskDesc = document.createElement("div");
-  taskDesc.classList.add(
-    "d-flex",
-    "justify-content-between",
-    "align-items-center"
-  );
-  taskDesc.style.display = "none";
-
-  const detailsButton = document.createElement("button");
-  detailsButton.classList.add("btn", "btn-info", "dropdown-toggle", "ms-1");
-  detailsButton.textContent = "Details";
-  taskTitle.appendChild(detailsButton);
-
-  detailsButton.onclick = function () {
-    taskDesc.style.display =
-      taskDesc.style.display === "none" ? "block" : "none";
-    taskDesc.innerHTML =
-      taskDesc.style.display === "block" ? task.description : "";
+  window.sendStatusUpdate = function(taskId, statusUpdate) {
+      taskStatusSocket.send(JSON.stringify({
+          taskId: taskId,
+          status: statusUpdate
+      }));
   };
 
-  taskElement.appendChild(taskDesc);
+  taskStatusSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      console.log('Message from server: ', data);
+      // Handle incoming messages, such as confirmation of status update
+  };
 
-  const taskStatus = document.createElement("div");
-  taskStatus.classList.add("d-flex", "justify-content-end");
-  taskStatus.textContent =
-    task.status === "y" ? "✔ Completed" : "✖ Not Yet Complete";
-  taskStatus.className +=
-    task.status === "y" ? " task-status-complete" : " task-status-incomplete";
-  taskElement.appendChild(taskStatus);
+  taskStatusSocket.onclose = function(e) {
+      console.error('Task status socket closed unexpectedly');
+  };
 
-  if (task.status !== "y") {
-    const completeButton = document.createElement("button");
-    completeButton.classList.add("btn", "btn-success", "ms-1");
-    completeButton.textContent = "Mark as Complete";
-    taskElement.appendChild(completeButton);
+  taskStatusSocket.onerror = function(err) {
+      console.error('WebSocket error: ', err);
+  };
+});*/
+//--------------
+console.log("javascript is running");
+  // When the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', (event) => {
+    // Get all the update status forms
+    document.querySelectorAll('.update-status-form').forEach(form => {
+      // Add an event listener to each form
+      form.addEventListener('submit', function(e) {
+        // Prevent the default form submission
+        e.preventDefault();
 
-    completeButton.addEventListener("click", function () {
-      task.status = "y";
-      taskStatus.className = "d-flex justify-content-end task-status-complete";
-      taskStatus.textContent = "✔ Completed";
+        // Get the task id from the data-task-id attribute
+        const taskId = this.getAttribute('data-task-id');
 
-      const timeStamp = new Date().toLocaleTimeString();
-      const timeStampElement = document.createElement("span");
-      timeStampElement.textContent = ` - Completed at ${timeStamp}`;
-      taskStatus.appendChild(timeStampElement);
+        // Show the updated at information for the right task
+        document.getElementById('updated-at-' + taskId).style.display = 'block';
 
-      completeButton.style.display = "none";
+        // You can now submit the form using AJAX or the following line to submit traditionally
+        // this.submit();
+      });
     });
-  }
-
-  return taskElement;
-}
-
+  });
+//-------------------------------------------------------------------
 function showPopup() {
   const overlay = document.createElement("div");
   overlay.classList.add("overlay");
@@ -153,5 +98,3 @@ function showPopup() {
     overlay.remove();
   });
 }
-
-

@@ -55,3 +55,16 @@ class InvoiceForm(forms.ModelForm):
         self.fields['client'].widget = forms.HiddenInput() 
         self.fields['c'].widget = forms.HiddenInput()
         self.fields['amount'].widget = forms.HiddenInput()
+
+
+class TaskpingForm(forms.ModelForm):
+    class Meta:
+        model = Taskping
+        fields = ['status']
+
+    def save(self, commit=True):
+        taskping_instance = super().save(commit=False)
+        taskping_instance.status = self.cleaned_data['status']
+        if commit:
+            taskping_instance.save()
+        return taskping_instance

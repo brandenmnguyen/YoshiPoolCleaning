@@ -43,6 +43,10 @@ import qrcode
 import stripe
 from django.contrib import messages
 from email.message import EmailMessage
+from .models import Taskping
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 import pyotp
 
@@ -206,8 +210,8 @@ def getTaskping(request):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ## --------------- Put Taskping ----------------
-
-@api_view(['PUT'])  # Using PUT for update operations
+from asgiref.sync import async_to_sync
+@api_view(['PUT', 'POST'])  # Using PUT for update operations, POST can be used for creating
 def putTaskping(request, pk):
     try:
         task = Taskping.objects.get(pk=pk)
@@ -588,7 +592,7 @@ def providerSearch(request):
     count_results = info.count()
     return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term})
    
-   # return render(request, "ResultsPage-1.html")
+    #return render(request, "ResultsPage-1.html")
 
 
 ## --------------- PAYMENT PAGE ---------------------------------------------------------------------------
@@ -704,14 +708,73 @@ def contact(request):
 #-----------------------TRACKING PAGE------------------------------------
 #@login_required
 #@login_required(login_url=login_user)
-from django.shortcuts import redirect, render
-from .models import Taskping
-from django.views.decorators.http import require_http_methods
 
-@require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
+def getCompanyLogin(company_email, company_pw):
+    try:
+        company = Company.objects.get(company_email=company_email, company_pw=company_pw)
+        return company
+    except Company.DoesNotExist:
+        return None
+    
+def getClientIdFromCompany(company_id):
+    try:
+        # Attempt to get the first Taskping instance matching the company_id
+        taskping_instance = Taskping.objects.filter(c_id=company_id).first()
+
+        # If a Taskping instance is found, return its associated client's client_id
+        if taskping_instance:
+            return taskping_instance.client.client_id
+        else:
+            return None
+    except Taskping.DoesNotExist:
+        # This exception block may actually never be hit because .first() will return None
+        # instead of raising DoesNotExist if no objects match the filter
+        return None
+
 def providertracking(request):
-    task_list = Taskping.objects.filter(c_id=1)   # as an example
-    return render(request, "ProviderTracking.html", {'task_list': task_list})
+    company_email = request.session.get('username')
+    company_pw = request.session.get('password')
+    company = getCompanyLogin(company_email, company_pw)
+    if company is None:
+        return render(request, "ErrorPage.html", {'error': 'Company not found'})
+
+    company_id = company.c_id
+    client_id =  getClientIdFromCompany(company_id)
+    tasks_with_forms = [
+        (task, TaskpingForm(instance=task))
+        for task in Taskping.objects.filter(c_id=company_id, client_id=client_id)
+    ]
+
+    context = {
+        'company': company,
+        'tasks_with_forms': tasks_with_forms,
+    }
+
+    #for task, _ in tasks_with_forms:
+    #    task.delete()
+    
+    return render(request, "ProviderTracking.html", context)
+
+
+def update_provider_tracking_status(request, pk):
+    task = get_object_or_404(Taskping, pk=pk)  # Ensures task exists or returns 404
+
+    if request.method == 'POST':
+        form = TaskpingForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('providertracking') 
+    else:
+        form = TaskpingForm(instance=task)
+
+    return render(request, "update_task_form.html", {'form': form})
+
+@require_POST
+def complete_task(request, task_id):
+    task = get_object_or_404(Taskping, task_id=task_id)
+    task.status = 'y'  # Assuming 'y' signifies completion
+    task.save()
+    return redirect('providertracking') 
 
 
 #@login_required

@@ -11,12 +11,11 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-
     <link rel="stylesheet" href="{% static 'ProviderTracking.css' %}" />
   </head>
-
   <body>
     <div class="navbar">
+      <!-- Navbar content -->
       <div class="navbar-links">
         <a href="#home">Logo</a>
         <a href="#about">About</a>
@@ -24,69 +23,85 @@
         <a href="#payment">Payment</a>
         <a href="#map">Map</a>
         <a href="#schedule">Schedule</a>
-        <a href=" {% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name"
-          >Account Name {{request.user}}
-        </a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="#account" class="account-name"> {{ company.company_name }}</a>
+      </div>
+    </div>
+    <div class="container mt-4 my-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Welcome to Provider Tracking</h5>
+          <p class="card-text">
+            Manage your tasks and track progress efficiently.
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="main-container">
+    <div class="container-fluid main-container mt-3 my-3">
       <div class="row">
-        <div class="col left-side-scroll">
-          <div class="container-fluid" id="tasksContainer">
-            <div class="row">
-              <div class="col-md-6 mt-1">
-                <div id="liveDate" class="live-date"></div>
-              </div>
-            </div>
+        <!-- Task list column (left-hand side) -->
+        <div class="col-md-6 left-side-scroll">
+          <div id="taskListContainer">
+            <ul style="list-style-type: none; padding-left: 0">
+              {% for task, form in tasks_with_forms %}
+              <li class="task my-3">
+                <strong>{{ task.taskname }}</strong><br />
+                <strong>Description:</strong> {{ task.description }}<br />
+                <div
+                  id="updated-at-{{ forloop.counter }}"
+                  style="display: none"
+                >
+                  <strong>Time of Update:</strong> {{ task.updated_at }}<br />
+                </div>
+
+                <!-- Form to update task status -->
+                <form
+                  method="post"
+                  action="{% url 'provider-status-update' task.task_id %}"
+                >
+                  {% csrf_token %} {{ form.as_p }}
+                  <button type="submit" class="btn btn-success">
+                    Update Status
+                  </button>
+                </form>
+              </li>
+              {% endfor %}
+            </ul>
           </div>
         </div>
 
-        <div class="col">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12">
-                <div
-                  class="technician-greeting d-none d-md-flex align-items-center"
-                >
-                  <div class="col-2 p-0">
-                    <img
-                      src="{% static 'profile.jpg' %}"
-                      alt="Technician"
-                      class="img-fluid"
-                    />
-                  </div>
-                  <div class="col-9">
-                    <p class="name-text">Robert</p>
-                    <p class="status-text">
-                      Destination Status
-                      <button class="dropdown-toggle ms-1"></button>
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <!-- Map and other content column (right-hand side) -->
+        <div class="col-md-6">
+          <div class="technician-greeting d-none d-md-flex align-items-center">
+            <div class="col-2 p-0">
+              <img
+                src="{% static 'profile.jpg' %}"
+                alt="Technician"
+                class="img-fluid"
+              />
+            </div>
+            <div class="col-9">
+              <p class="name-text">{{ company.company_name }}</p>
+              <p class="status-text">
+                Destination Status<button class="dropdown-toggle ms-1"></button>
+              </p>
             </div>
           </div>
-
-          <div class="container-fluid">
-            <div class="col-md-12 mt-4">
-              <div class="map-container d-none d-md-block">
-                <iframe
-                  src="https://www.google.com/maps?q=Sacramento,CA&output=embed"
-                  width="100%"
-                  height="500vh"
-                  style="border: 0"
-                  allowfullscreen=""
-                  loading="lazy"
-                ></iframe>
-              </div>
-            </div>
+          <div class="map-container d-none d-md-block">
+            <iframe
+              src="https://www.google.com/maps?q=Sacramento,CA&output=embed"
+              width="100%"
+              height="500vh"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>
     </div>
-
+    <button id="deleteTasksButton">Disconnect</button>
     <div class="footer">
       <a href="{% url 'about' %}">About Us</a>
       <a href="#terms">Terms of Use</a>
@@ -95,27 +110,6 @@
       <a href="#socials">Socials</a>
       <a href="#instagram">Instagram</a>
     </div>
-    <div id="tasksContainer">
-      <!-- Task elements will be appended here by the JavaScript -->
-    </div>
-    {% if task_list %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const tasks = [
-          {% for task in task_list %}
-            {
-              "name": "{{ task.taskname|escapejs }}",
-              "description": "{{ task.description|escapejs }}",
-              "status": "{{ task.status }}"
-            }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ];
-        initializeTasks(tasks);
-          });
-    </script>
-    {% endif %}
-    <!-- External JavaScript File -->
-    <!-- Link to the external JavaScript file -->
     <script src="{% static 'ProviderTracking.js' %}"></script>
   </body>
 </html>

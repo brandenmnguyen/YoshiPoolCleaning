@@ -109,7 +109,6 @@ class Taskping(models.Model):
 
     def get_client(self):
         return self.client
-
     def get_company(self):
         return self.company
 
