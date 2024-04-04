@@ -107,6 +107,12 @@ class Taskping(models.Model):
     c_id = models.ForeignKey(Company, on_delete=models.CASCADE, db_column='C_id', blank=True, null=True)  # Renamed from c to company
     updated_at = models.DateTimeField(auto_now=True)
 
+    def get_client(self):
+        return self.client
+
+    def get_company(self):
+        return self.company
+
     class Meta:
         managed = True
         db_table = 'TASKPING' 
