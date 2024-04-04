@@ -58,6 +58,7 @@ urlpatterns = [
     path('appView/', views.appointments_view, name = 'appView'),
     path('info/', views.info, name = 'info'),
     path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
-    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment')
+    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
 
+    path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory')
 ]

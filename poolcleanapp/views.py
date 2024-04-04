@@ -42,7 +42,8 @@ import pyotp
 
 from io import BytesIO
 
-
+import datetime
+import pytz
 
 # Create your views here.
 
@@ -818,8 +819,8 @@ def checkout(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
     )
 
     return redirect(checkout_session.url, code=303)
@@ -834,8 +835,8 @@ def checkout2(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
     )
 
     return redirect(checkout_session.url, code=303)
@@ -850,11 +851,28 @@ def checkout3(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/homepage/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/about/',
+        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
     )
 
     return redirect(checkout_session.url, code=303)
+
+def payment_history(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    payment_intent_id = "pi_3P0WfpFamngtG7BE057myOwA"
+    payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+    # payment_intents = stripe.PaymentIntent.list(customer=user_id)
+    amount_in_dollars = "{:.2f}".format(payment_intent.amount / 100)
+    timestamp = payment_intent.created
+    dt_utc = datetime.datetime.utcfromtimestamp(timestamp)
+    pst_timezone = pytz.timezone('America/Los_Angeles')
+    dt_pst = dt_utc.replace(tzinfo=pytz.utc).astimezone(pst_timezone)
+    return render(request, 'temp_payment_history.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst})
+
+#End of Stripe
 
 #logout
 def logoutUser(request):
