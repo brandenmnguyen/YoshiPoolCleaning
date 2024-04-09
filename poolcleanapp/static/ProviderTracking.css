@@ -154,12 +154,6 @@ body {
   margin-top: 20px; /* Adjust the top margin as needed */
 }
 
-.btn-info:hover,
-.btn-info.dropdown-toggle:hover {
-  /* Example of changing background and text color on hover */
-  background-color: #117a8b; /* Darker shade of the .btn-info color */
-  color: #fff;
-}
 
 .popup {
   position: fixed;

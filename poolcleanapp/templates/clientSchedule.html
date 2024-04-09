@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'clientSchedule.css' %}">
+</head>
+
+<body>
+
+    <h1>Schedule an appointment</h1>
+
+
+    <div id="appointmentContainer"></div>
+
+    <script>
+
+        const appointments = [
+            {% for appointment in schedule_list %}
+        {
+            "c_id": "{{ appointment.c_id }}",
+                "date": " {{ appointment.appdate }}",
+                    "time": " {{ appointment.apptime }}"
+        }
+        {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+          ];
+
+
+        const appointmentContainer = document.getElementById('appointmentContainer');
+
+
+        appointments.forEach(appoint => {
+
+            const scheduleElement = document.createElement('div');
+
+            //for date
+            const dateTitle = document.createElement('div');
+            dateTitle.innerHTML = `<b> Date: ${appoint.date}</b>`;
+            scheduleElement.appendChild(dateTitle);
+
+
+            //for time
+            const timeTitle = document.createElement('div');
+            timeTitle.innerHTML = `<b> Time: ${appoint.time}</b>`;
+            scheduleElement.appendChild(timeTitle);
+
+            const scheduleButton = document.createElement('button');
+            scheduleButton.innerHTML = `Schedule`;
+
+            const line = document.createElement('hr');
+
+            appointmentContainer.appendChild(scheduleElement).appendChild(scheduleButton);
+
+            appointmentContainer.appendChild(line);
+
+
+            // Event listener for schedule button
+            scheduleButton.addEventListener('click', function () {
+                scheduleAppointment(appoint.c_id, appoint.date, appoint.time);
+            });
+
+
+        });
+
+        function scheduleAppointment(c_id, date, time) {
+
+            // Parse date string into a Date object
+            const parsedDate = new Date(date);
+
+            // Format date in YYYY-MM-DD format
+            const formattedDate = parsedDate.toISOString().split('T')[0];
+
+            // Format time in HH:MM format
+            const formattedTime = time.replace('a.m.', '').replace('p.m.', '').trim(); // Remove a.m./p.m. and trim whitespace
+
+
+            // Send data to the server
+            fetch('/poolcleanapp/clientSchedule/schedule_appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    c_id: c_id,
+                    appdate: formattedDate,
+                    apptime: formattedTime
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Appointment scheduled successfully!');
+                        alert('Appointment scheduled successfully!');
+                    } else {
+                        console.error('Failed to schedule appointment:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error scheduling appointment:', error);
+                });
+        }
+
+    </script>
+
+
+</body>
+
+</html>

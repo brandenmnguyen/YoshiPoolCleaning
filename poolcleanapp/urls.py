@@ -21,11 +21,13 @@ urlpatterns = [
     path('deleteEmployee/<int:employee_id>/', views.deleteEmployee),
     path('logout/', views.logoutUser, name='logout'),
     path('getSession/',views.getSession),
-    path('messaging/', views.messaging, name = 'messaging'),
+    #path('messaging/', views.messaging, name = 'messaging'),
     path('viewAppointments/',views.getAppointments),
     path('addAppointments/',views.addAppointments),
     path('viewAvailableAppointments/',views.viewAvailableAppointments),
     path('scheduleAppointments/',views.scheduleAppointment),
+    path('sendEmail/',views.send_email),
+    path('sendEmailAPI/',views.send_simple_message),
     
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),
@@ -40,6 +42,7 @@ urlpatterns = [
     path('paymentsuccess/', views.paymentSuccess, name = 'paymentsuccess'),
     path('clienttracking/', views.clienttracking, name='clienttracking'),
     path('providertracking/', views.providertracking, name='providertracking'),
+    path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
     path('paymenthistory/', views.paymentHistory, name='paymenthistory'),
     path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
@@ -54,5 +57,15 @@ urlpatterns = [
     path('checkout/', views.checkout, name = 'checkout'),
     path('checkout2/', views.checkout2, name = 'checkout2'),
     path('checkout3/', views.checkout3, name = 'checkout3'),
-    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient')
-]
+    path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient'),
+    path('appView/', views.appointments_view, name = 'appView'),
+    path('info/', views.info, name = 'info'),
+    path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
+    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
+
+    path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
+
+    #------------------------------------------------------------------#
+    path('messaging/', views.messaging_view, name='messaging'),
+    #------------------------------------------------------------------#
+] 
