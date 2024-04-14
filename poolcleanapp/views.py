@@ -685,7 +685,20 @@ def calendar(request):
 #@login_required
 #@login_required(login_url=logging)
 def dailycalendar(request):
-    return render(request, "DailyCalendar.html")
+    company_email = request.session.get('username')
+    company_pw = request.session.get('password')
+    company = getCompanyLogin(company_email, company_pw)
+    if company is None:
+        return render (request, "ErrorPage.html", {'error': 'Company not found.'})
+    
+    appointments = Appointments.objects.filter(c_id=company.c_id)  
+    data = [{
+        'cname': appointment.cl.fname + " " + appointment.cl.lname,
+        'appdate':  appointment.appdate.strftime('%m/%d/%Y'), 
+        'apptime': appointment.apptime.strftime('%H:%M') 
+    } for appointment in appointments]
+    
+    return render(request, "DailyCalendar.html", {'appointments': data})
 
 
 def dailycalendarclient(request):

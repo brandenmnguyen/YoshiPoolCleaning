@@ -1,60 +1,15 @@
-// temp fake data
-var fakeProvider = {
-  name: "Company #1"
-};
-
-// NOTE: fake data as only one apptime, but model has separate variables
-// for the date and the time.
-var appointments = [
-  {
-    apptime: new Date(2024, 1, 26, 9, 0, 0),
-    cl: "John Doe",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 26, 10, 30, 0),
-    cl: "Adam Smith",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 26, 13, 0, 0),
-    cl: "David Johnson",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 26, 14, 30, 0),
-    cl: "Emily Wilson",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 26, 15, 15, 0),
-    cl: "James Anderson",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 26, 16, 30, 0),
-    cl: "Ashley Martinez",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 27, 10, 0, 0),
-    cl: "Jeff Daniels",
-    provider: fakeProvider
-  },
-  {
-    apptime: new Date(2024, 1, 25, 12, 0, 0),
-    cl: "Sarah Troop",
-    provider: fakeProvider
-  }
-];
+const appointments = JSON.parse(document.getElementById("appointments").textContent);
 
 var currentDay = Date();
 
-// compares 2 Date variables if they land on the same month, day and year
-function isSameDay(date1, date2) {
-  return date1.getFullYear() === date2.getFullYear() &&
-         date1.getMonth() === date2.getMonth() &&
-         date1.getDate() === date2.getDate();
+// compares a string with format "mm/dd/yyyy" to a Date variable
+function isSameDay(dateStr, dateVar) {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+  return dateStr == dateVar.toLocaleDateString('en-US', options);
 }
 
 // logic for how to offset the y-coord when putting task in daily view
@@ -73,6 +28,27 @@ function dayViewMinuteOffset(minute) {
   }
 }
 
+// takes in a string of HH:MM in military time,
+// and returns it as HH:MM A.M/P.M
+function militaryToRegular(time) {
+  // assume am
+  period = "A.M";
+  leading = ""
+  // get hour as integer
+  hour = parseInt(time.substring(0,2))
+
+  if (hour >= 12)
+    period = "P.M";
+
+  if (hour > 12)
+    hour -= 12;
+
+  if (hour < 10)
+    leading = "0";
+
+  return leading + hour + time.substring(2) + " " + period;
+}
+
 // create a cell in the daily view with the name of appointment,
 // the time, have the time be in the right location
 // NOTE: temporaily each appointment is 30 minutes in length
@@ -83,15 +59,15 @@ function printSelectedApts(day) {
   container.innerHTML = '';
 
   for (var apt of appointments) {
-    if (!isSameDay(apt.apptime, day)) {
+    if (!isSameDay(apt.appdate, day)) {
       continue;
     }
     // create div for appointment
     var div = document.createElement('div');
 
     // figure out location of div
-    var hour = apt.apptime.getHours();
-    var min = apt.apptime.getMinutes();
+    var hour = parseInt(apt.apptime.substring(0, 2));
+    var min = parseInt(apt.apptime.substring(3, 5));
     var timeLocStart = hour * 4 + 1 + dayViewMinuteOffset(min);
     var timeLocEnd = timeLocStart + 2;
     // set attributes
@@ -101,11 +77,11 @@ function printSelectedApts(day) {
     // populate data in cell
     var divTitle = document.createElement('div');
     divTitle.className = "dayview-cell-title";
-    divTitle.textContent = apt.cl + "'s Appointment.";
+    divTitle.textContent = apt.cname + "'s Appointment";
 
     var divTime = document.createElement('div');
     divTime.className = "dayview-cell-time";
-    divTime.textContent = apt.apptime.toLocaleTimeString().substring(0, apt.apptime.toLocaleTimeString().length - 6);
+    divTime.textContent = militaryToRegular(apt.apptime);
 
     div.appendChild(divTitle);
     div.appendChild(divTime);
@@ -210,9 +186,9 @@ class Calendar {
         startSearching = 1;
       }
       if (startSearching == 1) {
-        for (var apt of appointments) { 
-          if (apt.apptime.getDate() == day.innerText &&
-          apt.apptime.getMonth() == this.month.month() &&
+        for (var apt of appointments) {
+          if (parseInt(apt.appdate.substring(3, 5)) == day.innerText &&
+          (parseInt(apt.appdate.substring(0, 2)) - 1) == this.month.month() &&
           prev < day.innerText) {
             day.classList.add("cal-day__day--indicator"); 
           }
