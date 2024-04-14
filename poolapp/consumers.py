@@ -5,8 +5,7 @@ from models import Chat, ChatRoom
 
 class poolclient(AsyncWebsocketConsumer):
     async def connect(self):
-        self.roomGroupName = 'chat_%s' % self.room_name
-        self.roomName = self.scope['url_route']['kwargs']['room_name']
+        self.roomGroupName = "Group_chat"
         await self.channel_layer.group_add(
             self.roomGroupName,
             self.channel_name
@@ -15,23 +14,15 @@ class poolclient(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.roomGroupName,
-            self.channel_name
+            self.channel_layer
         )  
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         username = text_data_json["username"]
 
-        await self.channel_layer.group_send(
-            self.roomGroupName,
-            {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
-
         #find room object
-        #room = await database_sync_to_async(ChatRoom.objects.get)(name=self.roomGroupName)
+        room = await database_sync_to_async(ChatRoom.objects.get)(name=self.roomGroupName)
 
         #Create new chat object
         chat = Chat(

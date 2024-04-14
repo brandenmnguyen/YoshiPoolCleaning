@@ -47,11 +47,8 @@ from .models import Taskping
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-
 import pyotp
-
 from io import BytesIO
-
 import datetime
 import pytz
 
@@ -477,7 +474,7 @@ def verification(request):
         # Compare the user-entered TOTP code with the generated TOTP code
         if user_totp_code == generated_totp_code:
             # TOTP code is correct
-            return render(request, 'ProviderTracking.html')
+            return redirect( 'providertracking')
         else:
             # TOTP code is incorrect
             return render(request, 'LoginPage.html')
@@ -509,13 +506,6 @@ def login_user(request):
         return render(request, "LoginPage.html")
     
 
-
-
-def login_client(request):
-    return render(request, "LoginClientTemp.html")
-
-
-
 def logging(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -532,11 +522,6 @@ def logging(request):
         return render(request, "LoginPage.html", {'msg': messaging})
     else:
         return render(request, "LoginPage.html")
-
-
-
-def login_company(request):
-    return render(request, "LoginProvider2.html")
 
 # Logs out the user whether client or provider
 @api_view(['DELETE','GET'])
@@ -879,9 +864,10 @@ def clientVerification(request):
         generated_totp_code = totp.now()
 
         if user_totp_code == generated_totp_code:
-            return render(request, 'ClientTracking.html')
+            return redirect('clienttracking')
         else:
             return render(request, 'LoginPage.html')
+            
 
     return render(request, 'ClientVerification.html')
 

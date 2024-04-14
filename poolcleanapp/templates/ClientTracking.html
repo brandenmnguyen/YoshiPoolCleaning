@@ -19,8 +19,10 @@
   <body>
     <!-- Navigation bar section -->
     <div class="navbar">
-      <div class="navbar-links">
+      <div class="navbar-link" id="homelink">
         <a href="{% url 'homepage' %}">Logo</a>
+      </div>  
+      <div class="navbar-links" id="links">
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
         <a href="{% url 'messaging' %}">Messages</a>
@@ -28,10 +30,13 @@
         <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name">
-          {{ client.fname }} {{client.lname}}</a
-        >
+        <a href="#account" class="account-name" id="name">
+          {{ client.fname }} {{client.lname}}</a>
       </div>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+        <span class="navbar-toggler-icon"></span>
+      </a>
     </div>
 
     <div class="main-container">
@@ -174,4 +179,16 @@
     </div>
     <script src="{% static 'ClientTracking.js' %}" rel="stylesheet"></script>
   </body>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("links");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+        var y = document.getElementById("name")
+        y.style.display = "none";
+        }
+      }     
+  </script>  
 </html>

@@ -16,16 +16,23 @@
   <body>
     <div class="navbar">
       <!-- Navbar content -->
-      <div class="navbar-links">
+      <div class="navbar-link" id="homelink">
         <a href="#home">Logo</a>
+      </div>  
+      <div class="navbar-links" id="links">
         <a href="#about">About</a>
         <a href="#providers">Providers</a>
         <a href="#payment">Payment</a>
         <a href="#map">Map</a>
         <a href="#schedule">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name"> {{ company.company_name }}</a>
+        <a href="#account" class="account-name" id="name">
+          {{ client.fname }} {{client.lname}}</a>
       </div>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+        <span class="navbar-toggler-icon"></span>
+      </a>
     </div>
     <div class="container mt-4 my-3">
       <div class="card">
@@ -112,4 +119,16 @@
     </div>
     <script src="{% static 'ProviderTracking.js' %}"></script>
   </body>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("links");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+        var y = document.getElementById("name")
+        y.style.display = "none";
+        }
+      }     
+  </script>
 </html>

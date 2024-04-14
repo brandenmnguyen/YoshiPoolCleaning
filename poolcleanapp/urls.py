@@ -33,14 +33,18 @@ urlpatterns = [
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name='homepage'),
     path('login/', views.login_user, name='login'),
-    path('providerlogin/', views.login_company, name='providerlogin'),
+    
     path('clientsignup/', views.clientSignUp, name='clientsignup'),
-    path('clientlogin/',views.login_client, name='clientlogin'),
+    
+    path('clientVerification/', views.clientVerification, name = 'clientVerification'),
+    path('clienttracking/', views.clienttracking, name='clienttracking'),
+    path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
+    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
     path('viewOneClient/',views.getOneClient, name='viewOneClient'),
     path('providersignup/', views.providerSignUp, name='providersignup'),
     path('providersearch/', views.providerSearch, name='providersearch'),
     path('paymentsuccess/', views.paymentSuccess, name = 'paymentsuccess'),
-    path('clienttracking/', views.clienttracking, name='clienttracking'),
+    
     path('providertracking/', views.providertracking, name='providertracking'),
     path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
     path('paymenthistory/', views.paymentHistory, name='paymenthistory'),
@@ -48,7 +52,7 @@ urlpatterns = [
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
     path('about/', views.about, name='about'),
     path('verification/', views.verification, name = 'verification'),
-    path('clientVerification/', views.clientVerification, name = 'clientVerification'),
+    
     path('resultspage/', views.resultspage, name = 'resultspage'),
     path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),
@@ -60,8 +64,7 @@ urlpatterns = [
     path('dailycalendarclient/', views.dailycalendarclient, name='dailycalendarclient'),
     path('appView/', views.appointments_view, name = 'appView'),
     path('info/', views.info, name = 'info'),
-    path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
-    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
+    
 
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
 
