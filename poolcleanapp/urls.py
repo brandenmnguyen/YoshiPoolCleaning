@@ -7,9 +7,11 @@ urlpatterns = [
     path('viewClient/', views.getClient, name = 'viewClient'),
     path('viewOneClient/', views.getOneClient),
     path('addClient/', views.addClient, name = 'addClient'),
+    path('updateClient/<int:client_id>/', views.updateClient, name = 'updateClient'),
     path('viewCompany/', views.getCompany, name = 'viewCompany'),
     path('viewOneCompany/', views.getOneCompany),
     path('addCompany/', views.addCompany),
+    path('updateCompany/<int:company_id>/', views.updateCompany, name = 'updateCompany'),
     path('addTaskping/', views.addTaskping),
     path('getTaskping/', views.getTaskping),
     path('putTaskping/<int:pk>/', views.putTaskping, name='update-taskping-status'),
@@ -64,6 +66,8 @@ urlpatterns = [
     path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
 
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
+    path('clientSettings/', views.clientSettings, name = 'clientSettings'),
+    path('providerSettings/', views.companySettings, name = 'providerSettings'),
 
     #------------------------------------------------------------------#
     path('messaging/', views.messaging_view, name='messaging'),

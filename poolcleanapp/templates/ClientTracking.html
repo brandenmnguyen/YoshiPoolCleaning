@@ -27,7 +27,7 @@
         <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name">
+        <a href="{% url 'clientSettings' %}" class="account-name">
           {{ client.fname }} {{client.lname}}</a
         >
       </div>
