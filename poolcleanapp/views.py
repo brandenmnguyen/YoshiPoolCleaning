@@ -27,9 +27,20 @@ from rest_framework import status
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from .models import Appointments
+
+from .models import ProviderAvailableTimes             
+
 from .models import Company
 #from poolcleanapp.models import Invoice
+
+# serializers.py
+from rest_framework import serializers
+
+
 from .serializers import AppointmentsSerializer, ClientSerializer
+
+from .serializers import ProviderSchedulingSerializer
+
 from .serializers import CompanySerializer
 from .serializers import InvoiceSerializer
 from .serializers import TaskpingSerializer
@@ -54,6 +65,12 @@ from io import BytesIO
 
 import datetime
 import pytz
+
+#from .serializers import ProviderAvailableTimes
+#from .serializers import ProviderSchedulingSerializer
+
+
+
 
 # Create your views here.
 
@@ -413,6 +430,93 @@ def send_simple_message(request):
 			"subject": email_subject,
 			"text":body})
     return Response(request.data, status=r.status_code)
+
+
+
+@api_view(['GET'])
+def getProviderSchedule(request):
+    try:
+        provSchedule = ProviderAvailableTimes.objects.all()  # Replace YourModel with your actual model
+        serializer = ProviderSchedulingSerializer(provSchedule, many=True)  # Serialize the data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['POST'])
+def addProviderAppointments(request):
+    try:
+        serializer = ProviderSchedulingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+
+
+@api_view(['POST'])
+def scheduleProvAppointment(request):
+    # Get parameters from the request
+    appdate = request.data.get('appdate')
+    apptime = request.data.get('apptime')
+    c_id = request.data.get('c_id')
+
+    # Perform the query to check if appointment exists
+    try:
+        appointment = ProviderAvailableTimes.objects.get(appdate=appdate, apptime=apptime, c_id=c_id)
+        return Response({'error': 'Appointment already scheduled'}, status=404)
+    except ProviderAvailableTimes.DoesNotExist:
+        # If appointment does not exist, add it
+        try:
+            serializer = ProviderSchedulingSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else: 
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def homepage(request):
     return render(request, "Homepage-1.html")
@@ -784,9 +888,11 @@ def clienttracking(request):
     return render(request, "ClientTracking.html", {'task_list': task_list})
 
 
+
+
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):
-    schedule_list = Appointments.objects.filter(c_id=24)   
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id=24)   
     return render(request, "clientSchedule.html", {'schedule_list': schedule_list})
 
 
@@ -794,7 +900,7 @@ def clientSchedule(request):
 #SHOW APPOINTMENT INFO FOR CLIENT 
 def info(request):
  
-    appointments = Appointments.objects.filter(cl_id=4)   
+    appointments = Appointments.objects.filter(cl_id=3)   
     appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
     request.session['appointments'] = appointment_data
 
@@ -807,9 +913,16 @@ def schedule_appointment(request):
         # Parse JSON data from request body
         data = json.loads(request.body)
       #  cl_id = data.get('cl_id')
-        c_id = data.get('c_id')
+       # c_id = data.get('c_id')
+        c_id = int(data.get('c_id'))  # Convert c_id to an integer
         appdate = data.get('appdate')
         apptime = data.get('apptime')
+
+
+        # Check if appointment already exists
+        if Appointments.objects.filter(c_id=c_id, appdate=appdate, apptime=apptime).exists():
+            return JsonResponse({'error': 'Appointment already scheduled.'}, status=400)
+
 
         # Create a new appointment instance
         appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime)
@@ -827,8 +940,30 @@ def schedule_appointment(request):
 
 
 
+def ScheduleTimingProvider(request):
+    return render(request, "ScheduleTimingProvider.html")
 
 
+#save info that the provider entered for available dates and estimated times
+def providerDateTimeScheduling(request):
+    if request.method == 'POST':
+
+          # Retrieve data from the form
+       # c_id = request.POST.get('c_id')
+        c_id = int(request.POST.get('c_id'))
+        appdate = request.POST.get('date')
+        apptime = request.POST.get('time')
+
+        # Create a new appointment instance
+        provAppointment = ProviderAvailableTimes(c_id=c_id, appdate=appdate, apptime=apptime)
+
+        # Save the appointment to the database
+        provAppointment.save()
+        # Return a success response
+        return JsonResponse({'message': 'Appointment scheduled successfully.'})
+    else:
+        # Return an error response if method is not POST
+        return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 

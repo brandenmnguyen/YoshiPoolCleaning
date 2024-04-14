@@ -20,6 +20,22 @@ class Appointments(models.Model):
         db_table = 'appointments'
 
 
+
+
+class ProviderAvailableTimes(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
+    appdate = models.DateField(blank=True, null=True)
+    apptime = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'PROVIDERAVAILABLETIMES'
+
+
+
+
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
