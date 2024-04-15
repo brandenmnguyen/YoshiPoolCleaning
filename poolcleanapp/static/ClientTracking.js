@@ -1,29 +1,3 @@
-const socket = new WebSocket(
-  "ws://" + window.location.host + "/ws/taskupdates/"
-);
-
-socket.onmessage = function (e) {
-  const data = JSON.parse(e.data);
-  const message = data["message"];
-  // Update your page based on the message
-};
-
-socket.onclose = function (e) {
-  console.error("Chat socket closed unexpectedly");
-};
-
-function markTaskAsComplete(taskId) {
-  // Update task status in the backend
-  // ...
-
-  // Then, send a message through the WebSocket
-  socket.send(
-    JSON.stringify({
-      message: "Task " + taskId + " completed",
-    })
-  );
-}
-
 function createTaskElement(task) {
   // Create task element
   const taskElement = document.createElement("div");

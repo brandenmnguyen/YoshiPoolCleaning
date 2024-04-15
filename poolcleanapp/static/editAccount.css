@@ -1,0 +1,76 @@
+.navbar {
+  background-color: #a3c9f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.navbar-links {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.navbar a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #c2d1e0;
+}
+
+.account-name {
+  background-color: #60a0ef;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.footer {
+  background-color: #a3c9f7;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  width: 100%;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.left-side-scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+html,
+body {
+  height: 100%; /* Make sure the html and body elements take up the full height */
+  margin: 0; /* Reset default margin */
+}
+
+body {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack children elements vertically */
+  /* Minimum height of 100% of the viewport */
+}
+
+.main-container {
+  flex: 1; /* Flex grow to absorb extra space */
+}
+
+.navbar .dropdown-menu .dropdown-item:hover {
+  color: rgb(0, 0, 0);
+  background-color: #faf2de; /* Adjusted to ensure it is the intended light orange */
+}

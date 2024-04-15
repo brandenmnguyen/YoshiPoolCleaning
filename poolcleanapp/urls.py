@@ -28,7 +28,11 @@ urlpatterns = [
     path('scheduleAppointments/',views.scheduleAppointment),
     path('sendEmail/',views.send_email),
     path('sendEmailAPI/',views.send_simple_message),
-    
+
+    path('editaccount/getClientDetails/<int:pk>/', views.getClienttDetails, name='get_client_details'), 
+    path('editaccount/',views.editAccount, name='editAccount'),
+    path('editaccount/update/<int:client_id>/', views.update_client_field, name='update_client'),
+
     path('ping',views.calculate_distance),
     path('', RedirectView.as_view(url='homepage/')),
     path('homepage/', views.homepage, name='homepage'),
