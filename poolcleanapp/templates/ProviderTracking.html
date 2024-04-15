@@ -18,15 +18,18 @@
   <body>
     <div class="navbar">
       <div class="navbar-links">
-        <a href="#home">Logo</a>
-        <a href="#about">About</a>
-        <a href="#providers">Providers</a>
-        <a href="#payment">Payment</a>
-        <a href="#map">Map</a>
-        <a href="#schedule">Schedule</a>
+        <a href="{% url 'homepage' %}">Logo</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'paymenthistory' %}">Payment</a>
+        <a href="{% url 'providertracking' %}">Map</a>
+        <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href=" {% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name"
-          >Account Name {{request.user}}
+        <a href="#account" class="account-name">
+          {% if account_name %}
+            Account Name: {{ account_name }}
+          {% else %}
+            Account Name: Not Available
+          {% endif %}
         </a>
       </div>
     </div>

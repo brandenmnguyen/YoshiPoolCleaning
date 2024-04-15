@@ -1,7 +1,5 @@
 import json
 from io import BytesIO
-import smtplib
-import ssl
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
@@ -14,9 +12,6 @@ from channels.layers import get_channel_layer
 
 from django.conf import settings
 from django.core.serializers import serialize
-import requests
-from django.views.decorators.csrf import csrf_exempt
-
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -41,11 +36,17 @@ from math import sin, cos, sqrt, atan2, radians
 import qrcode
 import stripe
 from django.contrib import messages
-from email.message import EmailMessage
 
 import pyotp
 
 from io import BytesIO
+
+import smtplib
+import ssl
+import requests
+from django.views.decorators.csrf import csrf_exempt
+
+from email.message import EmailMessage
 
 
 
@@ -373,8 +374,9 @@ def scheduleAppointment(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 ## --------------- Notifications ----------------  
-         
+
 @api_view(['POST'])
 def send_email(request):
     data = json.loads(request.body)
@@ -402,7 +404,7 @@ def send_email(request):
         smtp.login(email_sender,email_pass)
         smtp.sendmail(email_sender,email_receiver,email_message.as_string())
         smtp.quit()
-        
+
     return Response(request.data, status=status.HTTP_200_OK)
 
 @csrf_exempt 
@@ -419,7 +421,7 @@ def send_simple_message(request):
 			"to": "Mohammed Al Chalabi <"+email_receiver+">",
 			"subject": email_subject,
 			"text":body})
-    return Response(request.data, status=r.status_code)
+    return Response(request.data, status=r.status_code)  
 
 def homepage(request):
     return render(request, "Homepage-1.html")
@@ -579,7 +581,7 @@ def providerSignUp(request, *args, **kwargs):
 def invoiceSearch(request):
     return render(request, "InvoiceTracking.html")
 
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def providerSearch(request):
     search_term = request.GET.get('search', '')
     info = Company.objects.filter(company_address__icontains=search_term)
@@ -686,7 +688,7 @@ def dailycalendarclient(request):
     return render(request, "ClientCalendarClient.html")
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def paymentHistory(request):
     return render(request, "InvoiceTracking.html")
 
@@ -706,7 +708,16 @@ from django.views.decorators.http import require_http_methods
 @require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 def providertracking(request):
     task_list = Taskping.objects.filter(c_id=1)   # as an example
-    return render(request, "ProviderTracking.html", {'task_list': task_list})
+    if 'username' in request.session:
+        account_name = request.session['username']
+    else:
+        account_name = "account_name"
+    
+    context = {
+        'task_list': task_list,
+        'account_name': account_name,
+    }
+    return render(request, "ProviderTracking.html", context)
 
 
 #@login_required
