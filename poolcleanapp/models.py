@@ -24,11 +24,17 @@ class Appointments(models.Model):
     c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
-    #client = models.ForeignKey('Client', models.DO_NOTHING, related_name='appointments_client_set', blank=True, null=True)
+
+    def get_client(self):
+        return self.cl  # Corrected to return the actual ForeignKey field to Client
+
+    def get_company(self):
+        return self.c  # Corrected to return the actual ForeignKey field to Company
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'appointments'
+
 
 
 class Client(models.Model):
@@ -90,6 +96,17 @@ class Invoice(models.Model):
 
 
 class Taskping(models.Model):
+    TASK_TASKNAME_CHOICES = [
+        ('---','---'),
+        ('Inspect the Pool.', 'Inspect the Pool.'),
+        ('Clean the Pump Basket', 'Clean the Pump Basket'),
+        ('Scrub Pool Walls.', 'Scrub Pool Walls.'),
+        ('Skim the Pool', 'Skim the Pool'),
+        ('Empty the Skimmer Basket.', 'Empty the Skimmer Basket.'),
+        ('Vacuum the Pool', 'Vacuum the Pool'),
+        ('Backwash Sand and DE Filters', 'Backwash Sand and DE Filters'),
+        ('Test the Pool Water and Add Chemicals', 'Test the Pool Water and Add Chemicals')
+    ]
     TASK_STATUS_CHOICES = [
         ('n', 'In progress'),
         ('y', 'Completed'),
@@ -98,23 +115,28 @@ class Taskping(models.Model):
     task_id = models.AutoField(primary_key=True)
     status = models.CharField(
         max_length=1,
-        default='N',
-        choices=TASK_STATUS_CHOICES
+        choices=TASK_STATUS_CHOICES,
+        default='n'
     )
-    taskname = models.CharField(max_length=100, blank=True, null=True)  # Renamed from taskName to task_name
+    taskname = models.CharField(
+        max_length=100,
+        choices=TASK_TASKNAME_CHOICES,
+        default='---'
+    )
     description = models.TextField(blank=True, null=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
-    c_id = models.ForeignKey(Company, on_delete=models.CASCADE, db_column='C_id', blank=True, null=True)  # Renamed from c to company
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, blank=True, null=True) 
+    c_id = models.ForeignKey('Company', on_delete=models.CASCADE, db_column='C_id', blank=True, null=True)  
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_client(self):
         return self.client
+
     def get_company(self):
-        return self.company
+        return self.c_id
 
     class Meta:
         managed = True
-        db_table = 'TASKPING' 
+        db_table = 'TASKPING'
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -228,3 +250,14 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+class ProviderAvailableTimes(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
+    appdate = models.DateField(blank=True, null=True)
+    apptime = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'PROVIDERAVAILABLETIMES'
+

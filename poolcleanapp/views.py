@@ -217,6 +217,7 @@ def putTaskping(request, pk):
         task = Taskping.objects.get(pk=pk)
         # Restrict updates to the 'status' field only
         serializer = TaskpingSerializer(task, data={'status': request.data.get('status')}, partial=True)
+        serializer = TaskpingSerializer(task, data={'description': request.data.get('description')}, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -301,6 +302,17 @@ def anonymous_required(function=None, redirect_url=None):
    return actual_decorator
 
 ## --------------- Appointment Scheduling ----------------
+#get only 1 appointment details
+@api_view(['GET'])
+def getAppointmentDetails(request, pk):
+    try:
+        appointment = Appointments.objects.get(pk=pk)  # Use get() and catch DoesNotExist
+        serializer = AppointmentsSerializer(appointment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Appointments.DoesNotExist:
+        return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
     
 @api_view(['GET'])
 def getAppointments(request):
@@ -477,7 +489,7 @@ def verification(request):
         # Compare the user-entered TOTP code with the generated TOTP code
         if user_totp_code == generated_totp_code:
             # TOTP code is correct
-            return render(request, 'ProviderTracking.html')
+            return redirect( 'providertracking')
         else:
             # TOTP code is incorrect
             return render(request, 'LoginPage.html')
@@ -708,6 +720,38 @@ def contact(request):
 #-----------------------TRACKING PAGE------------------------------------
 #@login_required
 #@login_required(login_url=login_user)
+""""
+@api_view(['GET'])
+def getOneCompany(request, pk):
+    try:
+        company = Company.objects.get(pk=pk)
+        serializer = CompanySerializer(company)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Company.DoesNotExist:
+        return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+"""
+
+@api_view(['GET'])
+def getTaskpingFrom(request,companyID,clientID):
+    try:
+        taskpings = Taskping.objects.filter(c_id = companyID, client = clientID) 
+        serializer = TaskpingSerializer(taskpings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+def getOneClient(request, pk):
+    try:
+        client = Client.objects.get(pk=pk)
+        serializer = ClientSerializer(client)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Company.DoesNotExist:
+        return Response({"error": "Client not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def getCompanyLogin(company_email, company_pw):
     try:
@@ -715,23 +759,9 @@ def getCompanyLogin(company_email, company_pw):
         return company
     except Company.DoesNotExist:
         return None
-    
-def getClientIdFromCompany(company_id):
-    try:
-        # Attempt to get the first Taskping instance matching the company_id
-        taskping_instance = Taskping.objects.filter(c_id=company_id).first()
 
-        # If a Taskping instance is found, return its associated client's client_id
-        if taskping_instance:
-            return taskping_instance.client.client_id
-        else:
-            return None
-    except Taskping.DoesNotExist:
-        # This exception block may actually never be hit because .first() will return None
-        # instead of raising DoesNotExist if no objects match the filter
-        return None
 
-def providertracking(request):
+def providertracking(request, form=None):
     company_email = request.session.get('username')
     company_pw = request.session.get('password')
     company = getCompanyLogin(company_email, company_pw)
@@ -739,48 +769,62 @@ def providertracking(request):
         return render(request, "ErrorPage.html", {'error': 'Company not found'})
 
     company_id = company.c_id
-    client_id =  getClientIdFromCompany(company_id)
-    tasks_with_forms = [
-        (task, TaskpingForm(instance=task))
-        for task in Taskping.objects.filter(c_id=company_id, client_id=client_id)
-    ]
+    appointment_list = Appointments.objects.filter(c=company_id)
+    tasks = Taskping.objects.filter(c_id=company_id)
+
+    if not form:
+        form = TaskpingForm()  # Create a new form if one isn't passed
 
     context = {
         'company': company,
-        'tasks_with_forms': tasks_with_forms,
+        'appointment_list': appointment_list,
+        'form': form,
+        'tasks': tasks,
     }
 
-    #for task, _ in tasks_with_forms:
-    #    task.delete()
-    
     return render(request, "ProviderTracking.html", context)
 
-
-def update_provider_tracking_status(request, pk):
-    task = get_object_or_404(Taskping, pk=pk)  # Ensures task exists or returns 404
-
+@csrf_exempt
+def submit_task_form(request, companyID, clientID):
     if request.method == 'POST':
-        form = TaskpingForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect('providertracking') 
-    else:
-        form = TaskpingForm(instance=task)
+        data = json.loads(request.body)
+        try:
+            company = Company.objects.get(pk=companyID)
+            client = Client.objects.get(pk=clientID)
+        except (Company.DoesNotExist, Client.DoesNotExist):
+            return JsonResponse({'status': 'error', 'message': 'Company or Client not found'}, status=404)
 
-    return render(request, "update_task_form.html", {'form': form})
+        for taskname in data.get('tasknames', []):
+            Taskping.objects.create(
+                taskname=taskname,
+                status=data.get('status', 'n'),  # Default to 'n' if status not provided
+                description=data.get('description', ''),  # Default to empty string if description not provided
+                client=client,
+                c_id=company
+            )
 
-@require_POST
-def complete_task(request, task_id):
-    task = get_object_or_404(Taskping, task_id=task_id)
-    task.status = 'y'  # Assuming 'y' signifies completion
-    task.save()
-    return redirect('providertracking') 
+        return JsonResponse({'status': 'success', 'message': 'Tasks submitted successfully'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+
+@csrf_exempt
+def update_task(request, task_id):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        task = Taskping.objects.get(pk=task_id)
+        task.status = data['status']
+        task.description = data['description']
+        task.save()
+        return JsonResponse({'message': 'Task updated successfully'}, status=200)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 #@login_required
 #@login_required(login_url=login_user)
-def clienttracking(request):
-    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
+#without login
+def clienttrackingWithout(request,pk):
+    task_list = Taskping.objects.filter(client=pk)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
 
 
