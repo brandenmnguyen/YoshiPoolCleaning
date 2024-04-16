@@ -847,7 +847,7 @@ def getTaskpingFrom(request,companyID,clientID):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
-def getOneClient(request, pk):
+def getOneClient1(request, pk):
     try:
         client = Client.objects.get(pk=pk)
         serializer = ClientSerializer(client)
@@ -864,7 +864,7 @@ def getCompanyLogin(company_email, company_pw):
     except Company.DoesNotExist:
         return None
 
-"""  old providertracking view
+
 def providertracking(request, form=None):
     company_email = request.session.get('username')
     company_pw = request.session.get('password')
@@ -887,7 +887,7 @@ def providertracking(request, form=None):
     }
 
     return render(request, "ProviderTracking.html", context)
-"""
+
 @csrf_exempt
 def submit_task_form(request, companyID, clientID):
     if request.method == 'POST':
@@ -924,18 +924,22 @@ def update_task(request, task_id):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 @require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 
-def providertracking(request):
-    task_list = Taskping.objects.filter(c_id=1)   # as an example
-    if 'username' in request.session:
-        account_name = request.session['username']
-    else:
-        account_name = "account_name"
+# def providertracking(request):
+#     task_list = Taskping.objects.filter(c_id=1)   # as an example
+#     if 'username' in request.session:
+#         account_name = request.session['username']
+#     else:
+#         account_name = "account_name"
     
-    context = {
-        'task_list': task_list,
-        'account_name': account_name,
-    }
-    return render(request, "ProviderTracking.html", context)
+#     context = {
+#         'task_list': task_list,
+#         'account_name': account_name,
+#     }
+#     return render(request, "ProviderTracking.html", context)
+
+def clienttrackingWithout(request):
+    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
+    return render(request, "ClientTracking.html", {'task_list': task_list})
 
 
 #@login_required
