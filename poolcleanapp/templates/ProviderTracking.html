@@ -15,20 +15,36 @@
   <body>
     <div class="navbar">
       <!-- Navbar content -->
-      <div class="navbar-links">
+      <div class="navbar-link" id="homelink">
         <a href="{% url 'homepage' %}">Logo</a>
+      </div>  
+      <div class="navbar-links" id="links">
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
         <a href="{% url 'providertracking' %}">Map</a>
         <a href="{% url 'dailycalendar' %}">Schedule</a>
-        <a href=" {% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name">
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="#account" class="account-name" id="name">
           {% if account_name %}
             Account Name: {{ account_name }}
           {% else %}
             Account Name: Not Available
           {% endif %}
-        </a>
+        </a>  
+      </div>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+        <span class="navbar-toggler-icon"></span>
+      </a>
+    </div>
+    <div class="container mt-4 my-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Welcome to Provider Tracking</h5>
+          <p class="card-text">
+            Manage your tasks and track progress efficiently.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -322,4 +338,16 @@
       crossorigin="anonymous"
     ></script>
   </body>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("links");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+        var y = document.getElementById("name")
+        y.style.display = "none";
+        }
+      }     
+  </script>
 </html>

@@ -56,9 +56,7 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 
 import pyotp
-
 from io import BytesIO
-
 import datetime
 import pytz
 import smtplib
@@ -604,9 +602,9 @@ def verification(request):
 
 #for messaging
 def messaging(request):
-    room = Chat.objects.filter(cl=1).first()
-    chats = []  
-    return render(request, 'messaging.html', {'room' : room, 'chats': chats})
+    #room = Chat.objects.filter(cl=1).first()
+   # chats = []  
+    return render(request, 'messaging.html')#, {'room' : room, 'chats': chats})
 
 def login_user(request):
  #   if request.user.is_authenticated:
@@ -626,13 +624,6 @@ def login_user(request):
         return render(request, "LoginPage.html")
     
 
-
-
-def login_client(request):
-    return render(request, "LoginClientTemp.html")
-
-
-
 def logging(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -649,11 +640,6 @@ def logging(request):
         return render(request, "LoginPage.html", {'msg': messaging})
     else:
         return render(request, "LoginPage.html")
-
-
-
-def login_company(request):
-    return render(request, "LoginProvider2.html")
 
 # Logs out the user whether client or provider
 @api_view(['DELETE','GET'])
@@ -1088,6 +1074,7 @@ def clientVerification(request):
             return redirect('clienttracking')
         else:
             return render(request, 'LoginPage.html')
+            
 
     return render(request, 'ClientVerification.html')
 

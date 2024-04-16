@@ -16,7 +16,7 @@
 
 
 <body>
-    <h1 id="header">Create your account as a provider</h1>
+    <h1 id="header"><strong>Create your account as a provider</strong></h1>
     <form class="form-signin" method="POST">
         {% csrf_token %}
         <div class="fullScreen">
@@ -40,7 +40,7 @@
                             id="companyEmail" name ="company_email" required>
                     </div>
                     <div class="col">
-                        <label for="companyPhone">Company Phone Number</label>
+                        <label for="companyPhone">Phone Number</label>
                         <input type="number" class="form-control" placeholder="Company Phone Number"
                             aria-label="CompanyPhonenumber" id="companyPhone" name="company_phone" required>
                     </div>
@@ -56,7 +56,7 @@
 
             <div class="imagePool">
 
-                <img src="{% static 'banner.jpg' %}" alt="" class="imagePoolSize">
+                <img src="{% static "banner.jpg" %}" alt="" class="imagePoolSize">
             </div>
 
             <script>
@@ -111,10 +111,15 @@
 
         </div>
 
-
-        <button href="#" class="btn signUpButton rounded-pill" onclick ="registerCompany()" type="submit">Sign Up</a>
+        <div class="container">
+            <button href="#" class="btn signUpButton rounded-pill" onclick ="registerCompany()" type="submit">Sign Up</a></div>
+               
+            
+           
 
     </form>
+    <div class="container">
+        <img src="{% static "SignUpClientImage2.png" %}" alt="" class="imagePoolSize2">
 </body>
 
 

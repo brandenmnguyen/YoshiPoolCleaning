@@ -4,7 +4,7 @@ h1 {
   color: rgba(96, 160, 239, 1);
   margin-top: 80px;
   font-size: 30px; 
-  margin-left: 250px;
+  text-align: center;
 }
 
 h2 {
@@ -17,14 +17,58 @@ h2 {
 
 body{
   color: white;
+  padding-bottom: 80px;
+}
+
+.navigationButton {
+  background-color: rgba(96, 160, 239, 1);
+  border-color: rgba(96, 160, 239, 1);
+  color: white;
+  width: 550px;
+  border: 0px;
+  font-size: 20px;
+  font-family: 'Lato', sans-serif;
+  border-radius: 20px;
+  margin-left: 90px;
+  height: 90px;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  padding: 13px;
+  transition: 0.6s;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.rightButton {
+  border-radius: 20px;
+  background-color: rgba(96, 160, 239, 1);
+  border-color: rgba(96, 160, 239, 1);
+  color: white;
+  margin-left: 1100px;
+  width: 180px;
+  border: 0px;
+  font-size: large;
+  font-family: 'Lato', sans-serif;
+  transition: 0.6s;
+}
+
+.rightButton:hover {
+  background-color: white;
+  color: rgba(96, 160, 239, 1);
+  border-radius: 25px;
+  cursor: pointer;
 }
 
 .navbar {
-  background-color: #a3c9f7;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
+  background-color: rgba(215, 233, 255, 1);
+  color: white;
+  font-size: 20px;
+  transition: 0.6s;
+}
+
+.nav-item:hover {
+  background-color: rgba(96, 160, 239, 1);
+  border-radius: 20px;
 }
 
 .navbar-links {
@@ -41,10 +85,6 @@ body{
   transition: background-color 0.3s;
 }
 
-.navbar a:hover {
-  background-color: #c2d1e0;
-}
-
 .account-name {
   background-color: #60a0ef;
   padding: 10px 20px;
@@ -53,31 +93,57 @@ body{
 }
 
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    position: absolute;
+    background-color: rgba(215, 233, 255, 1);
+    bottom: 0px;
+    height: 160px;
     width: 100%;
-    background-color: #a3c9f7;;
 }
 
 .footerInfo {
-  display: flex;
-  justify-content: space-around;
-  align-items: center; /* Align items vertically in the center */
-  background-color: #a3c9f7;
-  padding: 15px;
-  color: white; /* Text color */
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
 }
-
-/* Example styling for footer links */
-.footerInfo a {
-  color: white; /* Link color */
-  text-decoration: none; /* Remove underline */
-}
-
 .footerInfo a:hover {
   color: rgb(0, 47, 255);
   text-decoration: underline; /* Add underline on hover */
 }
+
+a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: end;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  padding-top: 8px;
+}
+
+a:hover {
+  color: rgba(96, 160, 239, 1);
+}
+
+@media screen and (max-width: 800px){
+  body{ 
+    padding-bottom: 20vh;
+    width: 100vw;
+  }
+  footer{
+    height: 20vh;
+  }
+  h1 {
+    text-align: center;
+  }
+
+  h2{
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+
+}
+
 
 

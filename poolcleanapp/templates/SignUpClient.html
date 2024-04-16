@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <h1 id="header">Create your account as a client</h1>
+    <h1 id="header"><strong>Create your account as a client</strong></h1>
     <div class="fullScreen">
         <div class="formHalf">
             <div class="row">
@@ -99,6 +99,7 @@
                         // Handle the response from the server if needed
                         console.log('Success:', data);
                         //   window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clienttracking/';
+                        
                         window.location.href = 'http://127.0.0.1:8000/poolcleanapp/login/';
                     })
                     .catch((error) => {
@@ -114,12 +115,14 @@
 
     </div>
 
+    <div class="container"> 
+        <a href="#" class="btn signUpButton rounded-pill " onclick ="registerClient()">Sign Up</a>
 
-    <a href="#" class="btn signUpButton rounded-pill " onclick ="registerClient()">Sign Up</a>
-
-    <a href="{% url 'providersignup' %}" id="provider">A provider? Sign up
+        <a href="{% url 'providersignup' %}" id="provider">A provider? Sign up
         as a provider</a>
 
+        <img src="{% static "SignUpClientImage2.png" %}" alt="" class="imagePoolSize2">    
+        </div>
 </body>
 
 </html>

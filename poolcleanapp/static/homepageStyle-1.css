@@ -5,6 +5,18 @@
     transition: 0.6s;
 }
 
+.navbar a.icon{
+    display: none;
+  }
+
+  .navbar-links a {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
 .nav-item:hover {
     background-color: rgba(96, 160, 239, 1);
     border-radius: 20px;
@@ -194,6 +206,22 @@ a:hover {
 
 
 }
+/*
+@media (min-width: 100px){
+    .upperContainerInfoWithLink {
+        font-size: 40px;
+
+        
+    }
+
+    .upperContainerInfo {
+        font-size: 40px;
+        width: 140%;
+        margin-left: 10px;
+
+    }
+}
+*/
 
 @media only screen and (min-width: 845px) and (max-width: 889px) {
 
@@ -213,6 +241,50 @@ a:hover {
 
         height: 100%;
 
+    }
+
+    .navbar a.icon{
+        display: inline;
+      }
+    
+      .account-name{
+        display: none;
+      }
+    
+      .navbar-links{
+        display: none;
+        justify-content: right;
+      }
+      .navbar-link{    
+        justify-content: left;
+      }
+        
+      .navbar {
+        right: 0;
+        top: 0;
+        overflow: hidden;
+        position: relative;
+        
+      }
+    
+      .navbar a {
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        display: block;    
+      } 
+      
+    
+    
+
+    .footerInfo a{
+        font-size: 1rem;
+    }
+
+    footer{
+        height: 20vh;
+        bottom: 0px;
     }
 
     .upperContainerInfo {
@@ -271,7 +343,6 @@ a:hover {
 
     .insideInfo {
 
-        display: flex;
         justify-content: center;
         width: 100%;
         margin-left: 1px;

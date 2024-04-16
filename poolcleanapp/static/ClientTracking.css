@@ -11,13 +11,25 @@ body {
   padding: 0 10px;
 }
 
+.navbar a.icon{
+  display: none;
+}
+
 .navbar-links {
   display: flex;
   flex: 1;
   justify-content: space-around;
 }
 
-.navbar a {
+.navbar-links a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.navbar-link a {
   color: white;
   text-align: center;
   padding: 14px 16px;
@@ -152,8 +164,50 @@ body {
 .main-container {
   flex: 1; /* Flex grow to absorb extra space */
 }
-
+/* delete?  */
 .navbar .dropdown-menu .dropdown-item:hover {
   color: rgb(0, 0, 0);
   background-color: #faf2de; /* Adjusted to ensure it is the intended light orange */
+}  
+@media screen and (max-width: 800px){
+  .footer {
+    bottom: 0px;
+    position: absolute;
+    padding: 0px;
+    width: 100%;
+    height: 10vh;
+  }
+
+  .navbar a.icon{
+    display: inline;
+  }
+
+  .account-name{
+    display: none;
+  }
+
+  .navbar-links{
+    display: none;
+    justify-content: right;
+  }
+  .navbar-link{    
+    justify-content: left;
+  }
+    
+  .navbar {
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    position: relative;
+    
+  }
+
+  .navbar a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;    
+  } 
+  
 }

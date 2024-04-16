@@ -26,8 +26,8 @@ class poolclient(AsyncWebsocketConsumer):
 
         #Create new chat object
         chat = Chat(
-            content = message
-            user = "username"
+            content = message,
+            user = "username",
             room = room
         )
 

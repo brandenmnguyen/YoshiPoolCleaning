@@ -6,6 +6,12 @@
     height: 650px;
 }
 
+.container {
+    width: 100vw;
+    justify-content: center;
+    margin-bottom: 4vw;
+}
+
 .formHalf {
     width: 50%;
 }
@@ -16,13 +22,14 @@
 
 h1 {
     color: rgba(96, 160, 239, 1);
+    margin-top: 5vh;
 
 }
 
 label {
     margin-top: 60px;
     color: rgba(96, 160, 239, 1);
-    font-size: 23px;
+    font-size: 1.4375rem;
 }
 
 input {
@@ -32,7 +39,11 @@ input {
 }
 
 .imagePoolSize {
-    width: 820px;
+    width: 50vw;
+}
+
+.imagePoolSize2 {
+    display: none;
 }
 
 .body {
@@ -41,7 +52,7 @@ input {
 
 .signUpButton {
     text-decoration: none;
-    margin-left: 210px;
+    margin-left: 150px;
     background-color: rgba(96, 160, 239, 1);
     border-radius: 20px;
     color: white;
@@ -58,7 +69,7 @@ input {
 
 #provider {
     display: block;
-    margin-left: 190px;
+    margin-left: 130px;
     text-decoration: none;
     margin-top: 5px;
     color: rgba(96, 160, 239, 1);
@@ -67,4 +78,43 @@ input {
 
 #provider:hover {
     text-decoration: underline;
+}
+
+@media screen and (max-width: 800px){
+
+    .col{
+        width: 80vw;
+    }
+
+    .signUpButton {        
+        width: 40%;
+        margin-left: 25vw;
+    }
+
+    #provider {  
+        margin-top: 0.5rem;
+    }
+
+    .formHalf{
+        width: 100%;
+    }
+
+    .fullScreen{
+        width: 100%;
+    }
+
+    .imagePoolSize {
+        display: none;
+    }
+
+    .imagePoolSize2{
+        display: inline;
+        margin-left: 10vw;
+    }
+
+    label {
+        margin-top: 60px;
+        color: rgba(96, 160, 239, 1);
+        font-size: 1.00rem;
+    }
 }
