@@ -37,6 +37,18 @@ class Appointments(models.Model):
 
 
 
+class ProviderAvailableTimes(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
+    appdate = models.DateField(blank=True, null=True)
+    apptime = models.TimeField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'PROVIDERAVAILABLETIMES'
+
+        
+
 class Client(models.Model):
     client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
     fname = models.CharField(max_length=100, blank=True, null=True)

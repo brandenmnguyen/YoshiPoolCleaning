@@ -13,6 +13,12 @@ urlpatterns = [
     path('addCompany/', views.addCompany),
     path('updateCompany/<int:company_id>/', views.updateCompany, name = 'updateCompany'),
     path('addTaskping/', views.addTaskping),
+
+    path('getProviderSchedule/', views.getProviderSchedule),
+    path('addProviderSchedule/', views.addProviderAppointments),
+    path('scheduleProvAppointments/',views.scheduleProvAppointment),
+
+
     path('getTaskping/', views.getTaskping),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
@@ -67,7 +73,8 @@ urlpatterns = [
     path('info/', views.info, name = 'info'),
     path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
     path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
-
+    path('ScheduleTimingProvider/', views.ScheduleTimingProvider, name='ScheduleTimingProvider'),
+    path('ScheduleTimingProvider/providerDateTimeScheduling/', views.providerDateTimeScheduling, name='providerDateTimeScheduling'),
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
     path('clientSettings/', views.clientSettings, name = 'clientSettings'),
     path('providerSettings/', views.companySettings, name = 'providerSettings'),
