@@ -5,11 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProviderTrackPage</title>
+    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{% static 'ProviderTracking.css' %}" />
   </head>
@@ -24,7 +23,7 @@
         <a href="#map">Map</a>
         <a href="#schedule">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name"> {{ company.company_name }}</a>
+        <a href="#account" class="account-name">{{ company.company_name }}</a>
       </div>
     </div>
     <div class="container mt-4 my-3">
@@ -38,70 +37,278 @@
       </div>
     </div>
 
-    <div class="container-fluid main-container mt-3 my-3">
-      <div class="row">
-        <!-- Task list column (left-hand side) -->
-        <div class="col-md-6 left-side-scroll">
-          <div id="taskListContainer">
-            <ul style="list-style-type: none; padding-left: 0">
-              {% for task, form in tasks_with_forms %}
-              <li class="task my-3">
-                <strong>{{ task.taskname }}</strong><br />
-                <strong>Description:</strong> {{ task.description }}<br />
-                <div
-                  id="updated-at-{{ forloop.counter }}"
-                  style="display: none"
-                >
-                  <strong>Time of Update:</strong> {{ task.updated_at }}<br />
-                </div>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a
+          class="nav-link active"
+          id="nav-home-tab"
+          data-bs-toggle="tab"
+          href="#nav-home"
+          role="tab"
+          aria-controls="nav-home"
+          aria-selected="true"
+          >Select An Appointment</a
+        >
+        <a
+          class="nav-link"
+          id="nav-taskping-tab"
+          data-bs-toggle="tab"
+          href="#nav-taskping"
+          role="tab"
+          aria-controls="nav-taskping"
+          aria-selected="false"
+          >Tracking List</a
+        >
+      </div>
+    </nav>
 
-                <!-- Form to update task status -->
-                <form
-                  method="post"
-                  action="{% url 'provider-status-update' task.task_id %}"
-                >
-                  {% csrf_token %} {{ form.as_p }}
-                  <button type="submit" class="btn btn-success">
-                    Update Status
-                  </button>
-                </form>
-              </li>
-              {% endfor %}
-            </ul>
+    
+
+    <div class="tab-content" id="nav-tabContent">
+      <!-- Tab for Appointments -->
+      <div
+        class="tab-pane fade show active"
+        id="nav-home"
+        role="tabpanel"
+        aria-labelledby="nav-home-tab"
+      >
+      <div class="container-fluid main-container mt-3 my-3">
+<div class="container ">
+  <div class="row">
+  {% if appointment_list|length > 0 %}
+    {% for appointment in appointment_list %}
+      <div class="col-md-3">
+        <div class="card border-dark mb-3" style="max-width: 18rem;">
+          <div class="card-header bg-a3c9f7 border-dark">
+             <strong style="color: #F5F5F5; font-size: 20px;">
+    Client {{ appointment.cl.fname }} {{ appointment.cl.lname }}
+</strong>
+
           </div>
+          <div class="card-body text-dark">
+<img
+  src="{% static 'profile.jpg' %}"
+  alt="Technician"
+  class="img-fluid mx-auto d-block"
+  style="max-width: 150px; height: auto;">
+            <h5 class="card-title"><strong>{{ appointment.cl.address }}</strong></h5>
+            <p class="card-text">
+              Appointment Date: {{ appointment.appdate }}<br />
+              Appointment Time: {{ appointment.apptime }}
+            </p>
+            <div class="text-center">
+  <button
+    id="selectAppointmentBtn_{{ appointment.appointment_id }}"
+    data-appointment-id="{{ appointment.appointment_id }}"
+    onclick="onAppointmentButtonClick(this.getAttribute('data-appointment-id')); showTaskpingTab();"
+  >
+    Select Appointment
+  </button>
+</div>
+          </div>
+          <div class="card-footer bg-transparent border-dark"></div>
         </div>
+      </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info" role="alert">
+      You have no appointments.
+  <a href="http://127.0.0.1:8000/poolcleanapp/dailycalendarclient/" class="alert-link">
+    Click here to manage your schedule
+  </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
 
-        <!-- Map and other content column (right-hand side) -->
-        <div class="col-md-6">
-          <div class="technician-greeting d-none d-md-flex align-items-center">
-            <div class="col-2 p-0">
-              <img
-                src="{% static 'profile.jpg' %}"
-                alt="Technician"
-                class="img-fluid"
-              />
-            </div>
-            <div class="col-9">
-              <p class="name-text">{{ company.company_name }}</p>
-              <p class="status-text">
-                Destination Status<button class="dropdown-toggle ms-1"></button>
-              </p>
-            </div>
+</div>
+</div>
+
+
+      <!-- Tab for Tasks -->
+      <p>{{ app }}</p>
+      <div
+        class="tab-pane fade"
+        id="nav-taskping"
+        role="tabpanel"
+        aria-labelledby="nav-taskping-tab"
+      >
+        <div class="container-fluid main-container mt-3 my-3">
+              <!-- Checklist for Task Names -->
+              <div id="clientName" style="font-size: 32px; font-weight: bold;"></div>
+              <div id="clientAddress" style="font-size: 16px; font-weight: bold;"></div>
+              <p>Click the down arrow to select one or many task</p>
+          <div class="label-button">
+            <label>Select Tasks</label> 
+            <button id="toggleTasksButton" class="btn custom-toggle-button">
+            <span id="arrowIcon" style="display: inline-block; transform: rotate(0deg)">&#9660;</span>
+            <!-- This is a downward triangle -->
+          </button>
           </div>
-          <div class="map-container d-none d-md-block">
-            <iframe
-              src="https://www.google.com/maps?q=Sacramento,CA&output=embed"
-              width="100%"
-              height="500vh"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-            ></iframe>
+      
+              <div id="tasksContainer" style="display: none">
+              <p>Select many task [then hit submit task to show task] </p>
+                  <input type="hidden" id="companyId" name="company_id" class="form-control">
+                  <!-- Hidden input for Client ID -->
+                  <input type="hidden" id="clientId" name="client_id" class="form-control">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="inspect"
+                    id="task_inspect"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Inspect the Pool</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Clean the Pump Basket"
+                    id="clean_the_pump_basket"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Clean the Pump Basket</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Scrub Pool Walls"
+                    id="scrub_pool_walls"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Scrub Pool Walls</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Skim the Pool"
+                    id="skim_the_pool"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Skim the Pool</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Empty the Skimmer Basket"
+                    id="empty_the_skimmer_basket"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Empty the Skimmer Basket</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Vacuum the Pool"
+                    id="vacuum_the_pool"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Vacuum the Pool</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Backwash Sand and DE Filters"
+                    id="backwash_sand_and_de_filters"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Backwash Sand and DE Filters</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name="taskname"
+                    value="Test the Pool Water and Add Chemicals"
+                    id="test_the_pool_water_and_add_chemicals"
+                  />
+                  <label class="form-check-label" for="task_inspect"
+                    >Test the Pool Water and Add Chemicals</label
+                  >
+                </div>
+                <!-- more checkboxes similar to the above -->
+
+                <button id="submitTasksButton" class="btn btn-primary">
+                  Submit Tasks
+                </button>
+              </div>
+              <div class="container-fluid main-container mt-3 my-3">
+                <div class="row">
+                  <!-- Task list column (left-hand side) -->
+                  <div class="col-md-6 left-side-scroll">
+                    <div id="taskListContainer">
+                      <div id="taskpingContainer">
+                        <div class="task">
+                          <div class="task-title"></div>
+                          <div class="task-status-complete">
+                          <div class="task-description"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Map and other content column (right-hand side) -->
+                  <div class="col-md-6">
+                    <div
+                      class="technician-greeting d-none d-md-flex align-items-center"
+                    >
+                      <div class="col-2 p-0">
+                        <img
+                          src="{% static 'profile.jpg' %}"
+                          alt="Technician"
+                          class="img-fluid"
+                        />
+                      </div>
+                      <div class="col-9">
+                        <p class="name-text">{{ company.company_name }}</p>
+                        <p class="status-text">
+                          Destination Status<button
+                            class="dropdown-toggle ms-1"
+                          ></button>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="map-container d-none d-md-block mt-3">
+                      <iframe
+                        src="https://www.google.com/maps?q=Sacramento,CA&output=embed"
+                        width="100%"
+                        height="500vh"
+                        style="border: 0"
+                        allowfullscreen=""
+                        loading="lazy"
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <button id="deleteTasksButton">Disconnect</button>
+
     <div class="footer">
       <a href="{% url 'about' %}">About Us</a>
       <a href="#terms">Terms of Use</a>
@@ -110,6 +317,14 @@
       <a href="#socials">Socials</a>
       <a href="#instagram">Instagram</a>
     </div>
-    <script src="{% static 'ProviderTracking.js' %}"></script>
+    <script
+      type="text/javascript"
+      src="{% static 'providertracking.js' %}"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

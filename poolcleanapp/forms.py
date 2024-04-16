@@ -56,15 +56,40 @@ class InvoiceForm(forms.ModelForm):
         self.fields['c'].widget = forms.HiddenInput()
         self.fields['amount'].widget = forms.HiddenInput()
 
+"""
+class UpdateTaskpingForm(forms.ModelForm):
+    description = forms.CharField(max_length=100, required=False)
 
-class TaskpingForm(forms.ModelForm):
     class Meta:
         model = Taskping
-        fields = ['status']
+        fields = ['status', 'description']
 
     def save(self, commit=True):
         taskping_instance = super().save(commit=False)
+        taskping_instance.description = self.cleaned_data['description']
         taskping_instance.status = self.cleaned_data['status']
+
+        if commit:
+            taskping_instance.save()
+        return taskping_instance
+"""
+    
+class TaskpingForm(forms.ModelForm):
+    class Meta:
+        model = Taskping
+        fields = ['taskname', 'status', 'description', 'client', 'c_id']  # Including all fields
+
+    def __init__(self, *args, **kwargs):
+        super(TaskpingForm, self).__init__(*args, **kwargs)
+        self.fields['taskname'].widget.attrs.update({'class': 'form-control'})
+        self.fields['status'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control'})
+        self.fields['client'].widget.attrs.update({'class': 'form-control'})
+        self.fields['c_id'].widget.attrs.update({'class': 'form-control'})
+
+    def save(self, commit=True):
+        taskping_instance = super().save(commit=False)
+        taskping_instance.taskname = self.cleaned_data['taskname']
         if commit:
             taskping_instance.save()
         return taskping_instance

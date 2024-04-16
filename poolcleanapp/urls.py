@@ -12,7 +12,6 @@ urlpatterns = [
     path('addCompany/', views.addCompany),
     path('addTaskping/', views.addTaskping),
     path('getTaskping/', views.getTaskping),
-    path('putTaskping/<int:pk>/', views.putTaskping, name='update-taskping-status'),
     path('viewInvoice/', views.getInvoice),
     path('addInvoice/', views.addInvoice),
     path('add_client/', views.add_client),
@@ -42,7 +41,7 @@ urlpatterns = [
     path('paymentsuccess/', views.paymentSuccess, name = 'paymentsuccess'),
     path('clienttracking/', views.clienttracking, name='clienttracking'),
     path('providertracking/', views.providertracking, name='providertracking'),
-    path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
+    #path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
     path('paymenthistory/', views.paymentHistory, name='paymenthistory'),
     path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
@@ -68,4 +67,13 @@ urlpatterns = [
     #------------------------------------------------------------------#
     path('messaging/', views.messaging_view, name='messaging'),
     #------------------------------------------------------------------#
-] 
+    path('ProviderTracking/getAppointmentDetails/<int:pk>/', views.getAppointmentDetails, name='get_appointment_details'),
+    #path('ProviderTracking/company/<int:pk>/', views.getOneCompany, name='get-one-company'),
+    path('ProviderTracking/client/<int:pk>/', views.getOneClient, name='get-one-client'),
+    path('ProviderTracking/submit_task/<int:companyID>/<int:clientID>/', views.submit_task_form, name='submit_task_form'),
+    path('ProviderTracking/taskping/<int:companyID>/<int:clientID>/', views.getTaskpingFrom, name='getTaskpingFrom'),
+    path('ProviderTracking/updateTask/<int:task_id>/', views.update_task, name='update_task'),
+    path('putTaskping/<int:pk>/', views.putTaskping, name='update-taskping-status'),
+    path('client-tracking/<int:pk>/', views.clienttrackingWithout, name='client-tracking'),
+]
+

@@ -1,100 +1,271 @@
+let globalCompanyId = null;  // Global scope variable for company ID
+let globalClientId = null;  // Global scope variable for client ID
+let globalTaskId = null;
 
-/*document.addEventListener('DOMContentLoaded', function () {
-  // Adjust the URL as necessary
-  const wsStart = window.location.protocol === "https:" ? "wss://" : "ws://";
-  const wsPath = wsStart + window.location.host + "/ws/provider-status-update/"; // General path, adjust as necessary
-  const taskStatusSocket = new WebSocket(wsPath);
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleButton = document.getElementById('toggleTasksButton');
+    var tasksContainer = document.getElementById('tasksContainer');
 
-  window.sendStatusUpdate = function(taskId, statusUpdate) {
-      taskStatusSocket.send(JSON.stringify({
-          taskId: taskId,
-          status: statusUpdate
-      }));
-  };
+    toggleButton.onclick = function() {
+        // Check current display style and toggle it
+        if (tasksContainer.style.display === 'none') {
+            tasksContainer.style.display = 'block';
+            toggleButton.textContent = 'Minimize Tasks'; // Change button text to indicate action
+        } else {
+            tasksContainer.style.display = 'none';
+            toggleButton.textContent = 'Display Tasks'; // Change back the button text
+        }
+    };
+});
 
-  taskStatusSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log('Message from server: ', data);
-      // Handle incoming messages, such as confirmation of status update
-  };
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleButton = document.getElementById('toggleTasksButton');
+    var tasksContainer = document.getElementById('tasksContainer');
+    var arrowIcon = document.getElementById('arrowIcon');
 
-  taskStatusSocket.onclose = function(e) {
-      console.error('Task status socket closed unexpectedly');
-  };
+    toggleButton.onclick = function() {
+        if (tasksContainer.style.display === 'none') {
+            tasksContainer.style.display = 'block';
+            arrowIcon.style.transform = 'rotate(180deg)'; // Arrow points up
+        } else {
+            tasksContainer.style.display = 'none';
+            arrowIcon.style.transform = 'rotate(0deg)'; // Arrow points down
+        }
+    };
+});
 
-  taskStatusSocket.onerror = function(err) {
-      console.error('WebSocket error: ', err);
-  };
-});*/
-//--------------
-console.log("javascript is running");
-  // When the DOM is fully loaded
-  document.addEventListener('DOMContentLoaded', (event) => {
-    // Get all the update status forms
-    document.querySelectorAll('.update-status-form').forEach(form => {
-      // Add an event listener to each form
-      form.addEventListener('submit', function(e) {
-        // Prevent the default form submission
-        e.preventDefault();
+function showTaskpingTab() {
+    // Activate the 'nav-taskping-tab' tab
+    var tabElement = document.getElementById('nav-taskping-tab');
+    var newTab = new bootstrap.Tab(tabElement);
+    newTab.show();
+}
 
-        // Get the task id from the data-task-id attribute
-        const taskId = this.getAttribute('data-task-id');
+async function onAppointmentButtonClick(appointmentId) {
+    try {
+        // Fetch the details of the appointment
+        const appointmentResponse = await fetch(`/poolcleanapp/ProviderTracking/getAppointmentDetails/${appointmentId}/`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        });
 
-        // Show the updated at information for the right task
-        document.getElementById('updated-at-' + taskId).style.display = 'block';
+        if (!appointmentResponse.ok) {
+            throw new Error('Failed to fetch appointment details');
+        }
 
-        // You can now submit the form using AJAX or the following line to submit traditionally
-        // this.submit();
-      });
+        const appointmentDetails = await appointmentResponse.json();
+        console.log('Appointment Details:', appointmentDetails);
+
+        // Set the global company and client IDs
+        globalCompanyId = appointmentDetails.c;
+        globalClientId = appointmentDetails.cl;
+
+        // Update the form fields with the fetched IDs
+        document.getElementById('companyId').value = globalCompanyId;
+        document.getElementById('clientId').value = globalClientId;
+
+        // Fetch task data now that global IDs are set
+        fetchTaskpingData();
+
+        // Fetch more client details
+        const clientResponse = await fetch(`/poolcleanapp/ProviderTracking/client/${globalClientId}/`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        });
+
+        if (!clientResponse.ok) {
+            throw new Error('Failed to fetch client details');
+        }
+
+        const clientData = await clientResponse.json();
+        console.log("Client Name is: " + clientData.fname + " " + clientData.lname);
+        console.log("Client address is: " + clientData.address);
+
+        // Update HTML elements with the client details
+        document.getElementById('clientName').textContent = clientData.fname + ' ' + clientData.lname;
+        document.getElementById('clientAddress').textContent = 'Address: ' + clientData.address;
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+function getCSRFToken() {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim().split('=');
+        if (cookie[0] === 'csrftoken') {
+            return decodeURIComponent(cookie[1]);
+        }
+    }
+    return null;
+}
+ 
+
+document.getElementById('submitTasksButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    if (!globalCompanyId || !globalClientId) {
+        console.log("No Company or Client ID");
+        alert("No Company or Client ID set. Please select an appointment first.");
+        return;  // Stop execution if IDs are not available
+    }
+
+    var taskNames = [];
+    document.querySelectorAll('.form-check-input:checked').forEach(function(item) {
+        taskNames.push(item.value);  // Collect all checked task names
     });
-  });
-//-------------------------------------------------------------------
-function showPopup() {
-  const overlay = document.createElement("div");
-  overlay.classList.add("overlay");
 
-  const popup = document.createElement("div");
-  popup.classList.add("popup");
+    if (taskNames.length === 0) {
+        alert("Please select at least one task.");
+        return;  // Prevent submission if no tasks are selected
+    }
 
-  const messageContainer = document.createElement("div");
-  messageContainer.textContent = "Some task are not complete.";
-  messageContainer.style.textAlign = "center";
+    var url = `/poolcleanapp/ProviderTracking/submit_task/${globalCompanyId}/${globalClientId}/`;
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()  // Ensure this function retrieves a valid token
+        },
+        body: JSON.stringify({
+            tasknames: taskNames,
+            status: 'n',
+            description: 'Add a description'
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to submit tasks: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        alert("Tasks submitted successfully.");
+        // Optionally, you can clear the checked items or refresh the task list
+        document.querySelectorAll('.form-check-input:checked').forEach(item => item.checked = false);
+        fetchTaskpingData();  // Refresh the task data if needed
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Error submitting tasks: " + error.message);
+    });
+});
 
-  // Create the buttons container
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.style.display = "flex";
-  buttonsContainer.style.justifyContent = "center"; // Center the buttons
-  buttonsContainer.style.gap = "10px"; // Add gap between buttons
+document.addEventListener('DOMContentLoaded', function() {
+    fetchTaskpingData(); // Ensure this is the right place to call it
+    updateTask();
+});
 
-  // Create the close button
-  const closeButton = document.createElement("button");
-  closeButton.textContent = "Close";
-  closeButton.classList.add("popup-close-btn");
+function fetchTaskpingData() {
+    if (globalCompanyId === null || globalClientId === null) {
+        console.error("Company ID or Client ID is not set.");
+        return;
+    }
 
-  // Create the finish button
-  const finishButton = document.createElement("button");
-  finishButton.textContent = "Finish";
-  finishButton.classList.add("popup-open-btn"); // Use the same class for styling
+    fetch(`/poolcleanapp/ProviderTracking/taskping/${globalCompanyId}/${globalClientId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("All data received:", data);
+        const container = document.getElementById('taskpingContainer');
+        container.innerHTML = '';  // Clear previous entries
 
-  // Append buttons to the buttons container
-  buttonsContainer.appendChild(closeButton);
-  buttonsContainer.appendChild(finishButton);
+        let allTasksCompleted = true;  // Flag to check if all tasks are completed
 
-  // Append the message container and buttons container to the popup
-  popup.appendChild(messageContainer);
-  popup.appendChild(buttonsContainer);
+        data.forEach(task => {
+            console.log("Task ID is: " + task.task_id);
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            const updatedDate = new Date(task.updated_at);
+            const formattedTime = updatedDate.toLocaleString();
 
-  document.body.appendChild(overlay);
-  document.body.appendChild(popup);
+            let statusElement, descriptionElement, updateButton;
+            if (task.status === 'y') {
+                statusElement = `<div class="task-status-complete">Completed</div>`;
+                descriptionElement = `<div class="task-description">${task.description}</div>`;
+                updateButton = `<button id="button-container" disabled="disabled">Update</button>`;
+            } else {
+                allTasksCompleted = false;  // Mark flag as false if any task is incomplete
+                statusElement = `
+                    <select class="task-status" id="status-${task.task_id}">
+                        <option value="y">Completed</option>
+                        <option value="n" selected>In Progress</option>
+                    </select>`;
+                descriptionElement = `
+                    <input type="text" class="task-description" id="description-${task.task_id}" value="${task.description || ''}">`;
+                updateButton = `<button id="button-container" onclick="updateTask(${task.task_id})">Update</button>`;
+            }
 
-  closeButton.addEventListener("click", function () {
-    popup.remove();
-    overlay.remove();
-  });
+            taskElement.innerHTML = `
+            <div class="task-title" style="font-weight: bold;">${task.taskname}</div>
+            <div class="update-time" style="font-weight: bold;">Time of update: ${formattedTime}</div>
+            ${statusElement}
+            <div style="font-weight: bold;">Description:</div>
+            ${descriptionElement}
+            ${updateButton}
+        `;
+            container.appendChild(taskElement);
+        });
 
-  finishButton.addEventListener("click", function () {
-    console.log("Finish button clicked");
-    popup.remove();
-    overlay.remove();
-  });
+        if (allTasksCompleted) {
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Complete';
+            completeButton.onclick = function() {
+                if (confirm('Complete for the day?')) {
+                    alert('Great job! Go back to Select an Appointment tab to select another appointment');
+                } else {
+                    alert('Continue your work!');
+                }
+            };
+            container.appendChild(completeButton);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+function updateTask(taskId) {
+
+    if (!taskId) {
+        console.error('Invalid Task ID provided.');
+        return;
+    }
+    const status = document.getElementById(`status-${taskId}`).value;
+    const description = document.getElementById(`description-${taskId}`).value;
+
+
+    fetch(`/poolcleanapp/ProviderTracking/updateTask/${taskId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken() 
+        },
+        body: JSON.stringify({
+            status: status,
+            description: description
+        })
+    })
+    .then(response => response.ok ? response.json() : Promise.reject('Failed to update task'))
+    .then(data => {
+        console.log('Update Success:', data);
+        fetchTaskpingData();  
+    })
+    .catch(error => {
+        console.error('Error updating task:', error);
+    });
 }
