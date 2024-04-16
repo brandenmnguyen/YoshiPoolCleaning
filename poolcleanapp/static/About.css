@@ -53,16 +53,31 @@ body{
 }
 
 .footer {
-    background-color: rgba(215, 233, 255, 1);
-
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #a3c9f7;;
 }
 
 .footerInfo {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; /* Align items vertically in the center */
+  background-color: #a3c9f7;
+  padding: 15px;
+  color: white; /* Text color */
+}
 
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
+/* Example styling for footer links */
+.footerInfo a {
+  color: white; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
 
+.footerInfo a:hover {
+  color: rgb(0, 47, 255);
+  text-decoration: underline; /* Add underline on hover */
 }
 
 

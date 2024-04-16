@@ -1,7 +1,5 @@
 import json
 from io import BytesIO
-import smtplib
-import ssl
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
@@ -14,9 +12,6 @@ from channels.layers import get_channel_layer
 
 from django.conf import settings
 from django.core.serializers import serialize
-import requests
-from django.views.decorators.csrf import csrf_exempt
-
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -54,6 +49,10 @@ from io import BytesIO
 
 import datetime
 import pytz
+import smtplib
+import ssl
+import requests
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -378,8 +377,9 @@ def scheduleAppointment(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 ## --------------- Notifications ----------------  
-         
+
 @api_view(['POST'])
 def send_email(request):
     data = json.loads(request.body)
@@ -407,7 +407,7 @@ def send_email(request):
         smtp.login(email_sender,email_pass)
         smtp.sendmail(email_sender,email_receiver,email_message.as_string())
         smtp.quit()
-        
+
     return Response(request.data, status=status.HTTP_200_OK)
 
 @csrf_exempt 
@@ -424,7 +424,7 @@ def send_simple_message(request):
 			"to": "Mohammed Al Chalabi <"+email_receiver+">",
 			"subject": email_subject,
 			"text":body})
-    return Response(request.data, status=r.status_code)
+    return Response(request.data, status=r.status_code)  
 
 def homepage(request):
     return render(request, "Homepage-1.html")
@@ -717,7 +717,7 @@ def dailycalendarclient(request):
     return render(request, "ClientCalendarClient.html")
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def paymentHistory(request):
     return render(request, "InvoiceTracking.html")
 
@@ -773,7 +773,7 @@ def getCompanyLogin(company_email, company_pw):
     except Company.DoesNotExist:
         return None
 
-
+"""  old providertracking view
 def providertracking(request, form=None):
     company_email = request.session.get('username')
     company_pw = request.session.get('password')
@@ -796,7 +796,7 @@ def providertracking(request, form=None):
     }
 
     return render(request, "ProviderTracking.html", context)
-
+"""
 @csrf_exempt
 def submit_task_form(request, companyID, clientID):
     if request.method == 'POST':
@@ -831,6 +831,20 @@ def update_task(request, task_id):
         task.save()
         return JsonResponse({'message': 'Task updated successfully'}, status=200)
     return JsonResponse({'error': 'Invalid request'}, status=400)
+@require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
+
+def providertracking(request):
+    task_list = Taskping.objects.filter(c_id=1)   # as an example
+    if 'username' in request.session:
+        account_name = request.session['username']
+    else:
+        account_name = "account_name"
+    
+    context = {
+        'task_list': task_list,
+        'account_name': account_name,
+    }
+    return render(request, "ProviderTracking.html", context)
 
 
 #@login_required
