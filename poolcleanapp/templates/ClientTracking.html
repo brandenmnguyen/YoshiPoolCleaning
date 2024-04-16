@@ -10,25 +10,18 @@
 </head>
 <body>
     <div class="navbar">
-        <!-- Navbar content -->
-        <div class="navbar-links">
-            <a href="#home">Logo</a>
-            <a href="#about">About</a>
-            <a href="#providers">Providers</a>
-            <a href="#payment">Payment</a>
-            <a href="#map">Map</a>
-            <a href="#schedule">Schedule</a>
-            <a href="{% url 'logout' %}">Logout</a>
-            <div class="account-name dropdown">
-                <a href="#" class="dropdown-toggle" id="dropdownAccountName" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ client.fname }} {{ client.lname }}
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownAccountName">
-                    <li><a class="dropdown-item" href="{% url 'editAccount' %}">Edit Profile</a></li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-            </div>
-        </div>
+      <div class="navbar-links">
+        <a href="{% url 'homepage' %}">Logo</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'providersearch' %}">Providers</a>
+        <a href="{% url 'paymenthistory' %}">Payment</a>
+        <!--<a href="#map">Map</a>-->
+        <a href="{% url 'dailycalendar' %}">Schedule</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'clientSettings' %}" class="account-name">
+          {{ client.fname }} {{client.lname}}</a
+        >
+      </div>
     </div>
 
     <div class="container mt-4 my-3">

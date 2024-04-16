@@ -42,6 +42,7 @@ from .models import Taskping
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
 
 import pyotp
 
@@ -1050,6 +1051,79 @@ def payment_history(request):
     return render(request, 'temp_payment_history.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst})
 
 #End of Stripe
+
+# Client/Provider Settings Page
+
+def clientSettings(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        client = Client.objects.get(email=user_id)
+        client_id = client.client_id
+    except Client.DoesNotExist:
+        client_id = None
+    print('user id:', client_id)
+    return render(request, 'clientSettings.html', {'user': user_id, 'pass': user_pass, 'client_id': client_id}, )
+
+@api_view(['PUT'])
+def updateClient(request, client_id):
+    try:
+        client = Client.objects.get(pk=client_id)
+        serializer = ClientSerializer(instance=client, data=request.data)
+        if 'email' in request.data:
+            new_email = request.data['email']
+            # Check if the new email is already in use
+            existing_client = Client.objects.filter(email=new_email).exclude(pk=client_id).first()
+            if existing_client:
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Client.DoesNotExist:
+        return Response({"error": "Client not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def companySettings(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        company = Company.objects.get(company_email=user_id)
+        company_id = company.c_id
+    except Client.DoesNotExist:
+        company_id = None
+    return render(request, 'providerSettings.html', {'user': user_id, 'pass': user_pass, 'company_id': company_id}, )
+
+@api_view(['PUT'])
+def updateCompany(request, company_id):
+    try:
+        company = Company.objects.get(pk=company_id)
+        serializer = CompanySerializer(instance=company, data=request.data)
+        if 'company_email' in request.data:
+            new_email = request.data['company_email']
+            # Check if the new email is already in use
+            existing_company = Company.objects.filter(company_email=new_email).exclude(pk=company_id).first()
+            if existing_company:
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Company.DoesNotExist:
+        return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+# End of Client/Provider Settings Page
 
 #logout
 def logoutUser(request):
