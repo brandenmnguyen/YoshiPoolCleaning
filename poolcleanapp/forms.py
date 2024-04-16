@@ -93,3 +93,14 @@ class TaskpingForm(forms.ModelForm):
         if commit:
             taskping_instance.save()
         return taskping_instance
+
+class ClientUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['email', 'cl_password', 'address', 'phone_number']
+
+    def __init__(self, *args, **kwargs):
+        super(ClientUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['cl_password'].widget = forms.PasswordInput()
+
+        

@@ -835,11 +835,10 @@ def update_task(request, task_id):
 
 #@login_required
 #@login_required(login_url=login_user)
-#without login
-def clienttrackingWithout(request,pk):
-    task_list = Taskping.objects.filter(client=pk)   #need to replace with logged in client
+"""def clienttracking(request):
+    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
-
+"""
 
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):
@@ -936,7 +935,7 @@ def clientVerification(request):
         generated_totp_code = totp.now()
 
         if user_totp_code == generated_totp_code:
-            return render(request, 'ClientTracking.html')
+            return redirect('clienttracking')
         else:
             return render(request, 'LoginPage.html')
 
@@ -1125,6 +1124,7 @@ def clienttracking(request):
     client_id = client.client_id
     c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID
 
+    appointment_list = Appointments.objects.filter(cl = client_id)
     task_list = Taskping.objects.filter(client=client)  # Filter Taskping objects by client object
 
     company = None
@@ -1135,13 +1135,47 @@ def clienttracking(request):
             company = None  # Handle the case where no Company matches the c_id
 
     context = {
+        'appointment_list': appointment_list,
         'client': client,
         'company': company,  # Pass the company object, which may be None
         'task_list': task_list,  # Pass the list of tasks associated with the client
     }
     return render(request, "ClientTracking.html", context)
 
+def editAccount(request):
+    # Corrected the typo in 'request'
+    password = request.session.get('password')
+    email = request.session.get('username')
+    client=Client.objects.get(email=email,cl_password=password)
+    context={
+        'client': client
+    }
+    # Use 'render' function to render the 'editAccount.html' template with context
+    return render(request, "editAccount.html",context)
+    
 
+def update_client_field(request, client_id):
+    try:
+        client = Client.objects.get(client_id=client_id)  # Corrected field name
+        if request.method == 'POST':
+            form = ClientUpdateForm(request.POST, instance=client)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'status': 'success', 'message': 'Field updated successfully'})
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors})
+    except Client.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Client not found'})
 
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
-
+@api_view(['GET'])
+def getClienttDetails(request, pk):
+    try:
+        appointment = Client.objects.get(pk=pk)  # Use get() and catch DoesNotExist
+        serializer = ClientSerializer(appointment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Client.DoesNotExist:
+        return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
