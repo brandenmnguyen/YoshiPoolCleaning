@@ -87,6 +87,7 @@ urlpatterns = [
     path('messaging/', views.messaging_view, name='messaging'),
     #------------------------------------------------------------------#
     path('ProviderTracking/getAppointmentDetails/<int:pk>/', views.getAppointmentDetails, name='get_appointment_details'),
+    #path('ProviderTracking/getOneAppointment/<int:pk>/', views.getOneAppointment, name='getOneAppointment'),
     #path('ProviderTracking/company/<int:pk>/', views.getOneCompany, name='get-one-company'),
     path('ProviderTracking/client/<int:pk>/', views.getOneClient1, name='get-one-client'),
     path('ProviderTracking/submit_task/<int:companyID>/<int:clientID>/', views.submit_task_form, name='submit_task_form'),

@@ -11,7 +11,9 @@
 <body>
     <div class="navbar">
       <div class="navbar-link" id="homelink">
-        <a href="{% url 'homepage' %}">Logo</a>
+        <a href="{% url 'homepage' %}">
+            <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
+        </a>
       </div>  
       <div class="navbar-links" id="links">
         <a href="{% url 'about' %}">About</a>
@@ -19,7 +21,7 @@
         <a href="{% url 'messaging' %}">Messages</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
         <!--<a href="#map">Map</a>-->
-        <a href="{% url 'dailycalendar' %}">Schedule</a>
+        <a href="{% url 'info' %}">Appointments</a>
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'clientSettings' %}" class="account-name">
           {{ client.fname }} {{client.lname}}</a

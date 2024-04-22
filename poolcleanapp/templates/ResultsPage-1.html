@@ -215,8 +215,8 @@
 
         subscribeButtons.forEach(button => {
             button.addEventListener("click", () => {
-                button.classList.toggle("subscribed");
-                button.textContent = button.classList.contains("subscribed") ? "Subscribed ✔" : "Subscribe";
+                button.innerHTML = "schedule";
+                window.location.href = "{% url 'clientSchedule' %}";
             });
         });
 

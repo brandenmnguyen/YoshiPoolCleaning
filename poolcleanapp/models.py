@@ -33,10 +33,15 @@ class ProviderAvailableTimes(models.Model):
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
 
+    def get_client(self):
+        return self.cl  # Corrected to return the actual ForeignKey field to Client
+
+    def get_company(self):
+        return self.c  # Corrected to return the actual ForeignKey field to Company
+
     class Meta:
         managed = True
         db_table = 'PROVIDERAVAILABLETIMES'
-
         
 
 class Client(models.Model):

@@ -102,6 +102,7 @@
                     if (response.ok) {
                         console.log('Appointment scheduled successfully!');
                         alert('Appointment scheduled successfully!');
+                        window.location.href = "{% url 'stripeTest' %}";
                     } else {
                         response.json().then(data => {
                             if (data.error === 'Appointment already scheduled.') {

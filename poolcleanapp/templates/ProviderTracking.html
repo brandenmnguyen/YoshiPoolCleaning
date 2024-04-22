@@ -16,20 +16,18 @@
     <div class="navbar">
       <!-- Navbar content -->
       <div class="navbar-link" id="homelink">
-        <a href="{% url 'homepage' %}">Logo</a>
+        <a href="{% url 'homepage' %}">
+          <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
+        </a>
       </div>  
       <div class="navbar-links" id="links">
         <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'paymenthistory' %}">Payment</a>
-        <a href="{% url 'providertracking' %}">Map</a>
+        
+        
         <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name" id="name">
-          {% if account_name %}
-            Account Name: {{ account_name }}
-          {% else %}
-            Account Name: Not Available
-          {% endif %}
+        <a href="{%url 'providerSettings' %}" class="account-name" id="name">
+          {{company.company_name}}
         </a>  
       </div>
       <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -124,7 +122,7 @@
     {% else %}
     <div class="alert alert-info" role="alert">
       You have no appointments.
-  <a href="http://127.0.0.1:8000/poolcleanapp/dailycalendarclient/" class="alert-link">
+  <a href="http://127.0.0.1:8000/poolcleanapp/ScheduleTimingProvider/" class="alert-link">
     Click here to manage your schedule
   </a>
     </div>

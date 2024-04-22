@@ -163,7 +163,7 @@ body {
 
 .main-container {
   flex: 1; /* Flex grow to absorb extra space */
-}
+} 
 /* delete?  */
 .navbar .dropdown-menu .dropdown-item:hover {
   color: rgb(0, 0, 0);

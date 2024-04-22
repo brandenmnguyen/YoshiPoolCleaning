@@ -70,6 +70,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
+
 # Create your views here.
 
 #Rest API
@@ -327,7 +328,7 @@ def getAppointmentDetails(request, pk):
     except Appointments.DoesNotExist:
         return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def getAppointments(request):
@@ -474,6 +475,8 @@ def addProviderAppointments(request):
 
 @api_view(['POST'])
 def scheduleProvAppointment(request):
+
+
     # Get parameters from the request
     appdate = request.data.get('appdate')
     apptime = request.data.get('apptime')
@@ -494,39 +497,7 @@ def scheduleProvAppointment(request):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
 def homepage(request):
@@ -873,7 +844,7 @@ def providertracking(request, form=None):
         return render(request, "ErrorPage.html", {'error': 'Company not found'})
 
     company_id = company.c_id
-    appointment_list = Appointments.objects.filter(c=company_id)
+    appointment_list = Appointments.objects.filter(c_id=company_id)
     tasks = Taskping.objects.filter(c_id=company_id)
 
     if not form:
@@ -953,23 +924,44 @@ def clienttrackingWithout(request):
 
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):
-    schedule_list = ProviderAvailableTimes.objects.filter(c_id=24)   
-    return render(request, "clientSchedule.html", {'schedule_list': schedule_list})
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+    client_id = client.client_id
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 10)   
+    return render(request, "clientSchedule.html", {'schedule_list': schedule_list, 'client_id': client_id})
 
 
 
 #SHOW APPOINTMENT INFO FOR CLIENT 
 def info(request):
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+    client_id = client.client_id
  
-    appointments = Appointments.objects.filter(cl_id=3)   
+    appointments = Appointments.objects.filter(cl_id = client_id)   
     appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
     request.session['appointments'] = appointment_data
 
-    return render(request, 'viewInfo.html', {'appointments': appointments})
+    return render(request, 'viewInfo.html', {'appointments': appointments, 'client_id': client_id})
 
 
 #SCHEDULING LOGIC
 def schedule_appointment(request):
+
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+
+    client_id = client.client_id
+
     if request.method == 'POST':
         # Parse JSON data from request body
         data = json.loads(request.body)
@@ -986,7 +978,7 @@ def schedule_appointment(request):
 
 
         # Create a new appointment instance
-        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime)
+        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime, cl_id = client_id)
         
         # Save the appointment to the database
         appointment.save()
@@ -1002,7 +994,17 @@ def schedule_appointment(request):
 
 
 def ScheduleTimingProvider(request):
-    return render(request, "ScheduleTimingProvider.html")
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        company = Company.objects.get(company_email=user_id)
+        company_id = company.c_id
+    except Company.DoesNotExist:
+        company_id = None
+    return render(request, "ScheduleTimingProvider.html", {'company_id': company_id},)
 
 
 #save info that the provider entered for available dates and estimated times
@@ -1224,7 +1226,7 @@ def companySettings(request):
     try:
         company = Company.objects.get(company_email=user_id)
         company_id = company.c_id
-    except Client.DoesNotExist:
+    except Company.DoesNotExist:
         company_id = None
     return render(request, 'providerSettings.html', {'user': user_id, 'pass': user_pass, 'company_id': company_id}, )
 
