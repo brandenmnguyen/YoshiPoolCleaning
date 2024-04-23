@@ -75,5 +75,7 @@ urlpatterns = [
     path('ProviderTracking/updateTask/<int:task_id>/', views.update_task, name='update_task'),
     path('putTaskping/<int:pk>/', views.putTaskping, name='update-taskping-status'),
     path('client-tracking/<int:pk>/', views.clienttrackingWithout, name='client-tracking'),
+    path('ProviderTracking/update_appstatus/<int:appointment_id>/', views.update_appstatus, name='update_appstatus'),
+    #path('ProviderTracking/deleteAllTaskpings/<int:clientId>/<int:companyId>/', views.deleteAllTaskpings, name='delete_all_taskpings'),
 ]
 

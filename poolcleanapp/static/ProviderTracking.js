@@ -41,6 +41,8 @@ function showTaskpingTab() {
     newTab.show();
 }
 
+
+//select an appointment
 async function onAppointmentButtonClick(appointmentId) {
     try {
         // Fetch the details of the appointment
@@ -54,7 +56,7 @@ async function onAppointmentButtonClick(appointmentId) {
         }
 
         const appointmentDetails = await appointmentResponse.json();
-        console.log('Appointment Details:', appointmentDetails);
+        //console.log('Appointment Details:', appointmentDetails);
 
         // Set the global company and client IDs
         globalCompanyId = appointmentDetails.c;
@@ -63,6 +65,8 @@ async function onAppointmentButtonClick(appointmentId) {
         // Update the form fields with the fetched IDs
         document.getElementById('companyId').value = globalCompanyId;
         document.getElementById('clientId').value = globalClientId;
+
+        //console.log("CompanyID is :" + globalCompanyId);
 
         // Fetch task data now that global IDs are set
         fetchTaskpingData();
@@ -76,19 +80,98 @@ async function onAppointmentButtonClick(appointmentId) {
         if (!clientResponse.ok) {
             throw new Error('Failed to fetch client details');
         }
+        const container = document.getElementById('updateStatusContainer');
 
         const clientData = await clientResponse.json();
-        console.log("Client Name is: " + clientData.fname + " " + clientData.lname);
-        console.log("Client address is: " + clientData.address);
+        //console.log("Client Name is: " + clientData.fname + " " + clientData.lname);
+        //console.log("Client address is: " + clientData.address);
 
         // Update HTML elements with the client details
         document.getElementById('clientName').textContent = clientData.fname + ' ' + clientData.lname;
         document.getElementById('clientAddress').textContent = 'Address: ' + clientData.address;
-        
+        container.innerHTML = `
+        <button onclick="updateAppointmentStatus(${appointmentId});">Complete Appointment</button>
+
+        `;
+
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
+function updateAppointmentStatus(appointmentId) {
+    
+        fetch(`/poolcleanapp/ProviderTracking/update_appstatus/${appointmentId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCSRFToken()  // Assuming you have a CSRF token setup
+            },
+            body: new URLSearchParams({appstatus: 'y'})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log(data.message);
+                alert('Appointment status updated successfully!');
+            } else {
+                console.log(appointmentId);
+                throw new Error(data.message);
+               
+            }
+        })
+        .catch(error => {
+            console.error('Error updating status:', error);
+            alert('Failed to update status.');
+        });
+}
+
+window.onload = function() {
+    // Select all the elements with the class 'appstatus'
+    var statusElements = document.querySelectorAll('.appstatus');
+  
+    statusElements.forEach(function(statusDiv) {
+      // Get the status text, which could be 'n', 'y', or something else
+      var statusText = statusDiv.textContent.split(':')[1].trim();
+  
+      // Assuming the format is "Status : x"
+      if (statusText === 'n') {
+        statusDiv.innerHTML = 'Status : <span style="color: red;">In Progress</span>';
+      } else if (statusText === 'y') {
+        statusDiv.innerHTML = 'Status : <span style="color: green;">Appointment Completed</span>';
+      } else {
+        // If the status is not 'n' or 'y', keep the original text
+        statusDiv.innerHTML = 'Status : ' + statusText;
+      }
+    });
+  };
+/*
+//after updating must delete all taskpings
+function deleteAllTaskpings(globalClientId,globalCompanyId) {
+    const url = `/poolcleanapp/deleteAllTaskpings/${globalClientId}/${globalCompanyId}/`;
+    fetch(url, {
+        method: 'DELETE',  // Using DELETE request
+        headers: {
+            'Content-Type': 'application/json',  // Assuming JSON, adjust if needed
+            'X-CSRFToken': getCSRFToken()  // Function to get CSRF token from cookies
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to delete taskpings');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message);  // Success message from server
+        alert(data.message);  // Alert the user with the response message
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting taskpings: ' + error.message);
+    });
+}
+*/
 
 
 function getCSRFToken() {
@@ -217,26 +300,11 @@ function fetchTaskpingData() {
         `;
             container.appendChild(taskElement);
         });
-
-        if (allTasksCompleted) {
-            const completeButton = document.createElement('button');
-            completeButton.textContent = 'Complete';
-            completeButton.onclick = function() {
-                if (confirm('Complete for the day?')) {
-                    alert('Great job! Go back to Select an Appointment tab to select another appointment');
-                } else {
-                    alert('Continue your work!');
-                }
-            };
-            container.appendChild(completeButton);
-        }
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
-
-
 
 
 function updateTask(taskId) {

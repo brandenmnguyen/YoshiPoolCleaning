@@ -19,11 +19,22 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length = 255)    
 
 class Appointments(models.Model):
+
+    APP_STATUS_CHOICES = [
+        ('n', 'In progress'),
+        ('y', 'Completed'),
+    ]
+
     appointment_id = models.AutoField(primary_key=True)
     cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
     c = models.ForeignKey('Company', models.DO_NOTHING, blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
+    appstatus = models.CharField(
+        max_length=100,
+        choices=APP_STATUS_CHOICES,
+        default= 'n'
+    )
 
     def get_client(self):
         return self.cl  # Corrected to return the actual ForeignKey field to Client
@@ -256,6 +267,7 @@ class ProviderAvailableTimes(models.Model):
     c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
+    status = models.CharField(max_length=1,default='n')
 
     class Meta:
         managed = True

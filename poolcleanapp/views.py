@@ -820,6 +820,37 @@ def update_task(request, task_id):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
+def update_appstatus(request, appointment_id):
+    if request.method == 'POST':
+        appointment = get_object_or_404(Appointments, pk=appointment_id)
+        if appointment.appstatus == 'n':
+            appointment.appstatus = 'y'
+            try:
+                appointment.save()
+                return JsonResponse({'message': 'Appointment status updated successfully.', 'status': 'success'}, status=200)
+            except Exception as e:
+                # Log the error for debugging
+                logging.error("Error updating appointment: %s", e)
+                return JsonResponse({'message': str(e), 'status': 'error'}, status=500)
+        else:
+            return JsonResponse({'message': 'Appointment status is not eligible for update.', 'status': 'error'}, status=400)
+    else:
+        return JsonResponse({'message': 'Invalid request method.', 'status': 'error'}, status=405)
+"""    
+@api_view(['DELETE'])
+#@permission_classes([IsAdminUser])
+def deleteAllTaskpings(request, clientId, companyId):
+    try:
+        taskpings = Taskping.objects.filter(client=clientId, c_id=companyId)
+        count = taskpings.count()
+        if count == 0:
+            return Response({"message": "No taskpings found to delete."}, status=status.HTTP_404_NOT_FOUND)
+
+        taskpings.delete()
+        return Response({"message": f"Successfully deleted {count} taskpings."}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+"""
 #@login_required
 #@login_required(login_url=login_user)
 #without login
@@ -827,6 +858,7 @@ def clienttrackingWithout(request,pk):
     task_list = Taskping.objects.filter(client=pk)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
 
+#--------------------------------------------------------------------------------------------------------------------------
 
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):

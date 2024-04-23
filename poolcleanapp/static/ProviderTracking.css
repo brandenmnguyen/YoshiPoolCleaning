@@ -172,3 +172,24 @@ body {
 .bg-a3c9f7 {
   background-color: #a3c9f7;
 }
+
+.appstatus {
+  visibility: hidden;
+  font-size: 0; /* Removes the space taken up by the text */
+}
+
+/* Display 'Not Complete' for n status */
+.appstatus[data-status="n"]::before {
+  content: 'Not Complete';
+  color: red;
+  visibility: visible;
+  font-size: revert; /* Reset the font size */
+}
+
+/* Display 'Appointment Completed' for y status */
+.appstatus[data-status="y"]::before {
+  content: 'Appointment Completed';
+  color: green;
+  visibility: visible;
+  font-size: revert;
+}

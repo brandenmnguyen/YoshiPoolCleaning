@@ -96,6 +96,7 @@
               Appointment Date: {{ appointment.appdate }}<br />
               Appointment Time: {{ appointment.apptime }}
             </p>
+            
             <div class="text-center">
   <button
     id="selectAppointmentBtn_{{ appointment.appointment_id }}"
@@ -106,7 +107,10 @@
   </button>
 </div>
           </div>
-          <div class="card-footer bg-transparent border-dark"></div>
+         <div class="card-footer bg-transparent border-dark" id="appStatus">
+         <div class="appstatus"><strong>Status :</strong> {{appointment.appstatus}}</div>
+          </div>
+
         </div>
       </div>
     {% endfor %}
@@ -266,6 +270,21 @@
                           </div>
                         </div>
                       </div>
+                      <form id="appointmentForm" method="post" action="">
+                       {% csrf_token %}
+                        <div id="appointmentsList">
+                       {% for appointment in appointments %}
+                        <div>
+                        <input type="radio" name="appointment" value="{{ appointment.id }}" onchange="selectAppointment()">
+                        {{ appointment.details }}
+                        </div>
+                        {% endfor %}
+                        </div>
+                        <button type="button" id="updateStatusButton" disabled hidden>Update Status</button>
+                        </form>
+                        <div id="updateStatusContainer"></div>
+
+
                     </div>
                   </div>
 
