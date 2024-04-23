@@ -90,13 +90,17 @@ async function onAppointmentButtonClick(appointmentId) {
         document.getElementById('clientName').textContent = clientData.fname + ' ' + clientData.lname;
         document.getElementById('clientAddress').textContent = 'Address: ' + clientData.address;
         container.innerHTML = `
-        <button onclick="updateAppointmentStatus(${appointmentId});">Complete Appointment</button>
+        <button onclick="updateAppointmentStatus(${appointmentId}); redirectToProviderTracking();">Complete Appointment</button>
+
 
         `;
 
     } catch (error) {
         console.error('Error:', error);
     }
+}
+function redirectToProviderTracking() {
+    window.location.href = "{% url 'providertracking' %}";
 }
 
 function updateAppointmentStatus(appointmentId) {
@@ -113,7 +117,7 @@ function updateAppointmentStatus(appointmentId) {
         .then(data => {
             if (data.status === 'success') {
                 console.log(data.message);
-                alert('Appointment status updated successfully!');
+                alert('Great work! This appointment is now completed!');
             } else {
                 console.log(appointmentId);
                 throw new Error(data.message);
@@ -122,7 +126,7 @@ function updateAppointmentStatus(appointmentId) {
         })
         .catch(error => {
             console.error('Error updating status:', error);
-            alert('Failed to update status.');
+            alert('Failed this appointment has been updated already.');
         });
 }
 

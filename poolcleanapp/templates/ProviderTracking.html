@@ -96,7 +96,6 @@
               Appointment Date: {{ appointment.appdate }}<br />
               Appointment Time: {{ appointment.apptime }}
             </p>
-            
             <div class="text-center">
   <button
     id="selectAppointmentBtn_{{ appointment.appointment_id }}"
@@ -107,19 +106,18 @@
   </button>
 </div>
           </div>
-         <div class="card-footer bg-transparent border-dark" id="appStatus">
-         <div class="appstatus"><strong>Status :</strong> {{appointment.appstatus}}</div>
-          </div>
-
+          <div class="card-footer bg-transparent border-dark"></div>
         </div>
       </div>
     {% endfor %}
     {% else %}
+    <div class="container-fluid main-container mt-3 my-3">
     <div class="alert alert-info" role="alert">
       You have no appointments.
   <a href="http://127.0.0.1:8000/poolcleanapp/dailycalendarclient/" class="alert-link">
     Click here to manage your schedule
   </a>
+    </div>
     </div>
     {% endif %}
   </div>
@@ -347,3 +345,4 @@
     ></script>
   </body>
 </html>
+

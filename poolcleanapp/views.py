@@ -766,10 +766,11 @@ def providertracking(request, form=None):
     company_pw = request.session.get('password')
     company = getCompanyLogin(company_email, company_pw)
     if company is None:
-        return render(request, "ErrorPage.html", {'error': 'Company not found'})
+        return render(request, "404.html", {'error': 'Company not found'})
 
     company_id = company.c_id
-    appointment_list = Appointments.objects.filter(c=company_id)
+    appointment_list = Appointments.objects.filter(c=company_id, appstatus = 'n')
+    
     tasks = Taskping.objects.filter(c_id=company_id)
 
     if not form:
@@ -1139,7 +1140,7 @@ def clienttracking(request):
     cl_password = request.session.get('password')  # Assuming password is stored in the session
     client = getClientName(email, cl_password)
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
 
     client_id = client.client_id
     c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID
