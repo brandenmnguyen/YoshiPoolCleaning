@@ -837,21 +837,23 @@ def update_appstatus(request, appointment_id):
             return JsonResponse({'message': 'Appointment status is not eligible for update.', 'status': 'error'}, status=400)
     else:
         return JsonResponse({'message': 'Invalid request method.', 'status': 'error'}, status=405)
-"""    
-@api_view(['DELETE'])
-#@permission_classes([IsAdminUser])
+
+from django.db import transaction
+@api_view(['GET','DELETE'])
 def deleteAllTaskpings(request, clientId, companyId):
     try:
-        taskpings = Taskping.objects.filter(client=clientId, c_id=companyId)
-        count = taskpings.count()
-        if count == 0:
-            return Response({"message": "No taskpings found to delete."}, status=status.HTTP_404_NOT_FOUND)
+        with transaction.atomic():
+            taskpings = Taskping.objects.filter(client=clientId, c_id=companyId)
+            count = taskpings.count()
+            if count == 0:
+                return Response({"message": "No taskpings found to delete."}, status=status.HTTP_404_NOT_FOUND)
 
-        taskpings.delete()
-        return Response({"message": f"Successfully deleted {count} taskpings."}, status=status.HTTP_200_OK)
+            taskpings.delete()
+            return Response({"message": f"Successfully deleted {count} taskpings."}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-"""
+    
+    
 #@login_required
 #@login_required(login_url=login_user)
 #without login

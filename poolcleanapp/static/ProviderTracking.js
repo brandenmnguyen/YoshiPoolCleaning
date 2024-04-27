@@ -90,18 +90,20 @@ async function onAppointmentButtonClick(appointmentId) {
         document.getElementById('clientName').textContent = clientData.fname + ' ' + clientData.lname;
         document.getElementById('clientAddress').textContent = 'Address: ' + clientData.address;
         container.innerHTML = `
-        <button onclick="updateAppointmentStatus(${appointmentId}); redirectToProviderTracking();">Complete Appointment</button>
+        <button onclick="updateAppointmentStatus(${appointmentId}); deleteAllTaskpings(${globalClientId},${globalCompanyId}); redirectToProviderTracking();">Complete Appointment</button>
 
 
         `;
-
+        //redirectToProviderTracking();
     } catch (error) {
         console.error('Error:', error);
     }
 }
+
 function redirectToProviderTracking() {
-    window.location.href = "{% url 'providertracking' %}";
+    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/providertracking/';
 }
+
 
 function updateAppointmentStatus(appointmentId) {
     
@@ -109,17 +111,17 @@ function updateAppointmentStatus(appointmentId) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCSRFToken()  // Assuming you have a CSRF token setup
+                'X-CSRFToken': getCSRFToken()  
             },
             body: new URLSearchParams({appstatus: 'y'})
         })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                console.log(data.message);
+                //console.log(data.message);
                 alert('Great work! This appointment is now completed!');
             } else {
-                console.log(appointmentId);
+                //console.log(appointmentId);
                 throw new Error(data.message);
                
             }
@@ -149,15 +151,15 @@ window.onload = function() {
       }
     });
   };
-/*
+
 //after updating must delete all taskpings
 function deleteAllTaskpings(globalClientId,globalCompanyId) {
-    const url = `/poolcleanapp/deleteAllTaskpings/${globalClientId}/${globalCompanyId}/`;
+    const url = `/poolcleanapp/ProviderTracking/deleteAllTaskpings/${globalClientId}/${globalCompanyId}/`;
     fetch(url, {
-        method: 'DELETE',  // Using DELETE request
+        method: 'DELETE', 
         headers: {
-            'Content-Type': 'application/json',  // Assuming JSON, adjust if needed
-            'X-CSRFToken': getCSRFToken()  // Function to get CSRF token from cookies
+            'Content-Type': 'application/json',  
+            'X-CSRFToken': getCSRFToken()  
         }
     })
     .then(response => {
@@ -168,14 +170,14 @@ function deleteAllTaskpings(globalClientId,globalCompanyId) {
     })
     .then(data => {
         console.log(data.message);  // Success message from server
-        alert(data.message);  // Alert the user with the response message
+        
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting taskpings: ' + error.message);
+        //alert('Error deleting taskpings: ' + error.message);
     });
 }
-*/
+
 
 
 function getCSRFToken() {
@@ -193,8 +195,8 @@ function getCSRFToken() {
 document.getElementById('submitTasksButton').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default form submission behavior
     if (!globalCompanyId || !globalClientId) {
-        console.log("No Company or Client ID");
-        alert("No Company or Client ID set. Please select an appointment first.");
+        //console.log("No Company or Client ID");
+        alert("Please select an Appointment.");
         return;  // Stop execution if IDs are not available
     }
 
@@ -247,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function fetchTaskpingData() {
     if (globalCompanyId === null || globalClientId === null) {
-        console.error("Company ID or Client ID is not set.");
+        //console.log("Company ID or Client ID is not set."); not an error...should be expected
         return;
     }
 
@@ -264,14 +266,14 @@ function fetchTaskpingData() {
         return response.json();
     })
     .then(data => {
-        console.log("All data received:", data);
+        //console.log("All data received:", data);
         const container = document.getElementById('taskpingContainer');
         container.innerHTML = '';  // Clear previous entries
 
         let allTasksCompleted = true;  // Flag to check if all tasks are completed
 
         data.forEach(task => {
-            console.log("Task ID is: " + task.task_id);
+            //console.log("Task ID is: " + task.task_id);
             const taskElement = document.createElement('div');
             taskElement.className = 'task';
             const updatedDate = new Date(task.updated_at);
@@ -314,7 +316,6 @@ function fetchTaskpingData() {
 function updateTask(taskId) {
 
     if (!taskId) {
-        console.error('Invalid Task ID provided.');
         return;
     }
     const status = document.getElementById(`status-${taskId}`).value;
@@ -334,7 +335,7 @@ function updateTask(taskId) {
     })
     .then(response => response.ok ? response.json() : Promise.reject('Failed to update task'))
     .then(data => {
-        console.log('Update Success:', data);
+        //console.log('Update Success:', data);
         fetchTaskpingData();  
     })
     .catch(error => {

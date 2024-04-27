@@ -42,6 +42,10 @@ body {
   text-align: center;
   padding: 15px 0;
   flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  
 }
 
 .footer a {
@@ -113,36 +117,36 @@ body {
 
 html,
 body {
-  height: 100%; /* Make sure the html and body elements take up the full height */
-  margin: 0; /* Reset default margin */
+  height: 100%; 
+  margin: 0; 
 }
 
 body {
-  display: flex; /* Use flexbox */
-  flex-direction: column; /* Stack children elements vertically */
-  min-height: 100vh; /* Minimum height of 100% of the viewport */
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
 }
 
 .main-container {
-  flex: 1 0; /* Flex grow to absorb extra space */
+  flex: 1 0; 
 }
 .appointments-container {
-  flex: 1; /* Flex grow to absorb extra space */
+  flex: 1; 
 }
 
-/* Adjust the container's right margin to push contents to the left */
+
 .small.text-muted {
-  margin-right: 15px; /* Adjust this value as needed */
+  margin-right: 15px; 
 }
 
 #liveDate {
-  margin-bottom: 20px; /* Adjust the value as needed */
+  margin-bottom: 20px; 
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px; /* Adjust the top margin as needed */
+  margin-top: 20px; 
 }
 
 .arrow {
@@ -150,23 +154,23 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 .label-button {
-  border: 1px solid #000; /* Example: 1px solid black border */
-  padding: 10px; /* Optional: Add some padding inside the border */
-  display: inline-block; /* Makes the div wrap around the content */
-  margin: 5px; /* Optional: Adds some space around the div */
+  border: 1px solid #000;
+  padding: 10px; 
+  display: inline-block; 
+  margin: 5px; 
 }
 
 .cards-container {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping of items */
-  justify-content: space-around; /* Distributes space around items */
-  align-items: stretch; /* Aligns items vertically */
+  flex-wrap: wrap; 
+  justify-content: space-around;
+  align-items: stretch; 
 }
 .card-custom {
   display: flex;
-  flex-direction: column; /* Makes sure content in cards is laid out top to bottom */
-  flex: 1; /* Allows the cards to grow and take equal space */
-  margin: 10px; /* Adds space between cards */
+  flex-direction: column; 
+  flex: 1; 
+  margin: 10px; 
 }
 
 .bg-a3c9f7 {
@@ -175,18 +179,18 @@ body {
 
 .appstatus {
   visibility: hidden;
-  font-size: 0; /* Removes the space taken up by the text */
+  font-size: 0; 
 }
 
-/* Display 'Not Complete' for n status */
+
 .appstatus[data-status="n"]::before {
   content: 'Not Complete';
   color: red;
   visibility: visible;
-  font-size: revert; /* Reset the font size */
+  font-size: revert; 
 }
 
-/* Display 'Appointment Completed' for y status */
+
 .appstatus[data-status="y"]::before {
   content: 'Appointment Completed';
   color: green;
