@@ -41,7 +41,7 @@ body {
   color: white;
   text-align: center;
   padding: 15px 0;
-  flex-shrink: 0;
+  /*flex-shrink: 0;*/
   position: fixed;
   bottom: 0;
   left: 0;

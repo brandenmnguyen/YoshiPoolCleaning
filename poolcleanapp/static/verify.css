@@ -56,3 +56,22 @@ button:hover{
    border-style: none;
    padding: 5px;
 }
+
+@media screen and (max-width: 800px) {
+    .body{
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    #qrcode{
+        text-align: center;
+        margin-right: 0px;
+    }
+    .card{
+        margin-top: 20px;
+        margin-left: 5vw;
+        scale: 60%;
+    }
+    
+}

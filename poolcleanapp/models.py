@@ -8,16 +8,6 @@
 from django.db import models
 
 
-class Chat(models.Model):
-    content = models.CharField(max_length = 1000)
-    timestamp = models.DateTimeField(auto_now=True)
-    cl = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True) #on delete = models.CASCADE
-    emp = models.ForeignKey('Employee', models.DO_NOTHING, blank=True, null=True) #on delete = models.CASCADE
-    room = models.ForeignKey('ChatRoom', on_delete=models.CASCADE)
-
-class ChatRoom(models.Model):
-    name = models.CharField(max_length = 255)    
-
 class Appointments(models.Model):
 
     APP_STATUS_CHOICES = [
@@ -47,6 +37,23 @@ class Appointments(models.Model):
         db_table = 'appointments'
 
 
+
+class ProviderAvailableTimes(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
+    appdate = models.DateField(blank=True, null=True)
+    apptime = models.TimeField(blank=True, null=True)
+
+    def get_client(self):
+        return self.cl  # Corrected to return the actual ForeignKey field to Client
+
+    def get_company(self):
+        return self.c  # Corrected to return the actual ForeignKey field to Company
+
+    class Meta:
+        managed = True
+        db_table = 'PROVIDERAVAILABLETIMES'
+        
 
 class Client(models.Model):
     client_id = models.AutoField(db_column='Client_id', primary_key=True)  # Field name made lowercase.
@@ -216,7 +223,6 @@ class AuthUserUserPermissions(models.Model):
         managed = False
         db_table = 'auth_user_user_permissions'
         unique_together = (('user', 'permission'),)
-
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()

@@ -22,7 +22,7 @@
         <form class="form" id="loginForm">
 
             <h2>Login</h2>
-
+            <!--Remove this alert?-->
             <div class="alert  alert-primary alert-dismissible fade show" role="alert">
                 <strong id="msg">Please enter correct information</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -40,16 +40,16 @@
         </form>
 
         <div class="side">
-
-            <h2>Welcome <br> Don't have an account already?</h2>
-
-            <img src="{% static 'LoginImage.png' %}">
-            <a href="{% url 'clientsignup' %}" id="provider">Sign Up</a>
+            <img src="{% static 'LoginImage.png' %}" class="Image">
+            <h2>Welcome <br> Don't have an account already?</h2>           
+            <a href="{% url 'clientsignup' %}">Sign Up</a>
+            <!--<a href="{% url 'clientsignup' %}" id="provider">Sign Up</a>-->
 
         </div>
 
     </div>
 
+    <img src="{% static 'BeachBall.png' %}" class="Image2">
 
     <script>
 
@@ -70,6 +70,7 @@
             console.log("Password: " + password);
 
             // Perform a GET request using the Fetch API
+            //const baseUrl = '../viewOneClient/';     switch this out for relative path
             const baseUrl = 'http://127.0.0.1:8000/poolcleanapp/viewOneClient/';
             const clientEmail = encodeURIComponent(email);
             const clientPassword = encodeURIComponent(password);
@@ -89,6 +90,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    //window.location.href = '../clientVerification/';  switch to rlative path
                     window.location.href = 'http://127.0.0.1:8000/poolcleanapp/clientVerification/';
                 })
                 .catch(error => {
@@ -107,6 +109,7 @@
                 return; // Exit function if fields are empty
             }
 
+            //const baseUrl = '../viewOneCompany/';    switch to relative path
             const baseUrl = 'http://127.0.0.1:8000/poolcleanapp/viewOneCompany/';
             const companyEmail = encodeURIComponent(email);
             const companyPassword = encodeURIComponent(password);
@@ -122,6 +125,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    //window.location.href = '../verification/';     switch to relative path
                     window.location.href = 'http://127.0.0.1:8000/poolcleanapp/verification/';
                 })
                 .catch(error => {

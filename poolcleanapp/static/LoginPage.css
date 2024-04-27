@@ -5,9 +5,8 @@
 .container {
     display: flex;
     margin: auto;
-    height: 850px;
+    height: 100vh;
 }
-
 
 .form {
     display: flex;
@@ -74,6 +73,7 @@
     justify-content: center;
     align-items: center;
     width: 50%;
+    text-align: center;
 
 }
 
@@ -105,28 +105,86 @@
 
 }
 
+.Image2{
+    display: none;
+}
+
 .side a {
 
-    position: absolute;
-    top: 70%;
-    background-color: rgb(39, 112, 201);
-    color: white;
-    border-radius: 20px;
-    width: 190px;
-    height: 30px;
-    text-align: center;
-    padding-top: 10px;
     text-decoration: none;
-    font-family: 'Inter Tight', sans-serif;
-    font-weight: bolder;
-    font-size: 20px;
-    transition: 0.6s;
+    margin-left: 120px;
+    background-color: rgba(96, 160, 239, 1);
+    border-radius: 20px;
+    color: white;
+    transition: 0.5s;
+    width: 200px;
+    padding: 0px;
+
+    position: absolute;
+    top: 70%; 
+    
+    height: 30px;
+    text-align: center;  
 }
 
 .side a:hover {
-    background-color: rgb(18, 73, 139);
     color: rgb(255, 255, 255);
     border-radius: 25px;
     transform: translateY(-5px);
     cursor: pointer;
+    background-color: rgb(47, 123, 217);
+}
+
+@media screen and (max-width: 811px){
+    .Image{
+        display: none;
+    }
+    .container{
+        width: 100%;
+        text-align: center;
+    }
+    .Image2{
+        display: inline;
+        width: 50%;
+        margin-left: 60vw;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        padding-top:0px;
+        
+    }
+    .form{
+        width: 100%;
+        margin-top: 10vh;
+        margin-bottom: 20vh;
+        
+    }
+    .side{
+        width: 100%;       
+    }
+    .side h2 {
+        line-height: 1rem;
+        width: 80%;
+        /* Position the text absolutely within the container */
+        font-size: 1.0rem;
+        top: 60vh;
+        /* Adjust the top position to vertically center the text */    
+        left: 50%;
+        /* Adjust the left position to horizontally center the text */    
+        transform: translate(-50%, -50%);
+        /* Center the text both vertically and horizontally */
+        color: rgb(39, 112, 201);
+        margin-top: 40vh;
+    
+    }
+    .side a{
+        margin-left: 0vw;
+        margin-right: 100vw;
+        margin-top: 35vh;
+        height: 40px;
+        width: 180px;
+        padding: 5px;
+        
+    } 
+
 }

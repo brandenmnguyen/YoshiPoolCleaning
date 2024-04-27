@@ -1,4 +1,10 @@
-const socket=io();
+//const socket=io();
+
+const socket = new WebSocket(
+   'ws://'
+   + window.location.host
+   + '/ws/chat/'
+);
 
 var username;
 

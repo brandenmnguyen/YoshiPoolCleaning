@@ -2,11 +2,10 @@ h1{
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(38, 125, 232);
+    color:  rgb(57, 137, 236);
     font-weight: 500;
     text-align: center;
     font-size: 60px;
-
 }
 
 div{
@@ -25,4 +24,10 @@ button{
    color: white;
    padding: 10px;
    cursor: pointer;
+}
+
+
+.alreadyScheduled{
+    background-color:  rgba(57, 138, 236, 0.523);
+    cursor: not-allowed;
 }

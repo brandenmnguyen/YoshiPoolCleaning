@@ -5,6 +5,8 @@ from poolcleanapp.models import Employee
 from poolcleanapp.models import Taskping
 from poolcleanapp.models import Invoice
 from poolcleanapp.models import Appointments
+from poolcleanapp.models import ProviderAvailableTimes
+
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -35,4 +37,10 @@ class TaskpingSerializer(serializers.ModelSerializer):
 class AppointmentsSerializer(serializers.ModelSerializer):
  class Meta:
         model = Appointments
+        fields = '__all__'
+
+
+class ProviderSchedulingSerializer(serializers.ModelSerializer):
+  class Meta:
+        model = ProviderAvailableTimes
         fields = '__all__'

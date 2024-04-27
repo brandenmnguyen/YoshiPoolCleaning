@@ -1,4 +1,4 @@
-{% load static %}
+  {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,12 +17,12 @@
   <!-- Navigation bar section -->
   <div class="navbar">
     <div class="navbar-links">
-      <a href="#home">Logo</a>
-      <a href="#about">About</a>
-      <a href="#providers">Providers</a>
-      <a href="#payment">Payment</a>
-      <a href="#map">Map</a>
-      <a href="#schedule">Schedule</a>
+      <a href="{% url 'homepage' %}">Logo</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'providersearch' %}">Providers</a>
+      <a href="{% url 'paymenthistory' %}">Payment</a>
+      <a href="{% url 'providertracking' %}">Map</a>
+      <a href="{% url 'dailycalendar' %}">Schedule</a>
       <a href="#account" class="account-name">Account Name</a>
     </div>
   </div>

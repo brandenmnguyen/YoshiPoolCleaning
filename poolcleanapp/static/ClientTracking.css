@@ -11,13 +11,25 @@ body {
   padding: 0 10px;
 }
 
+.navbar a.icon{
+  display: none;
+}
+
 .navbar-links {
   display: flex;
   flex: 1;
   justify-content: space-around;
 }
 
-.navbar a {
+.navbar-links a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.navbar-link a {
   color: white;
   text-align: center;
   padding: 14px 16px;
@@ -31,9 +43,15 @@ body {
 
 .account-name {
   background-color: #60a0ef;
-  padding: 10px 20px;
+  padding: 15px 0;
   border-radius: 30px;
   text-decoration: none;
+  border: none;
+}
+
+.account-name a:hover {
+  background-color: transparent; /* Keeps the background the same when hovered */
+  color: white; /* Maintains the text color */
 }
 
 .footer {
@@ -54,6 +72,17 @@ body {
 }
 
 .dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* Additional styling here */
+}
+
+.dropdown-menu {
+  background-color: #a3c9f7; /* Light blue background to match the theme */
+}
+
+.profile-toggle {
   background: none;
   border: none;
   cursor: pointer;
@@ -91,13 +120,6 @@ body {
   /* This will be pushed to the bottom of the container by the mt-auto class */
 }
 
-.task-in-progress {
-  background-color: #a3c9f7;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-}
-
 .task-status-in-progress {
   font-weight: bold;
 }
@@ -116,18 +138,6 @@ body {
   border: 1px solid #333; /* Border around the box */
   box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
   margin-top: 35px;
-}
-
-.greeting-text {
-  /* Add styles for greeting text */
-}
-
-.name-text {
-  /* Add styles for name text */
-}
-
-.status-text {
-  /* Add styles for status text */
 }
 
 .status-arrived {
@@ -153,4 +163,51 @@ body {
 
 .main-container {
   flex: 1; /* Flex grow to absorb extra space */
+} 
+/* delete?  */
+.navbar .dropdown-menu .dropdown-item:hover {
+  color: rgb(0, 0, 0);
+  background-color: #faf2de; /* Adjusted to ensure it is the intended light orange */
+}  
+@media screen and (max-width: 800px){
+  .footer {
+    bottom: 0px;
+    position: absolute;
+    padding: 0px;
+    width: 100%;
+    height: 10vh;
+  }
+
+  .navbar a.icon{
+    display: inline;
+  }
+
+  .account-name{
+    display: none;
+  }
+
+  .navbar-links{
+    display: none;
+    justify-content: right;
+  }
+  .navbar-link{    
+    justify-content: left;
+  }
+    
+  .navbar {
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    position: relative;
+    
+  }
+
+  .navbar a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;    
+  } 
+  
 }

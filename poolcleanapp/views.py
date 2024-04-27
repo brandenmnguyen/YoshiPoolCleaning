@@ -1,7 +1,5 @@
 import json
 from io import BytesIO
-import smtplib
-import ssl
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render, redirect
 #from django.http import HttpResponse
@@ -14,9 +12,6 @@ from channels.layers import get_channel_layer
 
 from django.conf import settings
 from django.core.serializers import serialize
-import requests
-from django.views.decorators.csrf import csrf_exempt
-
 #from django.conf import settings
 #from django.contrib import messages
 #from .forms import *
@@ -27,9 +22,20 @@ from rest_framework import status
 from poolcleanapp.models import Client
 from poolcleanapp.models import Company
 from .models import Appointments
+
+from .models import ProviderAvailableTimes             
+
 from .models import Company
 #from poolcleanapp.models import Invoice
+
+# serializers.py
+from rest_framework import serializers
+
+
 from .serializers import AppointmentsSerializer, ClientSerializer
+
+from .serializers import ProviderSchedulingSerializer
+
 from .serializers import CompanySerializer
 from .serializers import InvoiceSerializer
 from .serializers import TaskpingSerializer
@@ -47,13 +53,23 @@ from .models import Taskping
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
 
 import pyotp
-
 from io import BytesIO
-
 import datetime
 import pytz
+import smtplib
+import ssl
+import requests
+from django.views.decorators.csrf import csrf_exempt
+
+#from .serializers import ProviderAvailableTimes
+#from .serializers import ProviderSchedulingSerializer
+
+
+
+
 
 # Create your views here.
 
@@ -312,7 +328,7 @@ def getAppointmentDetails(request, pk):
     except Appointments.DoesNotExist:
         return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
 def getAppointments(request):
@@ -378,8 +394,9 @@ def scheduleAppointment(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
 ## --------------- Notifications ----------------  
-         
+
 @api_view(['POST'])
 def send_email(request):
     data = json.loads(request.body)
@@ -407,7 +424,7 @@ def send_email(request):
         smtp.login(email_sender,email_pass)
         smtp.sendmail(email_sender,email_receiver,email_message.as_string())
         smtp.quit()
-        
+
     return Response(request.data, status=status.HTTP_200_OK)
 
 @csrf_exempt 
@@ -424,7 +441,64 @@ def send_simple_message(request):
 			"to": "Mohammed Al Chalabi <"+email_receiver+">",
 			"subject": email_subject,
 			"text":body})
-    return Response(request.data, status=r.status_code)
+    return Response(request.data, status=r.status_code)  
+
+
+
+@api_view(['GET'])
+def getProviderSchedule(request):
+    try:
+        provSchedule = ProviderAvailableTimes.objects.all()  # Replace YourModel with your actual model
+        serializer = ProviderSchedulingSerializer(provSchedule, many=True)  # Serialize the data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(['POST'])
+def addProviderAppointments(request):
+    try:
+        serializer = ProviderSchedulingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+
+
+
+@api_view(['POST'])
+def scheduleProvAppointment(request):
+
+
+    # Get parameters from the request
+    appdate = request.data.get('appdate')
+    apptime = request.data.get('apptime')
+    c_id = request.data.get('c_id')
+
+    # Perform the query to check if appointment exists
+    try:
+        appointment = ProviderAvailableTimes.objects.get(appdate=appdate, apptime=apptime, c_id=c_id)
+        return Response({'error': 'Appointment already scheduled'}, status=404)
+    except ProviderAvailableTimes.DoesNotExist:
+        # If appointment does not exist, add it
+        try:
+            serializer = ProviderSchedulingSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else: 
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
 
 def homepage(request):
     return render(request, "Homepage-1.html")
@@ -499,9 +573,9 @@ def verification(request):
 
 #for messaging
 def messaging(request):
-    room = Chat.objects.filter(cl=1).first()
-    chats = []  
-    return render(request, 'messaging.html', {'room' : room, 'chats': chats})
+    #room = Chat.objects.filter(cl=1).first()
+   # chats = []  
+    return render(request, 'messaging.html')#, {'room' : room, 'chats': chats})
 
 def login_user(request):
  #   if request.user.is_authenticated:
@@ -521,13 +595,6 @@ def login_user(request):
         return render(request, "LoginPage.html")
     
 
-
-
-def login_client(request):
-    return render(request, "LoginClientTemp.html")
-
-
-
 def logging(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -544,11 +611,6 @@ def logging(request):
         return render(request, "LoginPage.html", {'msg': messaging})
     else:
         return render(request, "LoginPage.html")
-
-
-
-def login_company(request):
-    return render(request, "LoginProvider2.html")
 
 # Logs out the user whether client or provider
 @api_view(['DELETE','GET'])
@@ -697,14 +759,27 @@ def calendar(request):
 #@login_required
 #@login_required(login_url=logging)
 def dailycalendar(request):
-    return render(request, "DailyCalendar.html")
+    company_email = request.session.get('username')
+    company_pw = request.session.get('password')
+    company = getCompanyLogin(company_email, company_pw)
+    if company is None:
+        return render (request, "ErrorPage.html", {'error': 'Company not found.'})
+    
+    appointments = Appointments.objects.filter(c_id=company.c_id)  
+    data = [{
+        'cname': appointment.cl.fname + " " + appointment.cl.lname,
+        'appdate':  appointment.appdate.strftime('%m/%d/%Y'), 
+        'apptime': appointment.apptime.strftime('%H:%M') 
+    } for appointment in appointments]
+    
+    return render(request, "DailyCalendar.html", {'appointments': data})
 
 
 def dailycalendarclient(request):
     return render(request, "ClientCalendarClient.html")
 
 #@login_required
-@login_required(login_url=logging)
+#@login_required(login_url=logging)
 def paymentHistory(request):
     return render(request, "InvoiceTracking.html")
 
@@ -743,7 +818,7 @@ def getTaskpingFrom(request,companyID,clientID):
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['GET'])
-def getOneClient(request, pk):
+def getOneClient1(request, pk):
     try:
         client = Client.objects.get(pk=pk)
         serializer = ClientSerializer(client)
@@ -769,6 +844,7 @@ def providertracking(request, form=None):
         return render(request, "404.html", {'error': 'Company not found'})
 
     company_id = company.c_id
+    appointment_list = Appointments.objects.filter(c_id=company_id)
     appointment_list = Appointments.objects.filter(c=company_id, appstatus = 'n')
     
     tasks = Taskping.objects.filter(c_id=company_id)
@@ -856,42 +932,69 @@ def deleteAllTaskpings(request, clientId, companyId):
     
 #@login_required
 #@login_required(login_url=login_user)
-#without login
-def clienttrackingWithout(request,pk):
-    task_list = Taskping.objects.filter(client=pk)   #need to replace with logged in client
+"""def clienttracking(request):
+    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
-
+"""
 #--------------------------------------------------------------------------------------------------------------------------
 
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):
-    schedule_list = Appointments.objects.filter(c_id=24)   
-    return render(request, "clientSchedule.html", {'schedule_list': schedule_list})
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+    client_id = client.client_id
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 10)   
+    return render(request, "clientSchedule.html", {'schedule_list': schedule_list, 'client_id': client_id})
 
 
 
 #SHOW APPOINTMENT INFO FOR CLIENT 
 def info(request):
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+    client_id = client.client_id
  
-    appointments = Appointments.objects.filter(cl_id=4)   
+    appointments = Appointments.objects.filter(cl_id = client_id)   
     appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
     request.session['appointments'] = appointment_data
 
-    return render(request, 'viewInfo.html', {'appointments': appointments})
+    return render(request, 'viewInfo.html', {'appointments': appointments, 'client_id': client_id})
 
 
 #SCHEDULING LOGIC
 def schedule_appointment(request):
+
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    client = getClientName(email, cl_password)
+    if client is None:
+        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+
+    client_id = client.client_id
+
     if request.method == 'POST':
         # Parse JSON data from request body
         data = json.loads(request.body)
       #  cl_id = data.get('cl_id')
-        c_id = data.get('c_id')
+       # c_id = data.get('c_id')
+        c_id = int(data.get('c_id'))  # Convert c_id to an integer
         appdate = data.get('appdate')
         apptime = data.get('apptime')
 
+
+        # Check if appointment already exists
+        if Appointments.objects.filter(c_id=c_id, appdate=appdate, apptime=apptime).exists():
+            return JsonResponse({'error': 'Appointment already scheduled.'}, status=400)
+
+
         # Create a new appointment instance
-        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime)
+        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime, cl_id = client_id)
         
         # Save the appointment to the database
         appointment.save()
@@ -906,8 +1009,40 @@ def schedule_appointment(request):
 
 
 
+def ScheduleTimingProvider(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        company = Company.objects.get(company_email=user_id)
+        company_id = company.c_id
+    except Company.DoesNotExist:
+        company_id = None
+    return render(request, "ScheduleTimingProvider.html", {'company_id': company_id},)
 
 
+#save info that the provider entered for available dates and estimated times
+def providerDateTimeScheduling(request):
+    if request.method == 'POST':
+
+          # Retrieve data from the form
+       # c_id = request.POST.get('c_id')
+        c_id = int(request.POST.get('c_id'))
+        appdate = request.POST.get('date')
+        apptime = request.POST.get('time')
+
+        # Create a new appointment instance
+        provAppointment = ProviderAvailableTimes(c_id=c_id, appdate=appdate, apptime=apptime)
+
+        # Save the appointment to the database
+        provAppointment.save()
+        # Return a success response
+        return JsonResponse({'message': 'Appointment scheduled successfully.'})
+    else:
+        # Return an error response if method is not POST
+        return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 
@@ -958,9 +1093,10 @@ def clientVerification(request):
         generated_totp_code = totp.now()
 
         if user_totp_code == generated_totp_code:
-            return render(request, 'ClientTracking.html')
+            return redirect('clienttracking')
         else:
             return render(request, 'LoginPage.html')
+            
 
     return render(request, 'ClientVerification.html')
 
@@ -1060,6 +1196,79 @@ def payment_history(request):
 
 #End of Stripe
 
+# Client/Provider Settings Page
+
+def clientSettings(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        client = Client.objects.get(email=user_id)
+        client_id = client.client_id
+    except Client.DoesNotExist:
+        client_id = None
+    print('user id:', client_id)
+    return render(request, 'clientSettings.html', {'user': user_id, 'pass': user_pass, 'client_id': client_id}, )
+
+@api_view(['PUT'])
+def updateClient(request, client_id):
+    try:
+        client = Client.objects.get(pk=client_id)
+        serializer = ClientSerializer(instance=client, data=request.data)
+        if 'email' in request.data:
+            new_email = request.data['email']
+            # Check if the new email is already in use
+            existing_client = Client.objects.filter(email=new_email).exclude(pk=client_id).first()
+            if existing_client:
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Client.DoesNotExist:
+        return Response({"error": "Client not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+def companySettings(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        company = Company.objects.get(company_email=user_id)
+        company_id = company.c_id
+    except Company.DoesNotExist:
+        company_id = None
+    return render(request, 'providerSettings.html', {'user': user_id, 'pass': user_pass, 'company_id': company_id}, )
+
+@api_view(['PUT'])
+def updateCompany(request, company_id):
+    try:
+        company = Company.objects.get(pk=company_id)
+        serializer = CompanySerializer(instance=company, data=request.data)
+        if 'company_email' in request.data:
+            new_email = request.data['company_email']
+            # Check if the new email is already in use
+            existing_company = Company.objects.filter(company_email=new_email).exclude(pk=company_id).first()
+            if existing_company:
+                return Response({"error": "Email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Company.DoesNotExist:
+        return Response({"error": "Company not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+# End of Client/Provider Settings Page
+
 #logout
 def logoutUser(request):
     logout(request)
@@ -1147,6 +1356,7 @@ def clienttracking(request):
     client_id = client.client_id
     c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID
 
+    appointment_list = Appointments.objects.filter(cl = client_id)
     task_list = Taskping.objects.filter(client=client)  # Filter Taskping objects by client object
 
     company = None
@@ -1157,13 +1367,47 @@ def clienttracking(request):
             company = None  # Handle the case where no Company matches the c_id
 
     context = {
+        'appointment_list': appointment_list,
         'client': client,
         'company': company,  # Pass the company object, which may be None
         'task_list': task_list,  # Pass the list of tasks associated with the client
     }
     return render(request, "ClientTracking.html", context)
 
+def editAccount(request):
+    # Corrected the typo in 'request'
+    password = request.session.get('password')
+    email = request.session.get('username')
+    client=Client.objects.get(email=email,cl_password=password)
+    context={
+        'client': client
+    }
+    # Use 'render' function to render the 'editAccount.html' template with context
+    return render(request, "editAccount.html",context)
+    
 
+def update_client_field(request, client_id):
+    try:
+        client = Client.objects.get(client_id=client_id)  # Corrected field name
+        if request.method == 'POST':
+            form = ClientUpdateForm(request.POST, instance=client)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'status': 'success', 'message': 'Field updated successfully'})
+            else:
+                return JsonResponse({'status': 'error', 'errors': form.errors})
+    except Client.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Client not found'})
 
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
-
+@api_view(['GET'])
+def getClienttDetails(request, pk):
+    try:
+        appointment = Client.objects.get(pk=pk)  # Use get() and catch DoesNotExist
+        serializer = ClientSerializer(appointment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Client.DoesNotExist:
+        return Response({"error": "Appointment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

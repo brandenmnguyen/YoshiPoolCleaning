@@ -47,7 +47,7 @@ class InvoiceForm(forms.ModelForm):
 
     class Meta:
         model = Invoice
-        fields = ['client', 'c', 'amount', 'payment_method', 'card_name', 'expdate', 'email', 'card_number', 'cvv_code']
+        fields = ['client']
     
     # Hidden inputs that will be auto-filled
     def __init__(self, *args, **kwargs):
@@ -93,6 +93,17 @@ class TaskpingForm(forms.ModelForm):
         if commit:
             taskping_instance.save()
         return taskping_instance
+
+class ClientUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['email', 'cl_password', 'address', 'phone_number']
+
+    def __init__(self, *args, **kwargs):
+        super(ClientUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['cl_password'].widget = forms.PasswordInput()
+
+        
 
 
 class UpdateAppointmentStatusForm(forms.ModelForm):

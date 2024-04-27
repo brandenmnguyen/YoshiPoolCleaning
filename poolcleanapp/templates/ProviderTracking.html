@@ -16,16 +16,25 @@
   
     <div class="navbar">
       <!-- Navbar content -->
-      <div class="navbar-links">
-        <a href="#home">Logo</a>
-        <a href="#about">About</a>
-        <a href="#providers">Providers</a>
-        <a href="#payment">Payment</a>
-        <a href="#map">Map</a>
-        <a href="#schedule">Schedule</a>
+      <div class="navbar-link" id="homelink">
+        <a href="{% url 'homepage' %}">
+          <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
+        </a>
+      </div>  
+      <div class="navbar-links" id="links">
+        <a href="{% url 'about' %}">About</a>
+        
+        
+        <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="{% url 'logout' %}">Logout</a>
-        <a href="#account" class="account-name">{{ company.company_name }}</a>
+        <a href="{%url 'providerSettings' %}" class="account-name" id="name">
+          {{company.company_name}}
+        </a>  
       </div>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+        <span class="navbar-toggler-icon"></span>
+      </a>
     </div>
     <div class="container mt-4 my-3">
       <div class="card">
@@ -114,7 +123,7 @@
     <div class="container-fluid main-container mt-3 my-3">
     <div class="alert alert-info" role="alert">
       You have no appointments.
-  <a href="http://127.0.0.1:8000/poolcleanapp/dailycalendarclient/" class="alert-link">
+  <a href="http://127.0.0.1:8000/poolcleanapp/ScheduleTimingProvider/" class="alert-link">
     Click here to manage your schedule
   </a>
     </div>
@@ -325,7 +334,6 @@
         </div>
       </div>
     </div>
-    <div class="footer mt-auto">
     <div class="footer">
       <a href="{% url 'about' %}">About Us</a>
       <a href="#terms">Terms of Use</a>
@@ -345,5 +353,17 @@
       crossorigin="anonymous"
     ></script>
   </body>
+  <script>
+    function myFunction() {
+      var x = document.getElementById("links");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+        var y = document.getElementById("name")
+        y.style.display = "none";
+        }
+      }     
+  </script>
 </html>
 

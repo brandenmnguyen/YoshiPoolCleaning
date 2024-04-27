@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,18 +9,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/messaging.css">
+    <link rel="stylesheet" href="{% static 'messaging.css' %}">
 </head>
 <body>
 
 <main>
     <header>
         <div class="title">
-            <img src="../static/logo.png" width="35px" alt="Pool App Logo">
+            <img src="{% static 'logo.png' %}" width="35px" alt="Pool App Logo">
             <h1> Chat Pool </h1>
         </div>
         <button type="button" onclick="show_hide()">
-            <img src="../static/chat.png" width="50px" alt="Chat">
+            <img src="{% static 'chat.png' %}" width="50px" alt="Chat">
         </button>        
     </header>
     <div class="container">
@@ -37,7 +38,7 @@
         <div class="user-input">
             <input id="user-msg" type="text" placeholder="Type your message...">
             <button type="button" id="user-send">
-            <img src="../static/send.png" width="30px" alt="Chat">
+            <img src="{% static 'send.png' %}" width="30px" alt="Chat">
             </button>
 
         </div>
@@ -45,6 +46,10 @@
     </div>
 </main>
 <script>
+
+    //let url = 'ws://${window.location.host}/ws/sockt-server/'
+
+
     var uwindow=document.querySelector('.users-window');
     function show_hide(){
         if(uwindow.style.display=="block"){
@@ -57,8 +62,8 @@
 </script>
 
 <!-- Correct these script tags -->
-<script src="/socket.io/socket.io.js"></script>
-<script src="../static/client.js"></script>
+<!--<script src="/socket.io/socket.io.js"></script>-->
+<script src="{% static 'client.js' %}"></script>
 
 </body>
 </html>

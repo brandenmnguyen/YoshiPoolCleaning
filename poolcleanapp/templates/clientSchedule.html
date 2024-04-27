@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'clientSchedule.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 </head>
 
 <body>
@@ -50,6 +52,7 @@
 
             const scheduleButton = document.createElement('button');
             scheduleButton.innerHTML = `Schedule`;
+            scheduleButton.setAttribute('name', 'submitButton');
 
             const line = document.createElement('hr');
 
@@ -57,26 +60,30 @@
 
             appointmentContainer.appendChild(line);
 
-
             // Event listener for schedule button
             scheduleButton.addEventListener('click', function () {
-                scheduleAppointment(appoint.c_id, appoint.date, appoint.time);
+                scheduleAppointment(appoint.c_id, appoint.date, appoint.time, event.target);
             });
-
 
         });
 
-        function scheduleAppointment(c_id, date, time) {
-
-            // Parse date string into a Date object
-            const parsedDate = new Date(date);
+        function scheduleAppointment(c_id, date, time, button) {
+            // Parse date string into a Moment.js object
+            const parsedDate = moment(date);
 
             // Format date in YYYY-MM-DD format
-            const formattedDate = parsedDate.toISOString().split('T')[0];
+            const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-            // Format time in HH:MM format
-            const formattedTime = time.replace('a.m.', '').replace('p.m.', '').trim(); // Remove a.m./p.m. and trim whitespace
+            // Parse time string using Moment.js
+            const parsedTime = moment(time, ['h:mm A', 'H:mm:ss']); // Specify possible time formats
 
+            if (!parsedTime.isValid()) {
+                console.error('Error parsing time:', time);
+                return;
+            }
+
+            // Format time in HH:MM:SS format
+            const formattedTime = parsedTime.format('HH:mm:ss');
 
             // Send data to the server
             fetch('/poolcleanapp/clientSchedule/schedule_appointment/', {
@@ -95,8 +102,17 @@
                     if (response.ok) {
                         console.log('Appointment scheduled successfully!');
                         alert('Appointment scheduled successfully!');
+                        window.location.href = "{% url 'stripeTest' %}";
                     } else {
-                        console.error('Failed to schedule appointment:', response.statusText);
+                        response.json().then(data => {
+                            if (data.error === 'Appointment already scheduled.') {
+                                alert('scheduling failed, appointment already scheduled. Schedule another timing');
+                                button.classList.add('alreadyScheduled');
+                                button.disabled = true; // Disabling the button
+                            } else {
+                                console.error('Failed to schedule appointment:', data.error);
+                            }
+                        });
                     }
                 })
                 .catch(error => {

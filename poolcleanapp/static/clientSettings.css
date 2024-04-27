@@ -1,0 +1,90 @@
+/* Taken from ClientTracking.css */
+/* Navbar Styling */
+.navbar {
+    background-color: #a3c9f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+  
+  .navbar-links {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+  }
+  
+  .navbar a {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .navbar a:hover {
+    background-color: #c2d1e0;
+  }
+
+  /* Footer Styling */
+  .footer {
+    background-color: #a3c9f7;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  .footer a {
+    color: white;
+    text-decoration: none;
+    padding: 0 10px;
+  }
+  
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Client Settings Styling */
+
+  #settingsContainer{
+    width: 100%;
+  }
+
+  #settingsContainerStyling{
+    flex-direction: column;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  #accountInfoSpace{
+    margin-top: 3%;
+  }
+
+  #emailInput{
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #emailInput input[type="email"] {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  #passwordInput{
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  #passwordInput input[type="password"] {
+    flex: 1;
+    margin-right: 10px;
+  }
