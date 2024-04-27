@@ -82,7 +82,7 @@ urlpatterns = [
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
     path('clientSettings/', views.clientSettings, name = 'clientSettings'),
     path('providerSettings/', views.companySettings, name = 'providerSettings'),
-
+path('client_Schedule/<int:pk>/', views.client_Schedule, name='client_Schedule'),
     #------------------------------------------------------------------#
     path('messaging/', views.messaging_view, name='messaging'),
     #------------------------------------------------------------------#
