@@ -946,7 +946,7 @@ def clientSchedule(request):
     if client is None:
         return render(request, "ErrorPage.html", {'error': 'Client not found'})
     client_id = client.client_id
-    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 10)   
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 12)   
     return render(request, "clientSchedule.html", {'schedule_list': schedule_list, 'client_id': client_id})
 
 
