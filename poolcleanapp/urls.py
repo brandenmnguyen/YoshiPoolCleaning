@@ -50,7 +50,9 @@ urlpatterns = [
     path('clientVerification/', views.clientVerification, name = 'clientVerification'),
     path('clienttracking/', views.clienttracking, name='clienttracking'),
     path('clientSchedule/', views.clientSchedule, name = 'clientSchedule'),
-    path('clientSchedule/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
+
+    path('client_Schedule/<int:pk>/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
+    
     path('viewOneClient/',views.getOneClient, name='viewOneClient'),
     path('providersignup/', views.providerSignUp, name='providersignup'),
     path('providersearch/', views.providerSearch, name='providersearch'),
@@ -82,7 +84,7 @@ urlpatterns = [
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
     path('clientSettings/', views.clientSettings, name = 'clientSettings'),
     path('providerSettings/', views.companySettings, name = 'providerSettings'),
-path('client_Schedule/<int:pk>/', views.client_Schedule, name='client_Schedule'),
+    path('client_Schedule/<int:pk>/', views.client_Schedule, name='client_Schedule'),
     #------------------------------------------------------------------#
     path('messaging/', views.messaging_view, name='messaging'),
     #------------------------------------------------------------------#

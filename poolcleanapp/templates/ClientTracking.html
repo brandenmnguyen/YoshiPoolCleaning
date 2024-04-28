@@ -53,16 +53,19 @@
     <div class="container-fluid main-container mt-3 my-3">
         <div class="row">
             <!-- Task List Column (left-hand side) -->
-            <div class="col-md-6">
+            <div class="col-md-6" >
                 <div class="container-fluid" id="tasksContainer">
                     {% if task_list|length > 0 %}
                         <ul class="list-unstyled">
                             {% for task in task_list %}
-                                <li class="task">
+                                <li class="task"  style="margin-top: 30px; margin-bottom: 30px;" >
                                     <div class="task-details">
                                         <span class="task-title" style="font-weight: bold;">{{ task.taskname }}</span>
                                         <div id="updated-at-{{ forloop.counter }}" style="display: none;">
                                             <strong>Time of Update:</strong> {{ task.updated_at|date:"D, d M Y H:i:s" }}<br />
+                                        </div>
+                                        <div class="description">
+                                      <p> <b>Description:</b> {{ task.description }}</P>  
                                         </div>
                                         <div class="status-text">
                                             <span class="{% if task.status == 'y' %}status-complete{% else %}status-in-progress{% endif %}">

@@ -32,7 +32,10 @@
     color: white;
     text-align: center;
     padding: 15px 0;
-  }
+    position: fixed; /* Use 'fixed' instead of 'absolute' */
+    bottom: 0;
+    width: 100%; /* Ensure the footer spans the entire width of the viewport */
+}
   
   .footer a {
     color: white;
@@ -59,4 +62,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+html, body {
+  height: 100%; /* Ensure both HTML and body take up the entire viewport height */
+}
+
+.content {
+  flex: 1; /* Grow to fill remaining space */
 }

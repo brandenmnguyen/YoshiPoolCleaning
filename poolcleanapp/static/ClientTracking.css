@@ -29,6 +29,11 @@ body {
   transition: background-color 0.3s;
 }
 
+
+#tasksContainer{
+  margin: 40px;
+}
+
 .navbar-link a {
   color: white;
   text-align: center;
@@ -211,3 +216,5 @@ body {
   } 
   
 }
+
+

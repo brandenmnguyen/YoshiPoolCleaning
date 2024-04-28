@@ -664,7 +664,10 @@ def providerSearch(request):
     search_term = request.GET.get('search', '')
     info = Company.objects.filter(company_address__icontains=search_term)
     count_results = info.count()
-    return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term})
+
+    provSchedule = ProviderAvailableTimes.objects.all();
+
+    return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term, 'provSchedule': provSchedule})
    
     #return render(request, "ResultsPage-1.html")
 
@@ -908,8 +911,8 @@ def update_task(request, task_id):
 #     }
 #     return render(request, "ProviderTracking.html", context)
 
-def clienttrackingWithout(request):
-    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
+def clienttrackingWithout(request, pk):
+    task_list = Taskping.objects.filter(client= pk)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
 
 
@@ -930,18 +933,17 @@ def clientSchedule(request):
     if client is None:
         return render(request, "404.html", {'error': 'Client not found'})
     client_id = client.client_id
-    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 24)   
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 10)   
     return render(request, "clientSchedule.html", {'schedule_list': schedule_list, 'client_id': client_id})
 
 
 
-
+from django.shortcuts import render
 
 def client_Schedule(request, pk):
     email = request.session.get('username')  # Assuming email is stored in the session
     cl_password = request.session.get('password')  # Assuming password is stored in the session
 
-    # Assuming 'user_id' should be 'email'
     try:
         company = Company.objects.get(c_id=pk)
         company_id = company.c_id
@@ -950,21 +952,18 @@ def client_Schedule(request, pk):
 
     client = getClientName(email, cl_password)  # Assuming getClientName is defined elsewhere
     if client is None:
-        return JsonResponse({'error': 'Client not found'}, status=404)
+        return render(request, "404.html", {'error': 'Client not found'}, status=404)
 
     client_id = client.client_id
 
-    # Ensure that company_id is not None before filtering
     if company_id is not None:
-        schedule_list = Appointments.objects.filter(c_id=company_id)  # Use your model here
-        serializer = AppointmentsSerializer(schedule_list, many=True)
+        schedule_list = ProviderAvailableTimes.objects.filter(c_id=company_id)  # Use your model here
+        serializer = ProviderSchedulingSerializer(schedule_list, many=True)
         serialized_data = serializer.data
     else:
         serialized_data = []
 
-    return JsonResponse({'schedule_list': serialized_data, 'client_id': client_id})
-
-
+    return render(request, "clientSchedule.html", {'schedule_list': serialized_data, 'client_id': client_id})
 
 
 
@@ -985,33 +984,29 @@ def info(request):
 
 
 #SCHEDULING LOGIC
-def schedule_appointment(request):
-
+def schedule_appointment(request, pk):
     email = request.session.get('username')  # Assuming email is stored in the session
     cl_password = request.session.get('password')  # Assuming password is stored in the session
     client = getClientName(email, cl_password)
+    
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
 
     client_id = client.client_id
 
     if request.method == 'POST':
         # Parse JSON data from request body
         data = json.loads(request.body)
-      #  cl_id = data.get('cl_id')
-       # c_id = data.get('c_id')
-        c_id = int(data.get('c_id'))  # Convert c_id to an integer
+        c_id = pk  # Using the 'pk' from URL as the company ID
         appdate = data.get('appdate')
         apptime = data.get('apptime')
-
 
         # Check if appointment already exists
         if Appointments.objects.filter(c_id=c_id, appdate=appdate, apptime=apptime).exists():
             return JsonResponse({'error': 'Appointment already scheduled.'}, status=400)
 
-
         # Create a new appointment instance
-        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime, cl_id = client_id)
+        appointment = Appointments(c_id=c_id, appdate=appdate, apptime=apptime, cl_id=client_id)
         
         # Save the appointment to the database
         appointment.save()
@@ -1021,7 +1016,6 @@ def schedule_appointment(request):
     else:
         # Return an error response if method is not POST
         return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
 
 
 
