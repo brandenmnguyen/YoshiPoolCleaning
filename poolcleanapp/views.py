@@ -1225,7 +1225,7 @@ def payment_history(request):
     dt_utc = datetime.datetime.utcfromtimestamp(timestamp)
     pst_timezone = pytz.timezone('America/Los_Angeles')
     dt_pst = dt_utc.replace(tzinfo=pytz.utc).astimezone(pst_timezone)
-    return render(request, 'temp_payment_history.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst})
+    return render(request, 'PaymentHistory.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst})
 
 #End of Stripe
 

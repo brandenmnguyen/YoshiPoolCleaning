@@ -58,8 +58,7 @@ urlpatterns = [
     
     path('providertracking/', views.providertracking, name='providertracking'),
     #path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
-    path('paymenthistory/', views.paymentHistory, name='paymenthistory'),
-    path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
+    path('paymenthistory/', views.payment_history, name='paymenthistory'),
     path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
     path('about/', views.about, name='about'),
     path('verification/', views.verification, name = 'verification'),
