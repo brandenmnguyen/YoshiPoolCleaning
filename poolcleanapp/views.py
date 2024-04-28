@@ -928,10 +928,43 @@ def clientSchedule(request):
     cl_password = request.session.get('password')  # Assuming password is stored in the session
     client = getClientName(email, cl_password)
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
     client_id = client.client_id
-    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 12)   
+    schedule_list = ProviderAvailableTimes.objects.filter(c_id = 24)   
     return render(request, "clientSchedule.html", {'schedule_list': schedule_list, 'client_id': client_id})
+
+
+
+
+
+def client_Schedule(request, pk):
+    email = request.session.get('username')  # Assuming email is stored in the session
+    cl_password = request.session.get('password')  # Assuming password is stored in the session
+
+    # Assuming 'user_id' should be 'email'
+    try:
+        company = Company.objects.get(c_id=pk)
+        company_id = company.c_id
+    except Company.DoesNotExist:
+        company_id = None
+
+    client = getClientName(email, cl_password)  # Assuming getClientName is defined elsewhere
+    if client is None:
+        return JsonResponse({'error': 'Client not found'}, status=404)
+
+    client_id = client.client_id
+
+    # Ensure that company_id is not None before filtering
+    if company_id is not None:
+        schedule_list = Appointments.objects.filter(c_id=company_id)  # Use your model here
+        serializer = AppointmentsSerializer(schedule_list, many=True)
+        serialized_data = serializer.data
+    else:
+        serialized_data = []
+
+    return JsonResponse({'schedule_list': serialized_data, 'client_id': client_id})
+
+
 
 
 
