@@ -841,10 +841,12 @@ def providertracking(request, form=None):
     company_pw = request.session.get('password')
     company = getCompanyLogin(company_email, company_pw)
     if company is None:
-        return render(request, "ErrorPage.html", {'error': 'Company not found'})
+        return render(request, "404.html", {'error': 'Company not found'})
 
     company_id = company.c_id
     appointment_list = Appointments.objects.filter(c_id=company_id)
+    appointment_list = Appointments.objects.filter(c=company_id, appstatus = 'n')
+    
     tasks = Taskping.objects.filter(c_id=company_id)
 
     if not form:
@@ -893,34 +895,48 @@ def update_task(request, task_id):
         task.save()
         return JsonResponse({'message': 'Task updated successfully'}, status=200)
     return JsonResponse({'error': 'Invalid request'}, status=400)
-@require_http_methods(["GET", "POST"])  # Ensure only GET and POST requests are accepted
 
-# def providertracking(request):
-#     task_list = Taskping.objects.filter(c_id=1)   # as an example
-#     if 'username' in request.session:
-#         account_name = request.session['username']
-#     else:
-#         account_name = "account_name"
+
+def update_appstatus(request, appointment_id):
+    if request.method == 'POST':
+        appointment = get_object_or_404(Appointments, pk=appointment_id)
+        if appointment.appstatus == 'n':
+            appointment.appstatus = 'y'
+            try:
+                appointment.save()
+                return JsonResponse({'message': 'Appointment status updated successfully.', 'status': 'success'}, status=200)
+            except Exception as e:
+                # Log the error for debugging
+                logging.error("Error updating appointment: %s", e)
+                return JsonResponse({'message': str(e), 'status': 'error'}, status=500)
+        else:
+            return JsonResponse({'message': 'Appointment status is not eligible for update.', 'status': 'error'}, status=400)
+    else:
+        return JsonResponse({'message': 'Invalid request method.', 'status': 'error'}, status=405)
+
+from django.db import transaction
+@api_view(['GET','DELETE'])
+def deleteAllTaskpings(request, clientId, companyId):
+    try:
+        with transaction.atomic():
+            taskpings = Taskping.objects.filter(client=clientId, c_id=companyId)
+            count = taskpings.count()
+            if count == 0:
+                return Response({"message": "No taskpings found to delete."}, status=status.HTTP_404_NOT_FOUND)
+
+            taskpings.delete()
+            return Response({"message": f"Successfully deleted {count} taskpings."}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-#     context = {
-#         'task_list': task_list,
-#         'account_name': account_name,
-#     }
-#     return render(request, "ProviderTracking.html", context)
-
-def clienttrackingWithout(request):
-    task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
-    return render(request, "ClientTracking.html", {'task_list': task_list})
-
-
+    
 #@login_required
 #@login_required(login_url=login_user)
 """def clienttracking(request):
     task_list = Taskping.objects.filter(client=1)   #need to replace with logged in client
     return render(request, "ClientTracking.html", {'task_list': task_list})
 """
-
-
+#--------------------------------------------------------------------------------------------------------------------------
 
 #DISPLAYING AVAILABLE TIME OF PROVIDER
 def clientSchedule(request):
@@ -1368,7 +1384,7 @@ def clienttracking(request):
     cl_password = request.session.get('password')  # Assuming password is stored in the session
     client = getClientName(email, cl_password)
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
 
     client_id = client.client_id
     c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID

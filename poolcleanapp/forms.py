@@ -104,3 +104,16 @@ class ClientUpdateForm(forms.ModelForm):
         self.fields['cl_password'].widget = forms.PasswordInput()
 
         
+
+
+class UpdateAppointmentStatusForm(forms.ModelForm):
+    class Meta:
+        model = Appointments
+        fields = [] 
+
+    def save(self, commit=True):
+        appointment = super().save(commit=False)
+        appointment.appstatus = 'Y'  # Set status to 'Y'
+        if commit:
+            appointment.save()
+        return appointment
