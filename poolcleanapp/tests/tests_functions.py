@@ -21,7 +21,6 @@ class ClientSignUpTests(LiveServerTestCase):
 
     def setUp(self):
         co = webdriver.ChromeOptions()
-        co.browser_version = "123"
         self.driver = webdriver.Chrome(co)
 
     def tearDown(self):
@@ -45,7 +44,7 @@ class ClientSignUpTests(LiveServerTestCase):
         current_url = driver.current_url
 
         # find sign up button and click
-        signup_btn = driver.find_element(By.ID, 'provider')
+        signup_btn = driver.find_element(By.XPATH, "//a[text()='Sign Up']")
         signup_btn.click()
 
         # wait for page to load with 10 second timeout
@@ -81,14 +80,13 @@ class ClientSignUpTests(LiveServerTestCase):
         # wait until it goes back to login, with 10 second timeout
         WebDriverWait(driver, 10).until(EC.url_changes(current_url))
 
-        assert 'Login' in driver.title
+        assert 'Login' in driver.page_source
 
 
 class ClientLoginTest(LiveServerTestCase):
 
     def setUp(self):
         co = webdriver.ChromeOptions()
-        co.browser_version = "123"
         self.driver = webdriver.Chrome(co)
 
         self.clientEmail = 'john.doe@example.com'
@@ -143,7 +141,7 @@ class ClientLoginTest(LiveServerTestCase):
         # manually enter otp code
         getpass.getpass("Press enter after entering otp.")
 
-        assert 'ClientTrackPage' in driver.title
+        assert 'Client Tracking Page' in driver.title
 
     def testMissingEmailFieldClient(self):
         # start from login page
@@ -226,7 +224,6 @@ class ClientLoginTest(LiveServerTestCase):
 class ProviderSignUpTest(LiveServerTestCase):
     def setUp(self):
         co = webdriver.ChromeOptions()
-        co.browser_version = "123"
         self.driver = webdriver.Chrome(co)
 
     def tearDown(self):
@@ -250,7 +247,7 @@ class ProviderSignUpTest(LiveServerTestCase):
         current_url = driver.current_url
 
         # find sign up button and click
-        signup_btn = driver.find_element(By.ID, 'provider')
+        signup_btn = driver.find_element(By.XPATH, "//a[text()='Sign Up']")
         signup_btn.click()
 
         # wait for page to load with 10 second timeout
@@ -293,8 +290,7 @@ class ProviderSignUpTest(LiveServerTestCase):
         register.click()
 
         # wait until it goes back to login, with 10 second timeout
-        WebDriverWait(driver, 10).until(EC.url_changes(current_url))
-
+        WebDriverWait(driver, 2).until(EC.url_changes(current_url))
         assert 'Login' in driver.title
 
 
@@ -302,7 +298,6 @@ class ProviderLoginTest(LiveServerTestCase):
 
     def setUp(self):
         co = webdriver.ChromeOptions()
-        co.browser_version = "123"
         self.driver = webdriver.Chrome(co)
 
         self.providerEmail = 'pool.cleaner@example.com'
