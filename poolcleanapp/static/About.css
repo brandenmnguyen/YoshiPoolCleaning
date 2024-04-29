@@ -60,7 +60,7 @@ body{
 }
 
 .navbar {
-  background-color: rgba(215, 233, 255, 1);
+  background-color: #a3c9f7;
   color: white;
   font-size: 20px;
   transition: 0.6s;
@@ -93,21 +93,23 @@ body{
 }
 
 .footer {
-    position: absolute;
-    background-color: rgba(215, 233, 255, 1);
-    bottom: 0px;
-    height: 160px;
-    width: 100%;
+  background-color: #a3c9f7;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
 }
 
-.footerInfo {
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
+.footer a {
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
 }
-.footerInfo a:hover {
-  color: rgb(0, 47, 255);
-  text-decoration: underline; /* Add underline on hover */
+
+.footer a:hover {
+  text-decoration: underline;
 }
 
 a {

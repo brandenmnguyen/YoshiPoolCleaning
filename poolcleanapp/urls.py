@@ -54,13 +54,10 @@ urlpatterns = [
     path('viewOneClient/',views.getOneClient, name='viewOneClient'),
     path('providersignup/', views.providerSignUp, name='providersignup'),
     path('providersearch/', views.providerSearch, name='providersearch'),
-    path('paymentsuccess/', views.paymentSuccess, name = 'paymentsuccess'),
     
     path('providertracking/', views.providertracking, name='providertracking'),
     #path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
-    path('paymenthistory/', views.paymentHistory, name='paymenthistory'),
-    path('invoicetracking/', views.invoiceSearch, name='invoicetracking'),
-    path('payment/<int:company_id>/<int:client_id>/', views.payment, name='payment'), #TEMPORARY TO GRAB CLIENT can delete later on for next sprint
+    path('paymenthistory/', views.payment_history, name='paymenthistory'),
     path('about/', views.about, name='about'),
     path('verification/', views.verification, name = 'verification'),
     
@@ -68,7 +65,7 @@ urlpatterns = [
     path('generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
     path('calendar/', views.calendar),
     path('dailycalendar/', views.dailycalendar, name='dailycalendar'),
-    path('stripeTest/', views.stripeTest, name = 'stripeTest'),
+    path('paymentpage/', views.paymentPage, name = 'paymentpage'),
     path('checkout/', views.checkout, name = 'checkout'),
     path('checkout2/', views.checkout2, name = 'checkout2'),
     path('checkout3/', views.checkout3, name = 'checkout3'),
@@ -82,7 +79,8 @@ urlpatterns = [
     path('temppaymenthistory/', views.payment_history, name = 'temppaymenthistory'),
     path('clientSettings/', views.clientSettings, name = 'clientSettings'),
     path('providerSettings/', views.companySettings, name = 'providerSettings'),
-path('client_Schedule/<int:pk>/', views.client_Schedule, name='client_Schedule'),
+    path('client_Schedule/<int:pk>/', views.client_Schedule, name='client_Schedule'),
+    path('client_Schedule/<int:pk>/schedule_appointment/', views.schedule_appointment, name='schedule_appointment'),
     #------------------------------------------------------------------#
     path('messaging/', views.messaging_view, name='messaging'),
     #------------------------------------------------------------------#

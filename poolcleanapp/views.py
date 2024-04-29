@@ -661,10 +661,21 @@ def invoiceSearch(request):
 
 #@login_required(login_url=logging)
 def providerSearch(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    try:
+        client = Client.objects.get(email=user_id)
+        client_id = client.client_id
+        fname = client.fname
+        lname = client.lname
+    except Client.DoesNotExist:
+        client_id = None
     search_term = request.GET.get('search', '')
     info = Company.objects.filter(company_address__icontains=search_term)
     count_results = info.count()
-    return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term})
+    return render(request, "ResultsPage-1.html", {'info': info, 'count_results': count_results, 'search_term': search_term, 'fname': fname, 'lname': lname})
    
     #return render(request, "ResultsPage-1.html")
 
@@ -678,49 +689,6 @@ def getCompanyPrice(c_id): # GET COMPANY
 def getClientName(client_id):
     client = get_object_or_404(Client, id=client_id)
     return client.fname, client.lname 
-
-def payment(request, company_id, client_id):
-    try:
-        # Retrieve the company price based on the provided company ID
-        company = Company.objects.get(c_id=company_id)
-        company_charges = company.company_price
-        company_name = company.company_name  # Get the company name
-
-        # Get client information
-        client = Client.objects.get(client_id=client_id)
-        client_fname = client.fname
-        client_lname = client.lname
-
-        if request.method == 'POST':
-            # If the request method is POST, process the form data
-            form = InvoiceForm(request.POST)
-            if form.is_valid():
-                # If form is valid, save the invoice and redirect
-                invoice = form.save()
-                return HttpResponse('Invoice created successfully!')
-        else:
-            # Create an instance of the invoice form and pre-fill it with relevant data
-            initial_data = {
-                'client': client_id,
-                'c': company_id,
-                'amount': company_charges,
-                'email': client.email  # You can pre-fill other fields as needed
-            }
-            form = InvoiceForm(initial=initial_data)
-
-        # Pass company charges, company name, client information, and the invoice form to the template
-        return render(request, "payment_page.html", {'company_charges': company_charges, 'company_name': company_name, 'client_fname': client_fname, 'client_lname': client_lname, 'form': form})
-    except Company.DoesNotExist:
-        msg = "Company not found"
-        return render(request, "payment_page.html", {'msg': msg})
-    except Client.DoesNotExist:
-        msg = "Client not found"
-        return render(request, "payment_page.html", {'msg': msg})
-
-
-
-def paymentSuccess(request):
-    return render(request, "paymentsuccessful.html")
 
 ## ------------------------------------------------------------------------------------------
 
@@ -777,15 +745,6 @@ def dailycalendar(request):
 
 def dailycalendarclient(request):
     return render(request, "ClientCalendarClient.html")
-
-#@login_required
-#@login_required(login_url=logging)
-def paymentHistory(request):
-    return render(request, "InvoiceTracking.html")
-
-
-
-
 
 def about(request):
     return render(request, "about.html")
@@ -957,7 +916,6 @@ def client_Schedule(request, pk):
     email = request.session.get('username')  # Assuming email is stored in the session
     cl_password = request.session.get('password')  # Assuming password is stored in the session
 
-    # Assuming 'user_id' should be 'email'
     try:
         company = Company.objects.get(c_id=pk)
         company_id = company.c_id
@@ -966,70 +924,65 @@ def client_Schedule(request, pk):
 
     client = getClientName(email, cl_password)  # Assuming getClientName is defined elsewhere
     if client is None:
-        return JsonResponse({'error': 'Client not found'}, status=404)
+        return render(request, "404.html", {'error': 'Client not found'}, status=404)
 
     client_id = client.client_id
 
-    # Ensure that company_id is not None before filtering
     if company_id is not None:
-        schedule_list = Appointments.objects.filter(c_id=company_id)  # Use your model here
-        serializer = AppointmentsSerializer(schedule_list, many=True)
+        schedule_list = ProviderAvailableTimes.objects.filter(c_id=company_id)  # Use your model here
+        serializer = ProviderSchedulingSerializer(schedule_list, many=True)
         serialized_data = serializer.data
     else:
         serialized_data = []
 
-    return JsonResponse({'schedule_list': serialized_data, 'client_id': client_id})
-
-
-
-
+    return render(request, "clientSchedule.html", {'schedule_list': serialized_data, 'client_id': client_id})
 
 #SHOW APPOINTMENT INFO FOR CLIENT 
 def info(request):
-    email = request.session.get('username')  # Assuming email is stored in the session
-    cl_password = request.session.get('password')  # Assuming password is stored in the session
+    email = request.session.get('username')
+    cl_password = request.session.get('password')
     client = getClientName(email, cl_password)
     if client is None:
         return render(request, "ErrorPage.html", {'error': 'Client not found'})
+
     client_id = client.client_id
- 
-    appointments = Appointments.objects.filter(cl_id = client_id)   
-    appointment_data = [{'appdate':  appointment.appdate.strftime('%Y-%m-%d'), 'apptime': appointment.apptime.strftime('%H:%M:%S') } for appointment in appointments]
-    request.session['appointments'] = appointment_data
+    appointments = Appointments.objects.filter(cl_id=client_id, appstatus='n')
+    oldAppointments = Appointments.objects.filter(cl_id=client_id, appstatus='y')
+    appointments_data = [{'appdate': a.appdate.strftime('%Y-%m-%d'), 'apptime': a.apptime.strftime('%H:%M:%S')} for a in appointments]
+    old_appointments_data = [{'appdate': a.appdate.strftime('%Y-%m-%d'), 'apptime': a.apptime.strftime('%H:%M:%S')} for a in oldAppointments]
 
-    return render(request, 'viewInfo.html', {'appointments': appointments, 'client_id': client_id})
-
+    return render(request, 'viewInfo.html', {
+        'appointments': appointments_data, 
+        'oldAppointments': old_appointments_data,
+        'client_id': client_id
+    }) 
 
 #SCHEDULING LOGIC
-def schedule_appointment(request):
-
+def schedule_appointment(request, pk):
     email = request.session.get('username')  # Assuming email is stored in the session
     cl_password = request.session.get('password')  # Assuming password is stored in the session
     client = getClientName(email, cl_password)
+
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
 
     client_id = client.client_id
 
     if request.method == 'POST':
         # Parse JSON data from request body
         data = json.loads(request.body)
-      #  cl_id = data.get('cl_id')
-       # c_id = data.get('c_id')
-        c_id = int(data.get('c_id'))  # Convert c_id to an integer
+        c_id = pk  # Using the 'pk' from URL as the company ID
         appdate = data.get('appdate')
         apptime = data.get('apptime')
-
 
         # Check if appointment already exists
         if Appointments.objects.filter(c_id=c_id, appdate=appdate, apptime=apptime).exists():
             return JsonResponse({'error': 'Appointment already scheduled.'}, status=400)
 
-
         # Create a new appointment instance
-        appointment = Appointments( c_id=c_id, appdate=appdate, apptime=apptime, cl_id = client_id)
-        
-        # Save the appointment to the database
+        appointment = Appointments(c_id=c_id, appdate=appdate, apptime=apptime, cl_id=client_id)
+
+
         appointment.save()
 
         # Return a success response
@@ -1037,10 +990,6 @@ def schedule_appointment(request):
     else:
         # Return an error response if method is not POST
         return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
-
-
-
 
 def ScheduleTimingProvider(request):
     session_id = request.session.session_key
@@ -1159,8 +1108,20 @@ def messaging_view(request):
 
 # Stripe
 
-def stripeTest(request):
-    return render(request, "stripeTest.html")
+def paymentPage(request):
+    session_id = request.session.session_key
+    user_id = request.session.get('username')
+    if not user_id:
+        return HttpResponse("User not logged in or user_id not set", status=400)
+    user_pass = request.session.get('password')
+    try:
+        client = Client.objects.get(email=user_id)
+        client_id = client.client_id
+        fname = client.fname
+        lname = client.lname
+    except Client.DoesNotExist:
+        client_id = None
+    return render(request, "paymentpage.html", {'fname': fname, 'lname':lname})
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -1217,6 +1178,13 @@ def payment_history(request):
     user_id = request.session.get('username')
     if not user_id:
         return HttpResponse("User not logged in or user_id not set", status=400)
+    try:
+        client = Client.objects.get(email=user_id)
+        client_id = client.client_id
+        fname = client.fname
+        lname = client.lname
+    except Client.DoesNotExist:
+        client_id = None
     payment_intent_id = "pi_3P0WfpFamngtG7BE057myOwA"
     payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
     # payment_intents = stripe.PaymentIntent.list(customer=user_id)
@@ -1225,7 +1193,7 @@ def payment_history(request):
     dt_utc = datetime.datetime.utcfromtimestamp(timestamp)
     pst_timezone = pytz.timezone('America/Los_Angeles')
     dt_pst = dt_utc.replace(tzinfo=pytz.utc).astimezone(pst_timezone)
-    return render(request, 'temp_payment_history.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst})
+    return render(request, 'PaymentHistory.html', {'payment_intent': payment_intent, 'amount_in_dollars': amount_in_dollars, 'dt_pst': dt_pst, 'fname': fname, 'lname':lname})
 
 #End of Stripe
 
@@ -1240,10 +1208,12 @@ def clientSettings(request):
     try:
         client = Client.objects.get(email=user_id)
         client_id = client.client_id
+        fname = client.fname
+        lname = client.lname
     except Client.DoesNotExist:
         client_id = None
     print('user id:', client_id)
-    return render(request, 'clientSettings.html', {'user': user_id, 'pass': user_pass, 'client_id': client_id}, )
+    return render(request, 'clientSettings.html', {'user': user_id, 'pass': user_pass, 'client_id': client_id, 'fname': fname, 'lname':lname}, )
 
 @api_view(['PUT'])
 def updateClient(request, client_id):
@@ -1275,9 +1245,10 @@ def companySettings(request):
     try:
         company = Company.objects.get(company_email=user_id)
         company_id = company.c_id
+        company_name = company.company_name
     except Company.DoesNotExist:
         company_id = None
-    return render(request, 'providerSettings.html', {'user': user_id, 'pass': user_pass, 'company_id': company_id}, )
+    return render(request, 'providerSettings.html', {'user': user_id, 'pass': user_pass, 'company_id': company_id, 'company_name': company_name}, )
 
 @api_view(['PUT'])
 def updateCompany(request, company_id):
@@ -1389,7 +1360,7 @@ def clienttracking(request):
     client_id = client.client_id
     c_id = getProviderIdFromClient(client_id)  # Fetch company ID using the client ID
 
-    appointment_list = Appointments.objects.filter(cl = client_id)
+    appointment_list = Appointments.objects.filter(cl = client_id, appstatus = 'n')
     task_list = Taskping.objects.filter(client=client)  # Filter Taskping objects by client object
 
     company = None

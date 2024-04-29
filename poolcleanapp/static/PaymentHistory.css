@@ -41,6 +41,8 @@ body {
   color: white;
   text-align: center;
   padding: 15px 0;
+  position: absolute;
+  bottom: 0%;
 }
 
 .footer a {
@@ -96,6 +98,9 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   position: relative;
+  margin-top: 15px;
+  margin-right: 45%;
+  margin-bottom: 30%;
 }
 
 .transaction-complete {
@@ -119,6 +124,9 @@ body {
   border: 1px solid #333; /* Border around the box */
   box-sizing: border-box; /* Makes sure padding doesn't affect the overall width */
   margin-top: 35px;
+  margin-left: 65%;
+  margin-bottom: 30%;
+  
 }
 
 .left-side-scroll {
@@ -157,3 +165,7 @@ body {
 }
 
 /* Ensure that the background and positioning styles are not duplicated here, but kept where they originally were */
+.mt-3 {
+  margin-top: 1rem!important;
+  margin-bottom: -37%;
+}

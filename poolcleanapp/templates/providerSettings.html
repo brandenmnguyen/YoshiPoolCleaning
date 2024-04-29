@@ -16,14 +16,21 @@
   <body>
     {% comment %} Nav Bar {% endcomment %}
     <div class="navbar">
+        <div class="navbar-link" id="homelink">
+            <a href="{% url 'homepage' %}">
+                <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
+            </a>
+          </div>  
       <div class="navbar-links">
-        <a href="{% url 'homepage' %}">Logo</a>
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
        <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
-        <a href="#account" class="account-name">Account Name</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{%url 'providerSettings' %}" class="account-name" id="name">
+            {{company_name}}
+          </a>  
       </div>
     </div>
 <body>

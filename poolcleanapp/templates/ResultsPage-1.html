@@ -172,16 +172,15 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'about' %}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dailycalendar' %}">Schedule</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'paymenthistory' %}">Payments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'providertracking' %}">Map</a>
+                        <a class="nav-link" href="{% url 'logout' %}"   >Logout</a>
                     </li>
                     <li class="nav-item" id="nameOfUser">
-                        <a class="nav-link" href="#">Name</a>
+                        <a class="nav-link" href="{% url 'clientSettings' %}" class="account-name">
+                            {{ fname }} {{lname}}</a
+                          >
                     </li>
 
                     </li>
@@ -199,7 +198,7 @@
         // Iterate based on matched info from the database
         const companies = [
             {% for company in info %}
-        { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_phone }}", "email": "{{ company.company_email }}" }
+        { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_phone }}", "email": "{{ company.company_email }}", "c_id": "{{ company.c_id }}" }
         {% if not forloop.last %}, {% endif %}
         {% endfor %}
                 ];
@@ -216,26 +215,34 @@
                                 <p class="email">${company.email}</p>
                             </div>
                             <div class="subscribeButton">
-                                <button class="subscribeItself">Schedule</button>
+                                <button class="subscribeItself" data-id="${company.c_id}">Schedule</button>
                             </div>
                         </div>
                         <hr>
                     `;
+
+
+
+
 
             // Append the mainContainer to the body or another container
             document.body.appendChild(mainContainer);
         });
 
         // Add event listeners for subscription
-        const subscribeButtons = document.querySelectorAll(".subscribeItself");
+        const scheduleButton = document.querySelectorAll(".subscribeItself");
 
-        // subscribeButtons.classList.add('subscribeButton');
-        subscribeButtons.forEach(button => {
-            button.addEventListener("click", () => {
-                button.innerHTML = "schedule";
-                window.location.href = "{% url 'clientSchedule' %}";
-            });
+
+    scheduleButton.forEach(button => {
+        button.addEventListener("click", () => {
+    
+            const companyId = button.getAttribute("data-id");
+   
+        console.log("Company ID:", companyId); // Check if companyId is not empty
+            window.location.href = "/poolcleanapp/client_Schedule/" + companyId + "/";
+
         });
+    });
 
     </script>
     {% else %}
@@ -245,7 +252,6 @@
     <h2>Search your location to see providers that are near!</h2>
     {% endif %}
     <h2 id="numberResults"></h2>
-    <script src="{% static 'ResultsPage.js' %}"></script>
 </body>
 
 </html>

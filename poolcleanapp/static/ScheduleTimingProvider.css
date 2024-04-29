@@ -75,3 +75,20 @@ h1{
     height: 40px;
  
 }
+
+.home-button button {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.home-button button:hover {
+    color: blue;
+}

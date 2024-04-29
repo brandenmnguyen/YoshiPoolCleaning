@@ -23,7 +23,7 @@
         const appointments = [
             {% for appointment in schedule_list %}
         {
-            "c_id": "{{ appointment.c_id }}",
+            "c": "{{ appointment.c }}",
                 "date": " {{ appointment.appdate }}",
                     "time": " {{ appointment.apptime }}"
         }
@@ -62,63 +62,75 @@
 
             // Event listener for schedule button
             scheduleButton.addEventListener('click', function () {
-                scheduleAppointment(appoint.c_id, appoint.date, appoint.time, event.target);
+               //  console.log("Company ID:", appoint.c_id);
+               // scheduleAppointment(appoint.c_id, appoint.date, appoint.time, event.target);
+
+                console.log("Company ID:", appoint.c); // Access the company ID using appoint.c
+         scheduleAppointment(appoint.c, appoint.date, appoint.time, event.target);
             });
 
         });
 
-        function scheduleAppointment(c_id, date, time, button) {
-            // Parse date string into a Moment.js object
-            const parsedDate = moment(date);
+    function scheduleAppointment(c, date, time, button) {
+    // Parse date string into a Moment.js object
 
-            // Format date in YYYY-MM-DD format
-            const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-            // Parse time string using Moment.js
-            const parsedTime = moment(time, ['h:mm A', 'H:mm:ss']); // Specify possible time formats
+    const parsedDate = moment(date);
 
-            if (!parsedTime.isValid()) {
-                console.error('Error parsing time:', time);
-                return;
-            }
+    // Format date in YYYY-MM-DD format
+    const formattedDate = parsedDate.format('YYYY-MM-DD');
 
-            // Format time in HH:MM:SS format
-            const formattedTime = parsedTime.format('HH:mm:ss');
+    // Parse time string using Moment.js
+    const parsedTime = moment(time, ['h:mm A', 'H:mm:ss']); // Specify possible time formats
 
-            // Send data to the server
-            fetch('/poolcleanapp/clientSchedule/schedule_appointment/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({
-                    c_id: c_id,
-                    appdate: formattedDate,
-                    apptime: formattedTime
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Appointment scheduled successfully!');
-                        alert('Appointment scheduled successfully!');
-                        window.location.href = "{% url 'stripeTest' %}";
+    if (!parsedTime.isValid()) {
+        console.error('Error parsing time:', time);
+        return;
+    }
+
+    // Format time in HH:MM:SS format
+    const formattedTime = parsedTime.format('HH:mm:ss');
+
+
+
+
+
+
+    // Send data to the server
+    fetch(`/poolcleanapp/client_Schedule/${c}/schedule_appointment/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            c: c,
+            appdate: formattedDate,
+            apptime: formattedTime
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Appointment scheduled successfully!');
+                alert('Appointment scheduled successfully!');
+                window.location.href = "{% url 'paymentpage' %}";
+            } else {
+                response.json().then(data => {
+                    if (data.error === 'Appointment already scheduled.') {
+                        alert('Scheduling failed, appointment already scheduled. Schedule another timing');
+                        button.classList.add('alreadyScheduled');
+                        button.disabled = true; // Disabling the button
                     } else {
-                        response.json().then(data => {
-                            if (data.error === 'Appointment already scheduled.') {
-                                alert('scheduling failed, appointment already scheduled. Schedule another timing');
-                                button.classList.add('alreadyScheduled');
-                                button.disabled = true; // Disabling the button
-                            } else {
-                                console.error('Failed to schedule appointment:', data.error);
-                            }
-                        });
+                        console.error('Failed to schedule appointment:', data.error);
                     }
-                })
-                .catch(error => {
-                    console.error('Error scheduling appointment:', error);
                 });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Error scheduling appointment:', error);
+        });
+}
+
 
     </script>
 

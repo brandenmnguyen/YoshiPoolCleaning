@@ -273,7 +273,6 @@ class ProviderAvailableTimes(models.Model):
     c = models.ForeignKey('Company', models.DO_NOTHING, to_field='c_id', blank=True, null=True)
     appdate = models.DateField(blank=True, null=True)
     apptime = models.TimeField(blank=True, null=True)
-    status = models.CharField(max_length=1,default='n')
 
     class Meta:
         managed = True
