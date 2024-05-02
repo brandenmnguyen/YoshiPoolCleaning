@@ -1,4 +1,4 @@
-# Yoshi Pool Cleaning
+# Pool Clean Pro
 
 ![templogo](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd)
 
@@ -63,6 +63,8 @@ The pool cleaning industry is one that is quite overlooked, but important for th
 - **Login Page**
 
 ![sampleimage3](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/b28d9c69-1666-4acb-956e-ebcde57ca105)
+
+## Application Screenshots
 
 ## Testing
 
