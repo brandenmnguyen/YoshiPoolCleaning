@@ -110,10 +110,6 @@ This project is built using the following technologies and tools:
   
   [django-otp](https://django-otp-official.readthedocs.io/): Django library for two-factor authentication.
 
-- **Web Server:**
-  
-  [Apache](https://httpd.apache.org/): A widely used open-source web server.
-
 ### APIs
 
 - **Geolocation API:** To Track User Location
@@ -129,9 +125,9 @@ This project is built using the following technologies and tools:
 
 - [GitHub](https://github.com/): A web-based platform for version control and collaboration.
 
-### Servers
+### Deployment
 
-- [Microsoft Azure](https://azure.microsoft.com/): A cloud computing service for building, testing, deploying, and managing applications and services.
+- [AWS] which stands for Amazon Web Services, allows deploying applications and services with greater flexibility, scalability, and reliability. (https://aws.amazon.com)
 
 ## Timeline
 
