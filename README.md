@@ -4,7 +4,9 @@
 
 ## Introduction
 
-The pool cleaning industry is one that is quite overlooked, but important for those who own pools. Wanting to create a big splash in the industry, our client, Ben Stewart, President of Stewart Industries, wants us to create a web application for clients to find pool cleaners, and for pool cleaning companies to be able to find customers with pools to clean.
+The pool cleaning industry, often underestimated, plays a crucial role for pool owners. Typically, interactions between pool technicians and clients are minimal, with clients only discovering the condition of their pools after maintenance is completed. Additionally, scheduling and payments can present challenges. To address these issues and revolutionize the industry, Ben Stewart, President of Stewart Industries, is seeking to develop a web application. This platform will enable clients to effortlessly find pool cleaning services, while also allowing pool cleaning companies to connect with potential clients.
+
+This web application improves the way pool technicians and their companies operate. It lets technicians track and share their progress with clients, who no longer have to wonder when their pool will be cleaned. The app includes a straightforward scheduling system, making it easy for both technicians and clients to book appointments. Additionally, it features a payment system using Stripe, simplifying transactions and making the whole process smoother for everyone involved.
 
 ## Key Features
 
