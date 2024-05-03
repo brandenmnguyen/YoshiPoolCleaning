@@ -66,6 +66,22 @@ This web application improves the way pool technicians and their companies opera
 
 ## Application Screenshots
 
+- **Select Appointment**
+  
+  <img width="858" alt="select an appointment" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/040c5937-8760-4613-9adc-3fbb67299a0a">
+  
+- **Selecting Task**
+
+  <img width="803" alt="select task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/550ae89c-0d1d-4061-bfa0-0008bdcbf2f0">
+  
+- **Update Task**
+  
+  <img width="407" alt="update task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/2d1c89e9-a0dd-4ede-bd00-87314c2aa9a7">
+  
+- **Complete Task**
+  
+  <img width="875" alt="complete task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/35c86caa-4cfd-4230-ad7d-bdb2fae12dff">
+
 ## Testing
 
 This project uses Django's built-in testing tools for unit testing and Selenium for functional testing. To ensure your development environment is ready for running tests, you will need to install the necessary dependencies and configure your system appropriately.
