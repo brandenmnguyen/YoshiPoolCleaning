@@ -68,19 +68,19 @@ This web application improves the way pool technicians and their companies opera
 
 - **Select Appointment**
   
-  <img width="858" alt="select an appointment" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/040c5937-8760-4613-9adc-3fbb67299a0a">
+<img width="1097" alt="select appointment" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/1dcb20ed-9431-4463-a57a-74f1edb22458">
   
 - **Selecting Task**
 
-  <img width="803" alt="select task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/550ae89c-0d1d-4061-bfa0-0008bdcbf2f0">
+<img width="1082" alt="add task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/0d4d3870-85b9-4865-8737-79d5bdf141f1">
   
 - **Update Task**
   
-  <img width="407" alt="update task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/2d1c89e9-a0dd-4ede-bd00-87314c2aa9a7">
+<img width="407" alt="update task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/2d1c89e9-a0dd-4ede-bd00-87314c2aa9a7">
   
 - **Complete Task**
-  
-  <img width="875" alt="complete task" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/35c86caa-4cfd-4230-ad7d-bdb2fae12dff">
+
+<img width="1075" alt="task description" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/9c10b570-e128-43ce-8035-1cb94d3d9a4f">
 
 ## Testing
 
