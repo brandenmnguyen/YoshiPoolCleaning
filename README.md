@@ -68,8 +68,48 @@ This web application improves the way pool technicians and their companies opera
 
 ## Testing
 
-To be added in CSC191
+This project uses Django's built-in testing tools for unit testing and Selenium for functional testing. To ensure your development environment is ready for running tests, you will need to install the necessary dependencies and configure your system appropriately.
 
+### Prequisites:
+
+- **Python:** Make sure you have Python installed. You can download it from [python.org](https://www.python.org/)
+- **ChromeDriver:** Make sure you have ChromeDriver installed. You can download it from [chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads)
+
+### Activate and Run Python Virtual Environment
+
+1. Create a python virtual environment
+```
+python3 -m venv venv
+```
+2. Activate virtual environment
+```
+source venv/bin/activate
+```
+3. Install all python dependencies
+```
+pip install -r requirements.txt
+```
+
+### Run Tests
+
+- You can run all the tests with this command
+```
+python3 manage.py test
+```
+- To run a specific test, run python3 manage.py test poolcleanapp.tests.<FILE_NAME>
+  For example, to test only models, run the following command:
+```
+python3 manage.py test poolcleanapp.tests.tests_models
+```
+- To run only functional tests, first start the server
+```
+python3 manage.py runserver
+```
+  Then on a separate window, run this command
+```
+python3 manage.py test poolcleanapp.tests.tests_functions
+```
+  
 ## Deployment
 
 * We used Amazon Web Services to host the web application. The deployed web application can be viewed at http://18.236.105.85:8000/.
