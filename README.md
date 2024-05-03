@@ -1,6 +1,6 @@
 # Pool Clean Pro
 
-![templogo](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd)
+<img src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/100047116/c6b18071-4068-4fa4-8741-8245bf304d37" width="256">
 
 ## Introduction
 
@@ -10,23 +10,21 @@ This web application improves the way pool technicians and their companies opera
 
 ## Key Features
 
-**Location tracking:** 
+**Appointment Scheduling**
 
-- The application can track when a pool cleaner checks in and checks out in regards to cleaning the pool
+- A provider can add available appointment times for any customer to see.
 
-- The application uses time stamps to indicate when the pool cleaner has signed in and signed out.
+- A customer can view those available times and schedule it with their provider, which will take them through the payment process.
+
+- Once a customer schedules an appointment, the Provider can view it from their tracking page, add tasks, and update the info and status of those tasks.
+
+- A customer can view their scheduled appointments and see what tasks were done and any notes that their pool service provider left them.
 
 **Payment through the application:**
 
 - Customers can use the application to pay the pool cleaners through different methods such as credit card or Paypal.
 
 - The payment system uses the Stripe API.
-
-**Real time communication:**
-
-- Customers can directly message the pool cleaner and the pool cleaner can directly message the customer.
-
-- The communication will be in real time.
 
 **Login System**
 
@@ -130,60 +128,6 @@ This project is built using the following technologies and tools:
 ### Deployment
 
 - [AWS] which stands for Amazon Web Services, allows deploying applications and services with greater flexibility, scalability, and reliability. (https://aws.amazon.com)
-
-## Timeline
-
-### Sprint 5
-- Finish Login and Sign up for Clients
-- Finish Login and Sign up for Providers
-- Make Custom 404 page for invalid url(s)
-- Work on invoice tracking page so it works with fake data
-- Automatically Populate provider search based on the database
-- Create company admin page
-- Let company admins create and delete employee accounts
-- Work on back-end logic for client scheduling appointment for service
-
-### Sprint 6
-- Populate invoice tracking page using the database
-- Work on back-end logic for provider to view daily tasks
-- Work on provider daily calendar to view daily tasks using fake data
-- Work on back-end logic to return tasks to either provider or client
-- Work on client tracking page so that it works with fake data
-- Work on provider tracking page so that it works with fake data
-- Work on back-end logic of client subscribing to a provider
-- Work on front-end allowing client to subscribe to a provider
-- Finalize layout of payment page and allow it to capture user information
-- Make initial back-end logic for processing payments without Stripe API 
-
-### Sprint 7
-- Work on and apply Stripe API integration into the back-end
-- Add one-time card payments using Stripe API
-- Have payment page submit payments and save those payments in the database
-- Populate client tracking page based on database
-- Populate provider tracking page based on database
-- Work on back-end logic for verifying if provider is at a client's location using the HTML Geolocation API
-- Get two factor authentication working for both clients and providers
-- Let provider mark certain tasks as done for the client to see
-- Have local database update to the cloud instead
-
-### Sprint 8
-- Get webapp uploaded and deployed on Microsoft Azure
-- Allow providers to mark tasks as incomplete if they run into issues as they are completing them for the client
-- Get push notifications working for provider arriving at a client's house
-- Implement feature for clients to unsubscribe from a provider
-- Implement prototype for chatting between client and provider
-- basic implementation of client dashboard that shows which provider the client is subscribed to
-- Implement website fees 
-
-### Sprint 9
-- Fix any outstanding bugs
-- Implement client being able to reschedule provider services
-- Implement providers setting client Sign up limit 
-- Tweak search algorithm for provider search page to sort by closest providers to client's home
-- Implement password changing options for both the client and the provider
-- Add password length and format requirements for security reasons
-- Implement recurring payments for the clients
-- Allow providers to remove clients
 
 ## Contact
 
