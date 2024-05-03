@@ -77,7 +77,7 @@ To be added in CSC191
 
 ## Developer Instructions
 
-To be added in CSC191
+To set up the development environment for this project, first, ensure that you have Visual Studio Code and Python installed on your computer. After, start by cloning the project repository using the command git clone using the URL of Project, then navigate into the project directory. Create a virtual environment within the project directory by running python -m venv venv, and activate it using .\\venv\\Scripts\\activate on Windows or source venv/bin/activate on MacOS/Linux. Install all required dependencies. Finally, open the project in Visual Studio Code by running code in the terminal within your project directory.
 
 ## Tech Stack
 
