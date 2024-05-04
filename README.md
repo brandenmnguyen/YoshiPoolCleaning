@@ -66,6 +66,22 @@ This web application improves the way pool technicians and their companies opera
 
 ## Application Screenshots
 
+**Customer Side:**
+
+- **Search For Pool Company**
+  
+![image](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/61b0c95d-4fe4-4458-93de-b12ee4f3f308)
+
+- **Payment Page**
+
+![image](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/7a0607e6-067e-4cc2-92a6-79849e899226)
+
+- **Stripe Processing Payment**
+
+![image](https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/ced8f637-d05f-4f7a-9ebd-83cff745984c)
+
+**Pool Company Side:**
+
 - **Select Appointment**
   
 <img width="1097" alt="select appointment" src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/116032314/1dcb20ed-9431-4463-a57a-74f1edb22458">
@@ -133,7 +149,12 @@ python3 manage.py test poolcleanapp.tests.tests_functions
 
 ## Developer Instructions
 
-To set up the development environment for this project, first, ensure that you have Visual Studio Code and Python installed on your computer. After, start by cloning the project repository using the command git clone using the URL of Project, then navigate into the project directory. Create a virtual environment within the project directory by running python -m venv venv, and activate it using .\\venv\\Scripts\\activate on Windows or source venv/bin/activate on MacOS/Linux. Install all required dependencies. Finally, open the project in Visual Studio Code by running code in the terminal within your project directory.
+To set up the development environment for this project: 
+First, ensure that you have Visual Studio Code and Python installed on your computer.
+After, start by cloning the project repository using the command git clone using the URL of Project, then navigate into the project directory. 
+Create a virtual environment within the project directory by running python -m venv venv, and activate it using .\\venv\\Scripts\\activate on Windows or source venv/bin/activate on MacOS/Linux. 
+Install all required dependencies. 
+Finally, open the project in Visual Studio Code by running code in the terminal within your project directory.
 
 ## Tech Stack
 
@@ -184,7 +205,7 @@ This project is built using the following technologies and tools:
 
 ### Deployment
 
-- [AWS] which stands for Amazon Web Services, allows deploying applications and services with greater flexibility, scalability, and reliability. (https://aws.amazon.com)
+- [AWS](https://aws.amazon.com): Which stands for Amazon Web Services, allows deploying applications and services with greater flexibility, scalability, and reliability.
 
 ## Contact
 
