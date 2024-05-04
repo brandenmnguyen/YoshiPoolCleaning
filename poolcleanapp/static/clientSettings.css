@@ -37,6 +37,14 @@
     left: 0;
     width: 100%;
   }
+
+  .account-name {
+    background-color: #60a0ef;
+    padding: 15px 0;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+  }
   
   .footer a {
     color: white;

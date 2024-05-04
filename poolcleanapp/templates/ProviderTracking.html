@@ -22,7 +22,7 @@
         </a>
       </div>  
       <div class="navbar-links" id="links">
-        <a href="{% url 'about' %}">About</a>        
+        <a href="{% url 'aboutProvider' %}">About</a>        
         <a href="{% url 'ScheduleTimingProvider' %}">Schedule</a>
         <a href="{% url 'dailycalendar' %}">Calendar</a>
         <a href="{% url 'logout' %}">Logout</a>
@@ -119,7 +119,7 @@
     <div class="container-fluid main-container mt-3 my-3">
     <div class="alert alert-info" role="alert">
       You have no appointments.
-  <a href="http://127.0.0.1:8000/poolcleanapp/ScheduleTimingProvider/" class="alert-link">
+  <a href="/poolcleanapp/ScheduleTimingProvider/" class="alert-link">
     Click here to manage your schedule
   </a>
     </div>
@@ -362,4 +362,3 @@
       }     
   </script>
 </html>
-

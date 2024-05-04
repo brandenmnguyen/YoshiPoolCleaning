@@ -749,6 +749,12 @@ def dailycalendarclient(request):
 def about(request):
     return render(request, "about.html")
 
+def aboutProvider(request):
+    return render(request, "aboutProvider.html")
+
+def aboutClient(request):    
+    return render(request, "aboutClient.html")
+
 def contact(request):
     return render(request, "contact.html")
 #-----------------------TRACKING PAGE------------------------------------
@@ -943,19 +949,29 @@ def info(request):
     cl_password = request.session.get('password')
     client = getClientName(email, cl_password)
     if client is None:
-        return render(request, "ErrorPage.html", {'error': 'Client not found'})
+        return render(request, "404.html", {'error': 'Client not found'})
 
     client_id = client.client_id
-    appointments = Appointments.objects.filter(cl_id=client_id, appstatus='n')
-    oldAppointments = Appointments.objects.filter(cl_id=client_id, appstatus='y')
-    appointments_data = [{'appdate': a.appdate.strftime('%Y-%m-%d'), 'apptime': a.apptime.strftime('%H:%M:%S')} for a in appointments]
-    old_appointments_data = [{'appdate': a.appdate.strftime('%Y-%m-%d'), 'apptime': a.apptime.strftime('%H:%M:%S')} for a in oldAppointments]
+    appointments = Appointments.objects.filter(cl_id=client_id, appstatus='n').select_related('c')
+    oldAppointments = Appointments.objects.filter(cl_id=client_id, appstatus='y').select_related('c')
+
+    appointments_data = [{
+        'appdate': a.appdate.strftime('%Y-%m-%d'),
+        'apptime': a.apptime,
+        'company_name': a.c.company_name
+    } for a in appointments]
+
+    old_appointments_data = [{
+        'appdate': a.appdate.strftime('%Y-%m-%d'),
+        'apptime': a.apptime.strftime('%H:%M:%S'),
+        'company_name': a.c.company_name
+    } for a in oldAppointments]
 
     return render(request, 'viewInfo.html', {
         'appointments': appointments_data, 
         'oldAppointments': old_appointments_data,
         'client_id': client_id
-    }) 
+    })
 
 #SCHEDULING LOGIC
 def schedule_appointment(request, pk):
@@ -1135,8 +1151,8 @@ def checkout(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        success_url='//poolcleanapp/clienttracking/',
+        cancel_url='//poolcleanapp/clienttracking/',
     )
 
     return redirect(checkout_session.url, code=303)
@@ -1151,8 +1167,8 @@ def checkout2(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        success_url='//poolcleanapp/clienttracking/',
+        cancel_url='//poolcleanapp/clienttracking/',
     )
 
     return redirect(checkout_session.url, code=303)
@@ -1167,8 +1183,8 @@ def checkout3(request):
             },
         ],
         mode='payment',
-        success_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
-        cancel_url='http://127.0.0.1:8000/poolcleanapp/clienttracking/',
+        success_url='//poolcleanapp/clienttracking/',
+        cancel_url='//poolcleanapp/paymentpage/',
     )
 
     return redirect(checkout_session.url, code=303)

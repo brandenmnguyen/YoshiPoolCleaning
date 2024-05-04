@@ -3,63 +3,92 @@
 <html>
   <head>
     <title>Settings</title>
-    <link rel="stylesheet" href="providerSettings.css">
+    <link rel="stylesheet" href="providerSettings.css" />
     <script src="https://js.stripe.com/v3/"></script>
     <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="{% static 'providerSettings.css' %}">
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'providerSettings.css' %}" />
   </head>
   <body>
     {% comment %} Nav Bar {% endcomment %}
     <div class="navbar">
-        <div class="navbar-link" id="homelink">
-            <a href="{% url 'homepage' %}">
-                <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
-            </a>
-          </div>  
+      <div class="navbar-link" id="homelink">
+        <a href="{% url 'homepage' %}">
+          <img
+            src="{% static 'pool-clean-logo.png' %}"
+            class="logo-image"
+            alt="LOGO"
+            style="width: 100px; height: 100px"
+          />
+        </a>
+      </div>
       <div class="navbar-links">
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'providersearch' %}">Providers</a>
-        <a href="{% url 'paymenthistory' %}">Payment</a>
-       <!--<a href="#map">Map</a>-->
-        <a href="{% url 'dailycalendar' %}">Schedule</a>
+        <a href="{% url 'aboutProvider' %}">About</a>
+        <a href="{% url 'ScheduleTimingProvider' %}">Schedule</a>
+        <a href="{% url 'dailycalendar' %}">Calendar</a>
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{%url 'providerSettings' %}" class="account-name" id="name">
-            {{company_name}}
-          </a>  
+          {{company_name}}
+        </a>
       </div>
     </div>
-<body>
-    <div id="settingsContainer">
-        <div id= "settingsContainerStyling">
-            <h1>Account Settings</h1>
-            <div id ="accountInfoSpace">
-                <h2>Current Information:</h2>
-                <p><strong>Email:</strong> {{ user }}</p>
-                <p><strong>Password:</strong> {{ pass }}</p>
-                <h2> Change information:</h2>
-                <label for="companyEmail">Enter new email</label>
-                <div id= "emailInput">
-                    <input type="email" class="form-control" placeholder="Email" aria-label="email" id="companyEmail" name="company_email" required>
-                    <button type="button" id="emailChangeButton" onclick="changeEmail()">Change Email</button>
-                </div>
-                <label for="companyPassword">Enter new password</label>
-                <div id = "passwordInput">
-                    <input type="password" class="form-control" placeholder="Password"
-                        aria-label="password" id="companyPassword" name="company_pw" required>
-                    <button type="button" id="passwordChangeButton" onclick="changePassword()">Change Password</button>
-                </div>
-
-                <input type="hidden" id="c_id" value={{ company_id }}>
-
+    <body>
+      <div id="settingsContainer">
+        <div id="settingsContainerStyling">
+          <h1>Account Settings</h1>
+          <div id="accountInfoSpace">
+            <h2>Current Information:</h2>
+            <p><strong>Email:</strong> {{ user }}</p>
+            <p><strong>Password:</strong> {{ pass }}</p>
+            <h2>Change information:</h2>
+            <label for="companyEmail">Enter new email</label>
+            <div id="emailInput">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                aria-label="email"
+                id="companyEmail"
+                name="company_email"
+                required
+              />
+              <button
+                type="button"
+                id="emailChangeButton"
+                onclick="changeEmail()"
+              >
+                Change Email
+              </button>
             </div>
+            <label for="companyPassword">Enter new password</label>
+            <div id="passwordInput">
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+                aria-label="password"
+                id="companyPassword"
+                name="company_pw"
+                required
+              />
+              <button
+                type="button"
+                id="passwordChangeButton"
+                onclick="changePassword()"
+              >
+                Change Password
+              </button>
+            </div>
+
+            <input type="hidden" id="c_id" value="{{ company_id }}" />
+          </div>
         </div>
-    </div>
-</body>
+      </div>
+    </body>
     {% comment %} Footer {% endcomment %}
     <div class="footer">
       <a href="#about-us">About Us</a>
@@ -71,79 +100,80 @@
     </div>
 
     <script>
-        function changeEmail() {
-            var company_id = document.getElementById("c_id").value;
-            var c_email = document.getElementById("companyEmail").value;
+      function changeEmail() {
+        var company_id = document.getElementById("c_id").value;
+        var c_email = document.getElementById("companyEmail").value;
 
-            if (!c_email.trim()) {
-                alert("Please enter a new email.");
-                return;
-            }
-
-            var data = {
-                company_email: c_email
-            };
-
-            fetch('http://127.0.0.1:8000/poolcleanapp/updateCompany/' + company_id + '/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Email updated successfully
-                    alert("Email changed successfully!");
-                    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/logout/';
-                } else if (response.status === 400) {
-                    // Email already exists
-                    alert("This email already exists. Please choose a different one.");
-                } else {
-                    // Other errors
-                    alert("There was an error in changing your email.");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("There was an error in changing your email.");
-            });
+        if (!c_email.trim()) {
+          alert("Please enter a new email.");
+          return;
         }
+
+        var data = {
+          company_email: c_email,
+        };
+
+        fetch("/poolcleanapp/updateCompany/" + company_id + "/", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Email updated successfully
+              alert("Email changed successfully!");
+              window.location.href = "/poolcleanapp/logout/";
+            } else if (response.status === 400) {
+              // Email already exists
+              alert(
+                "This email already exists. Please choose a different one."
+              );
+            } else {
+              // Other errors
+              alert("There was an error in changing your email.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("There was an error in changing your email.");
+          });
+      }
     </script>
 
     <script>
-        function changePassword() {
-            var company_id = document.getElementById("c_id").value;
-            var company_password = document.getElementById("companyPassword").value;
+      function changePassword() {
+        var company_id = document.getElementById("c_id").value;
+        var company_password = document.getElementById("companyPassword").value;
 
-            if (!company_password.trim()) {
-                alert("Please enter a new password.");
-                return;
-            }
-
-            var data = {
-                company_pw: company_password
-            };
-
-            fetch('http://127.0.0.1:8000/poolcleanapp/updateCompany/' + company_id + '/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert("Password changed successfully!");
-                window.location.href = 'http://127.0.0.1:8000/poolcleanapp/logout/';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("There was an error in changing your password.");
-            });
+        if (!company_password.trim()) {
+          alert("Please enter a new password.");
+          return;
         }
-    </script>
 
+        var data = {
+          company_pw: company_password,
+        };
+
+        fetch("/poolcleanapp/updateCompany/" + company_id + "/", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+            alert("Password changed successfully!");
+            window.location.href = "/poolcleanapp/logout/";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("There was an error in changing your password.");
+          });
+      }
+    </script>
   </body>
 </html>

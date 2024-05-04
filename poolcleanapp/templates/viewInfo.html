@@ -4,31 +4,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Appointments</title>
     <link rel="stylesheet" href="{% static 'viewInfo.css' %}" />
   </head>
-
   <body>
     <a href="{% url 'clienttracking' %}" class="home-button">
-        <button>&larr; Back</button>
-      </a>
+      <button>&larr; Back</button>
+    </a>
     <h1>Appointments</h1>
-    <div class="box">
-      <b>Upcoming Appointments: </b>
-      <ul id="appointments-list">
-        {% for appointment in appointments %}
-        <li>
-          
-The provider will be coming on {{ appointment.appdate }} at an
-        estimated time of {{ appointment.apptime }}</li>{% endfor %}</ul></div>
 
-    <div class="box">
-      <b>Past Appointments: </b>
-      <ul id="oldappointments-list">
-        {% for oldAppointment in oldAppointments %}
-        <li>- Appointment is completed at {{ oldAppointment.appdate }}</li>
-        {% endfor %}
-      </ul>
+    <div class="card">
+      <div class="card-header">
+        Upcoming Appointments<span class="dot">.</span><span class="dot">.</span
+        ><span class="dot">.</span><span class="dot">.</span>
+      </div>
+      <div class="card-body">
+        <b>Appointments:</b>
+        <ul id="appointments-list">
+          {% for appointment in appointments %}
+          <li>
+            <b>{{ appointment.company_name }}</b> will be coming on
+            <span class="datetime" data-type="date"
+              ><b>{{ appointment.appdate }}</b></span
+            >
+            at an estimated time of
+            <span class="datetime" data-type="time"
+              ><b>{{ appointment.apptime }}</b></span
+            >
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
+
+    <div class="card">
+      <div class="card-header">Past Appointments</div>
+      <div class="card-body">
+        <b>Appointments:</b>
+        <ul id="oldappointments-list">
+          {% for oldAppointment in oldAppointments %}
+          <li>
+            - Appointment completed on <b>{{ oldAppointment.appdate }}</b> with
+            <b>{{ oldAppointment.company_name }}</b>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <script></script>
   </body>
 </html>

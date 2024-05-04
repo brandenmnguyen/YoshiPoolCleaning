@@ -2,256 +2,290 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Results Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
 
     <style>
-        #Search {
-            background-color: rgba(96, 160, 239, 1);
-            color: white;
-            border-color: rgba(96, 160, 239, 1);
-            margin-right: 20px;
-        }
+      #Search {
+        background-color: rgba(96, 160, 239, 1);
+        color: white;
+        border-color: rgba(96, 160, 239, 1);
+        margin-right: 20px;
+      }
+      .navbar {
+        background-color: #a3c9f7;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+      }
 
-        .navbar {
-            background-color: rgba(215, 233, 255, 1);
-            color: white;
-            font-size: 20px;
-            transition: 0.6s;
-        }
+      .navbar-links,
+      .navbar-nav {
+        display: flex;
+        flex: 1;
+        justify-content: space-around;
+      }
 
-        .navbar-nav {
-            display: flex;
-            justify-content: space-around;
-        }
+      .navbar a,
+      .nav-link {
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        font-family: Arial, sans-serif; /* Example font */
+        font-size: 16px; /* Uniform font size across all nav links */
+      }
 
-        .form-control {
-            border-radius: 20px;
-            border-color: rgba(215, 233, 255, 1);
-            margin-left: 20px;
-        }
+      .navbar a:hover,
+      .nav-link:hover {
+        background-color: #c2d1e0; /* Hover effect for background */
+      }
 
-        .nav-item:hover {
-            background-color: rgba(96, 160, 239, 1);
-            border-radius: 20px;
-        }
+      .account-name a:hover {
+        background-color: transparent;
+        color: white; /* Ensures text color stays white on hover */
+      }
 
-        h2 {
-            margin-top: 20px;
-            margin-left: 35px;
-            font-size: 23px;
-        }
+      .form-control {
+        border-radius: 20px;
+        border-color: rgba(215, 233, 255, 1);
+        margin-left: 20px;
+      }
+      h2 {
+        margin-top: 20px;
+        margin-left: 35px;
+        font-size: 23px;
+      }
 
-        .nav-item a {
-            font-family: 'Inter', sans-serif;
-            color: white;
-            font-weight: bold;
-            margin-left: 60px;
-            margin-right: 60px;
-            display: flex;
-            cursor: pointer;
-        }
+      #Search:hover {
+        background-color: rgb(57, 139, 239);
+        border-color: rgba(96, 160, 239, 1);
+      }
 
-        .nav-item a:hover {
-            color: white;
-        }
+      .resultsOfSearch {
+        width: 100%;
+        padding: 0px;
+        margin-left: 35px;
+        display: flex;
+        flex-direction: row;
+      }
 
-        #Search:hover {
-            background-color: rgb(57, 139, 239);
-            border-color: rgba(96, 160, 239, 1);
-        }
+      .nameOfCompany {
+        padding-top: 25px;
+        margin-bottom: 25px;
+      }
 
-        .resultsOfSearch {
-            width: 100%;
-            padding: 0px;
-            margin-left: 35px;
-            display: flex;
-            flex-direction: row;
-        }
+      .nameOfStreet {
+        font-size: 12px;
+        color: rgba(105, 105, 105, 1);
+      }
 
-        .nameOfCompany {
-            padding-top: 25px;
-            margin-bottom: 25px;
-        }
+      .Phonenumber {
+        font-size: 12px;
+        color: rgba(105, 105, 105, 1);
+      }
 
-        .nameOfStreet {
-            font-size: 12px;
-            color: rgba(105, 105, 105, 1);
-        }
+      .plusItself {
+        border-radius: 50%;
+        background-color: rgba(215, 233, 255, 1);
+        color: black;
+        height: 45px;
+        width: 50px;
+        padding: 10px;
+        text-align: center;
+        margin-left: 450px;
+        size: 35px;
+        text-decoration: none;
+      }
 
-        .Phonenumber {
-            font-size: 12px;
-            color: rgba(105, 105, 105, 1);
-        }
+      #nameOfUser {
+        background-color: rgba(96, 160, 239, 1);
+        border-radius: 20px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 10px;
+      }
 
-        .plusItself {
-            border-radius: 50%;
-            background-color: rgba(215, 233, 255, 1);
-            color: black;
-            height: 45px;
-            width: 50px;
-            padding: 10px;
-            text-align: center;
-            margin-left: 450px;
-            size: 35px;
-            text-decoration: none;
-        }
+      .plusItself:hover {
+        background-color: rgb(110, 172, 247);
+        color: black;
+      }
 
+      .plusSign {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+      }
 
-        #nameOfUser {
-            background-color: rgba(96, 160, 239, 1);
-            border-radius: 20px;
-            margin-left: 20px;
-        }
+      .infoOfCompany {
+        width: 50%;
+        line-height: 1px;
+      }
 
-        .plusItself:hover {
-            background-color: rgb(110, 172, 247);
-            color: black;
-        }
+      .email {
+        font-size: 12px;
+        color: rgba(105, 105, 105, 1);
+      }
 
+      .subscribeItself {
+        background-color: rgba(96, 160, 239, 1);
+        border-style: none;
+        margin-top: 20px;
+        color: white;
+        padding: 13px;
+        border-radius: 20px;
+        margin-left: 500px;
+      }
 
-        .plusSign {
-            width: 50%;
-            display: flex;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .infoOfCompany {
-            width: 50%;
-            line-height: 1px;
-        }
-
-        .email {
-            font-size: 12px;
-            color: rgba(105, 105, 105, 1);
-        }
-
-
-
-        .subscribeItself {
-            background-color: rgba(96, 160, 239, 1);
-            border-style: none;
-            margin-top: 20px;
-            color: white;
-            padding: 13px;
-            border-radius: 20px;
-            margin-left: 500px;
-        }
-
-        .subscribeItself:hover {
-            background-color: rgb(45, 132, 239);
-        }
+      .subscribeItself:hover {
+        background-color: rgb(45, 132, 239);
+      }
     </style>
+  </head>
 
-
-
-
-</head>
-
-<body class="contentOfConent">
-    <nav class="navbar sticky-bottom  navbar-expand-lg bg-body-tertiary ">
-        <div class="container-fluid">
-            <form class="d-flex" role="search" action="{% url 'providersearch' %}" method="get">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search"
-                    value="{{ search_term }} ">
-                <button class="btn btn-outline-success" type="submit" id="Search">Search</button>
-            </form>
-
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'about' %}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'paymenthistory' %}">Payments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}"   >Logout</a>
-                    </li>
-                    <li class="nav-item" id="nameOfUser">
-                        <a class="nav-link" href="{% url 'clientSettings' %}" class="account-name">
-                            {{ fname }} {{lname}}</a
-                          >
-                    </li>
-
-                    </li>
-
-                </ul>
-
-            </div>
+  <body class="contentOfConent">
+    <nav class="navbar sticky-bottom navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'clienttracking' %}">
+          <img
+            src="{% static 'pool-clean-logo.png' %}"
+            class="logo-image"
+            alt="LOGO"
+            style="width: 100px; height: 100px"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'aboutClient' %}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'providersearch' %}"
+                >Providers</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'paymenthistory' %}">Payment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'info' %}">Appointments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+          </ul>
+          <form
+            class="d-flex"
+            role="search"
+            action="{% url 'providersearch' %}"
+            method="get"
+          >
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              name="search"
+              value="{{ search_term }}"
+              style="width: 400px"
+            />
+            <!-- Adjust the width-->
+            <button class="btn btn-outline-success" type="submit" id="Search">
+              Search
+            </button>
+          </form>
+          <ul>
+            <li class="nav-item" id="nameOfUser">
+              <a class="nav-link" href="{% url 'clientSettings' %}"
+                >{{ fname }} {{ lname }}</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
-    {% if search_term %}
-    {% if info %}
-    <h2> Showing {{ count_results }} results</h2>
+    {% if search_term %} {% if info %}
+    <h2>Showing {{ count_results }} results</h2>
     <script>
-        // Iterate based on matched info from the database
-        const companies = [
-            {% for company in info %}
-        { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_phone }}", "email": "{{ company.company_email }}", "c_id": "{{ company.c_id }}" }
-        {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-                ];
+          // Iterate based on matched info from the database
+          const companies = [
+              {% for company in info %}
+          { "name": "{{ company.company_name }}", "location": "{{ company.company_address }}", "phoneNumber": "{{ company.company_phone }}", "email": "{{ company.company_email }}", "c_id": "{{ company.c_id }}" }
+          {% if not forloop.last %}, {% endif %}
+          {% endfor %}
+                  ];
 
-        companies.forEach(company => {
-            // Creating elements using HTML literals
-            const mainContainer = document.createElement('div');
-            mainContainer.innerHTML = `
-                        <div class="resultsOfSearch">
-                            <div class="infoOfCompany">
-                                <p class="nameOfCompany">${company.name}</p>
-                                <p class="nameOfStreet">${company.location}</p>
-                                <p class="Phonenumber">${company.phoneNumber}</p>
-                                <p class="email">${company.email}</p>
-                            </div>
-                            <div class="subscribeButton">
-                                <button class="subscribeItself" data-id="${company.c_id}">Schedule</button>
-                            </div>
-                        </div>
-                        <hr>
-                    `;
-
-
+          companies.forEach(company => {
+              // Creating elements using HTML literals
+              const mainContainer = document.createElement('div');
+              mainContainer.innerHTML = `
+                          <div class="resultsOfSearch">
+                              <div class="infoOfCompany">
+                                  <p class="nameOfCompany">${company.name}</p>
+                                  <p class="nameOfStreet">${company.location}</p>
+                                  <p class="Phonenumber">${company.phoneNumber}</p>
+                                  <p class="email">${company.email}</p>
+                              </div>
+                              <div class="subscribeButton">
+                                  <button class="subscribeItself" data-id="${company.c_id}">Schedule</button>
+                              </div>
+                          </div>
+                          <hr>
+                      `;
 
 
 
-            // Append the mainContainer to the body or another container
-            document.body.appendChild(mainContainer);
-        });
-
-        // Add event listeners for subscription
-        const scheduleButton = document.querySelectorAll(".subscribeItself");
 
 
-    scheduleButton.forEach(button => {
-        button.addEventListener("click", () => {
-    
-            const companyId = button.getAttribute("data-id");
-   
-        console.log("Company ID:", companyId); // Check if companyId is not empty
-            window.location.href = "/poolcleanapp/client_Schedule/" + companyId + "/";
+              // Append the mainContainer to the body or another container
+              document.body.appendChild(mainContainer);
+          });
 
-        });
-    });
+          // Add event listeners for subscription
+          const scheduleButton = document.querySelectorAll(".subscribeItself");
 
+
+      scheduleButton.forEach(button => {
+          button.addEventListener("click", () => {
+
+              const companyId = button.getAttribute("data-id");
+
+          console.log("Company ID:", companyId); // Check if companyId is not empty
+              window.location.href = "/poolcleanapp/client_Schedule/" + companyId + "/";
+
+          });
+      });
     </script>
     {% else %}
     <h2>No results found for that location, search for other locations.</h2>
-    {% endif %}
-    {% else %}
+    {% endif %} {% else %}
     <h2>Search your location to see providers that are near!</h2>
     {% endif %}
     <h2 id="numberResults"></h2>
-</body>
-
+  </body>
 </html>

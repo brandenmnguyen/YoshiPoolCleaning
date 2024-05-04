@@ -21,6 +21,13 @@
     text-decoration: none;
     transition: background-color 0.3s;
   }
+  .account-name {
+    background-color: #60a0ef;
+    padding: 15px 0;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+  }
   
   .navbar a:hover {
     background-color: #c2d1e0;
@@ -88,3 +95,20 @@
     flex: 1;
     margin-right: 10px;
   }
+
+  .home-button button {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.home-button button:hover {
+    color: blue;
+}

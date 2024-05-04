@@ -2,31 +2,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Select payment</title>
-    <link rel="stylesheet" href="paymentpage.css">
+    <link rel="stylesheet" href="paymentpage.css" />
     <script src="https://js.stripe.com/v3/"></script>
     <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossorigin="anonymous"
-  />
-  <link rel="stylesheet" href="{% static 'paymentpage.css' %}">
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'paymentpage.css' %}" />
   </head>
   <body>
     {% comment %} Nav Bar {% endcomment %}
     <div class="navbar">
       <div class="navbar-link" id="homelink">
         <a href="{% url 'homepage' %}">
-            <img src="{% static 'pool-clean-logo.png' %}" class="logo-image" alt="LOGO" style="width: 100px; height: 100px;">
+          <img
+            src="{% static 'pool-clean-logo.png' %}"
+            class="logo-image"
+            alt="LOGO"
+            style="width: 100px; height: 100px"
+          />
         </a>
-      </div>  
+      </div>
       <div class="navbar-links">
-        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'aboutClient' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
-       <!--<a href="#map">Map</a>-->
+        <!--<a href="#map">Map</a>-->
         <a href="{% url 'dailycalendar' %}">Schedule</a>
         <a href="{% url 'clientSettings' %}" class="account-name">
           {{ fname }} {{lname}}</a
@@ -35,40 +40,49 @@
     </div>
     <section>
       <div id="checkoutContainer">
-      <div class="product">
-        <div class="product-description">
-          <img src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd" alt="Pool Example" />
-          <h3>Pool Cleaning Service - Basic</h3>
-          <h5>$100.00</h5>
-        <form action="{% url 'checkout' %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" id="checkout-button">Checkout</button>
-        </form>
+        <div class="product">
+          <div class="product-description">
+            <img
+              src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd"
+              alt="Pool Example"
+            />
+            <h3>Pool Cleaning Service - Basic</h3>
+            <h5>$100.00</h5>
+            <form action="{% url 'checkout' %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" id="checkout-button">Checkout</button>
+            </form>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-description">
+            <img
+              src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd"
+              alt="Pool Example"
+            />
+            <h3>Pool Cleaning Service - Premium</h3>
+            <h5>$200.00</h5>
+            <form action="{% url 'checkout2' %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" id="checkout-button">Checkout</button>
+            </form>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-description">
+            <img
+              src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd"
+              alt="Pool Example"
+            />
+            <h3>Pool Cleaning Service - Elite</h3>
+            <h5>$300.00</h5>
+            <form action="{% url 'checkout3' %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" id="checkout-button">Checkout</button>
+            </form>
+          </div>
+        </div>
       </div>
-      </div>
-      <div class="product">
-        <div class="product-description">
-          <img src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd" alt="Pool Example" />
-          <h3>Pool Cleaning Service - Premium</h3>
-          <h5>$200.00</h5>
-        <form action="{% url 'checkout2' %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" id="checkout-button">Checkout</button>
-        </form>
-      </div>
-      </div>
-      <div class="product">
-        <div class="product-description">
-          <img src="https://github.com/brandenmnguyen/YoshiPoolCleaning/assets/114447703/db209675-7c78-479c-a352-f8425947c8cd" alt="Pool Example" />
-          <h3>Pool Cleaning Service - Elite</h3>
-          <h5>$300.00</h5>
-        <form action="{% url 'checkout3' %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" id="checkout-button">Checkout</button>
-        </form>
-      </div>
-      </div>
-    </div>
     </section>
     {% comment %} Footer {% endcomment %}
     <div class="footer">

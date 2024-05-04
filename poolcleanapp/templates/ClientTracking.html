@@ -16,7 +16,7 @@
         </a>
       </div>  
       <div class="navbar-links" id="links">
-        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'aboutClient' %}">About</a>
         <a href="{% url 'providersearch' %}">Providers</a>
         <a href="{% url 'paymenthistory' %}">Payment</a>
         <!--<a href="#map">Map</a>-->
@@ -39,7 +39,7 @@
                 <p class="card-text">
                     {% if appointment_list|length > 0 %}
                         {% for appointment in appointment_list %}
-                            <div>Your next appointment is {{ appointment.appdate }}, {{ appointment.apptime }}<br></div>
+                            <div>Your appointment is on {{ appointment.appdate }} at <b>{{ appointment.apptime }}</b><br></div>
                         {% endfor %}
                     {% else %}
                         No appointment details available.
@@ -77,7 +77,7 @@
                         </ul>
                     {% else %}
                         <div class="alert alert-info" role="alert">
-                            You don't have any upcoming appointments.
+                            No task in progress.
                         </div>
                     {% endif %}
                 </div>

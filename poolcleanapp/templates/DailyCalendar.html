@@ -2,181 +2,159 @@
 {% load static %}
 
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Daily Calendar View</title>
+    <link rel="stylesheet" href="{% static 'DailyCalendarStyle.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Google Font Link for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <script src="{% static 'DailyCalendarscript.js' %}" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script
+      type="text/JavaScript"
+      src="https://MomentJS.com/downloads/moment.js"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>Daily Calendar View</title>
-  <link rel="stylesheet" href="{% static 'DailyCalendarStyle.css' %}">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Font Link for Icons -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-  <script src="{% static 'DailyCalendarscript.js' %}" defer></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
-</head>
+  <body>
+    <div class="navbar">
+      <!-- Navbar content -->
+      <div class="navbar-link" id="homelink">
+        <a href="{% url 'homepage' %}">
+          <img
+            src="{% static 'pool-clean-logo.png' %}"
+            class="logo-image"
+            alt="LOGO"
+            style="width: 100px; height: 100px"
+          />
+        </a>
+      </div>
+      <div class="navbar-links" id="links">
+        <a href="{% url 'aboutProvider' %}">About</a>
+        <a href="{% url 'ScheduleTimingProvider' %}">Schedule</a>
+        <a href="{% url 'dailycalendar' %}">Calendar</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{%url 'providerSettings' %}" class="account-name" id="name">
+          {{company.company_name}}
+        </a>
+      </div>
+    </div>
 
-<body>
-
-  {{ appointments|json_script:"appointments"}}
-  <div class="dayview-container">
-    <div class="dayview-timestrings-container">
-      <div class="dayview-timestrings">
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            12:00 A.M
+    {{ appointments|json_script:"appointments"}}
+    <div class="dayview-container">
+      <div class="dayview-timestrings-container">
+        <div class="dayview-timestrings">
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">12:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            01:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">01:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            02:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">02:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            03:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">03:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            04:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">04:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            05:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">05:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            06:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">06:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            07:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">07:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            08:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">08:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            09:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">09:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            10:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">10:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            11:00 A.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">11:00 A.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            12:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">12:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            01:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">01:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            02:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">02:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            03:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">03:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            04:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">04:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            05:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">05:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            06:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">06:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            07:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">07:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            08:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">08:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            09:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">09:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            10:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">10:00 P.M</div>
           </div>
-        </div>
-        <div class="dayview-timestring-container">
-          <div class="dayview-timestring">
-            11:00 P.M
+          <div class="dayview-timestring-container">
+            <div class="dayview-timestring">11:00 P.M</div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="dayview-grid-container">
-      <div class="dayview-grid">
-        <div class="dayview-grid-tiles">
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-          <div class="dayview-grid-tile"></div>
-        </div>
-        <div class="dayview-now-marker"></div>
-        <div class="dayview-grid-marker-start"></div>
-        <div class="dayview-gridcell-container">
-          <div class="dayview-gridcell" id="dayTask">
-            <!--
+      <div class="dayview-grid-container">
+        <div class="dayview-grid">
+          <div class="dayview-grid-tiles">
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+            <div class="dayview-grid-tile"></div>
+          </div>
+          <div class="dayview-now-marker"></div>
+          <div class="dayview-grid-marker-start"></div>
+          <div class="dayview-gridcell-container">
+            <div class="dayview-gridcell" id="dayTask">
+              <!--
                 <div class="dayview-cell" style="grid-row: 13 / 5;">
                   <div class="dayview-cell-title">Ttle</div>
                   <div class="dayview-cell-time">05:00-06:00</div>
@@ -191,32 +169,31 @@
                   <div class="dayview-cell-desc">Description</div>
                 </div>
                 -->
+            </div>
           </div>
+          <div class="dayview-grid-marker-end"></div>
         </div>
-        <div class="dayview-grid-marker-end"></div>
       </div>
     </div>
-  </div>
-  <script>
-    // assumes post DomContentLoaded
-    document.addEventListener("DOMContentLoaded", () => {
-      const d = new Date();
-      document.querySelector(".dayview-now-marker").style.top =
-        (document
-          .querySelector(".dayview-gridcell-container")
-          .getBoundingClientRect().height /
-          24) *
-        (d.getHours() + d.getMinutes() / 60) +
-        "px";
-    });
-  </script>
+    <script>
+      // assumes post DomContentLoaded
+      document.addEventListener("DOMContentLoaded", () => {
+        const d = new Date();
+        document.querySelector(".dayview-now-marker").style.top =
+          (document
+            .querySelector(".dayview-gridcell-container")
+            .getBoundingClientRect().height /
+            24) *
+            (d.getHours() + d.getMinutes() / 60) +
+          "px";
+      });
+    </script>
 
-  <div class="calendar">
-    <div class="calendar__month">
-      <div class="cal-month__previous">
-        < </div>
-          <div class="cal-month__current"></div>
-          <div class="cal-month__next">></div>
+    <div class="calendar">
+      <div class="calendar__month">
+        <div class="cal-month__previous"><</div>
+        <div class="cal-month__current"></div>
+        <div class="cal-month__next">></div>
       </div>
       <div class="calendar__head">
         <div class="cal-head__day"></div>
@@ -284,8 +261,5 @@
         </div>
       </div>
     </div>
-
-
-</body>
-
+  </body>
 </html>

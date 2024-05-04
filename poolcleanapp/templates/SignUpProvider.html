@@ -85,7 +85,7 @@
                     };
         
                     // Perform a POST request using the Fetch API
-                    fetch('http://127.0.0.1:8000/poolcleanapp/addCompany/', {
+                    fetch('/poolcleanapp/addCompany/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -97,7 +97,7 @@
                         .then(data => {
                             // Handle the response from the server if needed
                             console.log('Success:', data);
-                            window.location.href = 'http://127.0.0.1:8000/poolcleanapp/login/';
+                            window.location.href = '/poolcleanapp/login/';
                         })
                         .catch((error) => {
                             console.error('Error:', error);

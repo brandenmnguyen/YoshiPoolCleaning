@@ -1,166 +1,176 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Provider Scheduling</title>
-    <link rel="stylesheet" href="{% static 'ScheduleTimingProvider.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'ScheduleTimingProvider.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
 
-</head>
-
-<body>
+  <body>
     <h1>Schedule date and estimated time of your availability:</h1>
 
-    <button id="anotherButton" type="button" class="anotherForm">Press here to add another form to schedule
-        other dates and
-        time</button>
+    <button id="anotherButton" type="button" class="anotherForm">
+      Press here to add another form to schedule other dates and time
+    </button>
 
     <form id="mainForm" method="POST" class="mainForm">
-        <div class="mb-3">
+      <div class="mb-3">
+        <br />
 
+        <input type="hidden" name="c_id" id="c_id" value="{{company_id}}" />
 
-            <br>
+        <label for="date" class="form-label">Enter Available date: </label>
+        <input
+          type="date"
+          name="date"
+          class="date form-control"
+          id="date"
+          aria-describedby="date"
+          placeholder="Enter available date"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="time" class="form-label">Enter estimated time: </label>
+        <input
+          type="time"
+          name="time"
+          class="time form-control"
+          id="time"
+          placeholder="Enter estimated time"
+        />
+      </div>
 
-            <input type="hidden" name="c_id" id="c_id" value={{company_id}}>
-
-
-            <label for="date" class="form-label">Enter Available date: </label>
-            <input type="date" name="date" class="date form-control" id="date" aria-describedby="date"
-                placeholder="Enter available date">
-
-        </div>
-        <div class="mb-3">
-            <label for="time" class="form-label">Enter estimated time: </label>
-            <input type="time" name="time" class="time form-control" id="time" placeholder="Enter estimated time">
-        </div>
-
-        <button type="button" class="submitButton btn btn-primary" id="submitForm">Submit</button>
-
-
+      <button
+        type="button"
+        class="submitButton btn btn-primary"
+        id="submitForm"
+      >
+        Submit
+      </button>
     </form>
 
     <a href="{% url 'providertracking' %}" class="home-button">
-        <button>&larr; Back</button>
-      </a>
+      <button>&larr; Back</button>
+    </a>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener("DOMContentLoaded", function () {
+        const formContainer = document.getElementsByClassName("mainForm");
 
-            const formContainer = document.getElementsByClassName('mainForm');
+        // Access the first element in the collection
+        const firstFormContainer = formContainer[0];
 
-            // Access the first element in the collection
-            const firstFormContainer = formContainer[0];
+        document
+          .querySelector(".anotherForm")
+          .addEventListener("click", function () {
+            // Creating form with POST method
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("class", "mainForm");
 
-            document.querySelector('.anotherForm').addEventListener('click', function () {
-                // Creating form with POST method
-                var form = document.createElement('form');
-                form.setAttribute('method', 'POST');
-                form.setAttribute('class', 'mainForm');
+            // Creating date input field
+            var dateLabel = document.createElement("label");
+            dateLabel.setAttribute("name", "form-label");
+            dateLabel.innerHTML = "Enter Available date: ";
 
-                // Creating date input field
-                var dateLabel = document.createElement('label');
-                dateLabel.setAttribute('name', 'form-label');
-                dateLabel.innerHTML = 'Enter Available date: ';
+            var dateInput = document.createElement("input");
+            dateInput.setAttribute("type", "date");
+            dateInput.setAttribute("name", "date");
+            dateInput.classList.add("date");
 
-                var dateInput = document.createElement('input');
-                dateInput.setAttribute('type', 'date');
-                dateInput.setAttribute('name', 'date');
-                dateInput.classList.add('date');
+            dateLabel.appendChild(dateInput);
 
+            // Creating time input field
+            var timeLabel = document.createElement("label");
+            timeLabel.setAttribute("name", "form-label");
+            timeLabel.innerHTML = "Enter estimated time: ";
 
-                dateLabel.appendChild(dateInput);
+            var timeInput = document.createElement("input");
+            timeInput.setAttribute("type", "time");
+            timeInput.setAttribute("name", "time");
+            timeInput.classList.add("time");
 
-                // Creating time input field
-                var timeLabel = document.createElement('label');
-                timeLabel.setAttribute('name', 'form-label');
-                timeLabel.innerHTML = 'Enter estimated time: ';
+            timeLabel.appendChild(timeInput);
 
-                var timeInput = document.createElement('input');
-                timeInput.setAttribute('type', 'time');
-                timeInput.setAttribute('name', 'time');
-                timeInput.classList.add('time');
+            //create submit button
+            var submitButton = document.createElement("button");
+            submitButton.setAttribute("type", "button");
+            submitButton.setAttribute("name", "submitButton btn btn-primary");
+            submitButton.innerHTML = "Submit";
+            submitButton.classList.add("submitButton");
 
-                timeLabel.appendChild(timeInput);
+            // Appending input elements to form
+            var line = document.createElement("hr");
+            line.classList.add("line");
 
-                //create submit button
-                var submitButton = document.createElement('button');
-                submitButton.setAttribute('type', 'button');
-                submitButton.setAttribute('name', 'submitButton btn btn-primary');
-                submitButton.innerHTML = 'Submit';
-                submitButton.classList.add('submitButton');
+            form.appendChild(line);
+            form.appendChild(dateLabel);
+            form.appendChild(document.createElement("br"));
+            form.appendChild(timeLabel);
+            form.appendChild(document.createElement("br"));
+            form.appendChild(submitButton);
 
-                // Appending input elements to form
-                var line = document.createElement('hr');
-                line.classList.add('line');
+            // Appending form to main form container
+            firstFormContainer.appendChild(form);
+          });
 
-                form.appendChild(line);
-                form.appendChild(dateLabel);
-                form.appendChild(document.createElement('br'));
-                form.appendChild(timeLabel);
-                form.appendChild(document.createElement('br'));
-                form.appendChild(submitButton);
+        // const submitButtonData = document.getElementsByClassName('submitButton btn btn-primary');
 
+        document.addEventListener("click", function (event) {
+          if (event.target && event.target.classList.contains("submitButton")) {
+            var form = event.target.closest("form");
+            // Get data from input fields
+            //   var date = form.querySelector('.date').value;
+            //   var time = form.querySelector('.time').value;
+            // Get provider ID from hidden input field
+            var providerId = document.getElementById("c_id").value;
 
-                // Appending form to main form container
-                firstFormContainer.appendChild(form);
-            });
+            // Create FormData object for the current form
+            var formData = new FormData(form);
 
-            // const submitButtonData = document.getElementsByClassName('submitButton btn btn-primary');
+            // Append provider ID to FormData object
+            formData.append("c_id", providerId);
 
-            document.addEventListener('click', function (event) {
-
-                if (event.target && event.target.classList.contains('submitButton')) {
-
-                    var form = event.target.closest('form');
-                    // Get data from input fields
-                    //   var date = form.querySelector('.date').value;
-                    //   var time = form.querySelector('.time').value;
-                    // Get provider ID from hidden input field
-                    var providerId = document.getElementById('c_id').value;
-
-
-                    // Create FormData object for the current form
-                    var formData = new FormData(form);
-
-
-                    // Append provider ID to FormData object
-                    formData.append('c_id', providerId);
-
-                    // Send data to the server using fetch
-                    fetch('/poolcleanapp/ScheduleTimingProvider/providerDateTimeScheduling/', {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest', // Set AJAX header
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                        body: formData
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                console.log('Form submitted successfully!');
-                                alert('Form submitted successfully!');
-                            } else {
-                                console.error('Failed to submit form:', response.statusText);
-                                alert('Failed to submit form');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error submitting form:', error);
-                            alert('Error submitting form');
-                        });
-
+            // Send data to the server using fetch
+            fetch(
+              "/poolcleanapp/ScheduleTimingProvider/providerDateTimeScheduling/",
+              {
+                method: "POST",
+                headers: {
+                  "X-Requested-With": "XMLHttpRequest", // Set AJAX header
+                  "X-CSRFToken": "{{ csrf_token }}",
+                },
+                body: formData,
+              }
+            )
+              .then((response) => {
+                if (response.ok) {
+                  console.log("Form submitted successfully!");
+                  alert("Form submitted successfully!");
+                } else {
+                  console.error("Failed to submit form:", response.statusText);
+                  alert("Failed to submit form");
                 }
-            });
-
+              })
+              .catch((error) => {
+                console.error("Error submitting form:", error);
+                alert("Error submitting form");
+              });
+          }
         });
-
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

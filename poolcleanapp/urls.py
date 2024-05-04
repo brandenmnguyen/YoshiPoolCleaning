@@ -59,6 +59,8 @@ urlpatterns = [
     #path('api/provider-status-update/<int:pk>/', views.update_provider_tracking_status, name='provider-status-update'),
     path('paymenthistory/', views.payment_history, name='paymenthistory'),
     path('about/', views.about, name='about'),
+    path('aboutProvider/', views.aboutProvider, name='aboutProvider'),
+    path('aboutClient/', views.aboutClient, name='aboutClient'),
     path('verification/', views.verification, name = 'verification'),
     
     path('resultspage/', views.resultspage, name = 'resultspage'),

@@ -52,7 +52,7 @@ class ProviderAvailableTimes(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'PROVIDERAVAILABLETIMES'
+        db_table = 'provideravailabletimes'
         
 
 class Client(models.Model):
@@ -66,7 +66,7 @@ class Client(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'CLIENT'
+        db_table = 'client'
 
 
 class Company(models.Model):
@@ -79,7 +79,7 @@ class Company(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'COMPANY'
+        db_table = 'company'
 
 
 class Employee(models.Model):
@@ -93,7 +93,7 @@ class Employee(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'EMPLOYEE'
+        db_table = 'employee'
 
 
 class Invoice(models.Model):
@@ -110,7 +110,7 @@ class Invoice(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'INVOICE'
+        db_table = 'invoice'
 
 
 class Taskping(models.Model):
@@ -154,7 +154,7 @@ class Taskping(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'TASKPING'
+        db_table = 'taskping'
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -276,5 +276,5 @@ class ProviderAvailableTimes(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'PROVIDERAVAILABLETIMES'
+        db_table = 'provideravailabletimes'
 

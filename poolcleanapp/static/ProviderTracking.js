@@ -101,7 +101,7 @@ async function onAppointmentButtonClick(appointmentId) {
 }
 
 function redirectToProviderTracking() {
-    window.location.href = 'http://127.0.0.1:8000/poolcleanapp/providertracking/';
+    window.location.href = '//poolcleanapp/providertracking/';
 }
 
 
