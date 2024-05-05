@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test import Client as TestClient
+from selenium.webdriver.common.action_chains import ActionChains
 from django.urls import reverse, resolve
 from poolcleanapp.models import Client, Company
 
@@ -69,9 +70,24 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'ProviderTracking.html')
         
 
-    def test_provider_search_with_no_results(self): #YPS-121 
-        # Test with a search term that matches nothing
+    def test_provider_search_with_no_results(self):  # YPS-121
+    # Test with a search term that matches nothing
+        Client.objects.create(
+            fname='John',
+            lname='Doe',
+            email='john.doe@example.com',
+            cl_password='password',
+            phone_number='123456789',
+            address='123 Main Street',
+        )
+
+        session = self.client.session
+        session['type'] = 'client'
+        session['username'] = "john.doe@example.com"
+        session['password'] = "password"
+        session.save()
         response = self.client.get(self.provider_search_url, {'search': 'Beach'})
+        print(response.context)  # Debugging: Check what's actually in the context
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "ResultsPage-1.html")
         self.assertEqual(len(response.context['info']), 0)  # Expects to find no companies
