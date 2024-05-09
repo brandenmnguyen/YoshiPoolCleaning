@@ -144,7 +144,7 @@ python3 manage.py test poolcleanapp.tests.tests_functions
   
 ## Deployment
 
-* We used Amazon Web Services to host the web application. The deployed web application can be viewed at http://18.236.105.85:8000/.
+* We used Amazon Web Services to host the web application. The deployed web application can be viewed at [http://18.236.105.85:8000/](https://poolcleanpro.net/poolcleanapp/homepage/).
 * You can learn about how to deploy with the [AWS deployment documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html).
 
 ## Developer Instructions
