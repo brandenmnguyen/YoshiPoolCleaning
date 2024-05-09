@@ -144,17 +144,17 @@ python3 manage.py test poolcleanapp.tests.tests_functions
   
 ## Deployment
 
-* We used Amazon Web Services to host the web application. The deployed web application can be viewed at [http://18.236.105.85:8000/](https://poolcleanpro.net/poolcleanapp/homepage/).
+* We used Amazon Web Services to host the web application. The deployed web application can be viewed at [https://poolcleanpro.net/poolcleanapp/homepage/](https://poolcleanpro.net/poolcleanapp/homepage/).
 * You can learn about how to deploy with the [AWS deployment documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html).
 
 ## Developer Instructions
 
 To set up the development environment for this project: 
-First, ensure that you have Visual Studio Code and Python installed on your computer.
-After, start by cloning the project repository using the command git clone using the URL of Project, then navigate into the project directory. 
-Create a virtual environment within the project directory by running python -m venv venv, and activate it using .\\venv\\Scripts\\activate on Windows or source venv/bin/activate on MacOS/Linux. 
-Install all required dependencies. 
-Finally, open the project in Visual Studio Code by running code in the terminal within your project directory.
+- First, ensure that you have Visual Studio Code and Python installed on your computer.
+- After, start by cloning the project repository using the command git clone using the URL of Project, then navigate into the project directory. 
+- Create a virtual environment within the project directory by running python -m venv venv, and activate it using .\\venv\\Scripts\\activate on Windows or source venv/bin/activate on MacOS/Linux. 
+- Install all required dependencies. 
+- Finally, open the project in Visual Studio Code by running code in the terminal within your project directory.
 
 ## Tech Stack
 
